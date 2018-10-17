@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ApexCollect.iml" filepath="$PROJECT_DIR$/ApexCollect.iml" />
+      <module fileurl="file://$PROJECT_DIR$/apexcollectsdk/apexcollectsdk.iml" filepath="$PROJECT_DIR$/apexcollectsdk/apexcollectsdk.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
