@@ -1,1 +1,1 @@
-include ':app', ':apexcollectsdk', ':ApexCollectSDK'
+include ':ApexCollectSDK'

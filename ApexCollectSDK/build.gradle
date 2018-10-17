@@ -1,5 +1,7 @@
 apply plugin: 'com.android.library'
 
+version = "1.0"
+
 android {
     compileSdkVersion 27
 
@@ -32,3 +34,14 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
+
+task makeJar(type: Copy) {
+    def jarName = 'ApexAnalytics_Collect_Android_' + version + '.jar'
+    delete 'build/libs/' + jarName
+    from('build/intermediates/packaged-classes/release/')
+    into('build/libs/')
+    include('classes.jar')
+    rename('classes.jar', jarName)
+}
+
+makeJar.dependsOn(build)
