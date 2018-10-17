@@ -33,20 +33,20 @@ public class ApexAnalytics {
     /**
      * Initialize 初始化
      *
-     * @param context 必须为Application的Context
+     * @param applicationContext 必须为Application的Context
      */
-    public void init(Context context) {
+    public void init(Context applicationContext) {
         if (mIsInit) {
             ATLog.e(TAG, "ApexAnalytics can only be initialized once!");
             return;
         }
 
-        if (null == context) {
-            ATLog.e(TAG, "context is null!");
+        if (null == applicationContext) {
+            ATLog.e(TAG, "applicationContext is null!");
             return;
         }
 
-        mContext = context;
+        mContext = applicationContext;
 
         registerApexCollectActivityLifecycleCallbacks();
 
