@@ -1,4 +1,4 @@
-package com.chinapex.android.apexcollect;
+package com.chinapex.android.datacollect;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

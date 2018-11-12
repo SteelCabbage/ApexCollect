@@ -1,4 +1,4 @@
-package com.chinapex.android.apexcollect;
+package com.chinapex.android.datacollect;
 
 import org.junit.Test;
 

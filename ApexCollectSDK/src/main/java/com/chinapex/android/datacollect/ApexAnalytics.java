@@ -1,12 +1,12 @@
-package com.chinapex.android.apexcollect;
+package com.chinapex.android.datacollect;
 
 import android.annotation.TargetApi;
 import android.app.Application;
 import android.content.Context;
 import android.os.Build;
 
-import com.chinapex.android.apexcollect.metrics.ApexCollectActivityLifecycleCallbacks;
-import com.chinapex.android.apexcollect.utils.ATLog;
+import com.chinapex.android.datacollect.metrics.ApexCollectActivityLifecycleCallbacks;
+import com.chinapex.android.datacollect.utils.ATLog;
 
 /**
  * @author SteelCabbage

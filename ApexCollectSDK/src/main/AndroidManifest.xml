@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.chinapex.android.apexcollect">
+    package="com.chinapex.android.datacollect">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
