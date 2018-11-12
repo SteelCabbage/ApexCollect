@@ -6,7 +6,7 @@ import android.util.Log;
  * @author SteelCabbage
  * @date 2018/10/17
  */
-public class AtLog {
+public class AppLog {
     public static final int VERBOSE = 2;
     public static final int DEBUG = 3;
     public static final int INFO = 4;

@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Build;
 
+import com.chinapex.android.datacollect.global.ApexCache;
 import com.chinapex.android.datacollect.metrics.ApexCollectActivityLifecycleCallbacks;
 import com.chinapex.android.datacollect.utils.ATLog;
 
@@ -16,7 +17,6 @@ public class ApexAnalytics {
 
     private static final String TAG = ApexAnalytics.class.getSimpleName();
     private boolean mIsInit;
-    private Context mContext;
 
     private ApexAnalytics() {
 
@@ -46,7 +46,7 @@ public class ApexAnalytics {
             return;
         }
 
-        mContext = applicationContext;
+        ApexCache.getInstance().setContext(applicationContext);
 
         registerApexCollectActivityLifecycleCallbacks();
 
@@ -55,10 +55,9 @@ public class ApexAnalytics {
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     private void registerApexCollectActivityLifecycleCallbacks() {
-        if (mContext.getApplicationContext() instanceof Application) {
-            Application app = (Application) mContext.getApplicationContext();
-            ApexCollectActivityLifecycleCallbacks lifecycleCallbacks = new
-                    ApexCollectActivityLifecycleCallbacks();
+        if (ApexCache.getInstance().getContext().getApplicationContext() instanceof Application) {
+            Application app = (Application) ApexCache.getInstance().getContext().getApplicationContext();
+            ApexCollectActivityLifecycleCallbacks lifecycleCallbacks = new ApexCollectActivityLifecycleCallbacks();
             app.registerActivityLifecycleCallbacks(lifecycleCallbacks);
         } else {
             ATLog.w(TAG, "Context is not an Application!");

@@ -31,10 +31,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bt_test:
-                AtLog.i(TAG, "原有逻辑执行 ====== bt_test被点击了");
+                AppLog.i(TAG, "原有逻辑执行 ====== bt_test被点击了");
                 break;
             case R.id.cb_jar:
-                AtLog.i(TAG, "原有逻辑执行 ====== jar包中的button被点击了");
+                AppLog.i(TAG, "原有逻辑执行 ====== jar包中的button被点击了");
                 break;
             default:
                 break;
