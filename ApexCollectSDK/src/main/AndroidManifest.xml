@@ -2,8 +2,5 @@
     package="com.chinapex.android.datacollect">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
-    <application>
-
-    </application>
+    
 </manifest>
