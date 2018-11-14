@@ -9,17 +9,20 @@ class FilterUtils {
 
     static boolean isMatchClass(String className, String[] interfaces) {
         boolean isMatchClass = false
+
         //剔除掉以android开头的类，即系统类，以避免出现不可预测的bug
         if (className.startsWith('android')) {
             return isMatchClass
         }
+
         // 是否满足实现的接口
         isMatchClass = isMatchInterfaces(interfaces, 'android/view/View$OnClickListener')
-//        if (className.contains('Fragment')) {
-//            isMeetClassCondition = true
-//        } else if (isMatchingSettingClass(className, interfaces)) {
-//            isMeetClassCondition = true
-//        }
+        if (className.contains('Fragment')) {
+            isMatchClass = true
+        } /*else if (isMatchingSettingClass(className, interfaces)) {
+            isMatchClass = true
+        }*/
+
         return isMatchClass
     }
 
@@ -41,7 +44,7 @@ class FilterUtils {
                 || (name == 'onPause' && desc == '()V')
                 || (name == 'setUserVisibleHint' && desc == '(Z)V')
                 || (name == 'onHiddenChanged' && desc == '(Z)V')
-                || isMatchingSettingMethod(name, desc)) {
+        /*|| isMatchingSettingMethod(name, desc)*/) {
             return true
         } else {
             return false
@@ -73,92 +76,66 @@ class FilterUtils {
                 void visitCode() {
                     super.visitCode()
 
-                    // ALOAD 25
                     adapter.visitVarInsn(Opcodes.ALOAD, 1)
-                    // INVOKESTATIC 184
                     adapter.visitMethodInsn(Opcodes.INVOKESTATIC, "com/chinapex/android/datacollect/aop/AopHelper", "onClick", "(Landroid/view/View;)Z", false)
 
                     Label label = new Label()
                     adapter.visitJumpInsn(Opcodes.IFEQ, label)
                     adapter.visitInsn(Opcodes.RETURN)
                     adapter.visitLabel(label)
-
-                }
-
-                @Override
-                protected void onMethodEnter() {
-                    super.onMethodEnter()
-
-//                    // ALOAD 25
-//                    adapter.visitVarInsn(Opcodes.ALOAD, 1)
-//                    // INVOKESTATIC 184
-//                    adapter.visitMethodInsn(Opcodes.INVOKESTATIC, "com/chinapex/aopdemo/AopHelper", "onClick", "(Landroid/view/View;)Z", false)
-//
-//                    Label end = new Label()
-//                    adapter.visitInsn(Opcodes.RETURN)
-
-
-//                    adapter.visitJumpInsn(Opcodes.IFEQ, L0)
-
-//                    adapter.visitInsn(Opcodes.RETURN)
-
-//                    Label end = new Label()
-//                    adapter.visitInsn(Opcodes.RETURN)
-//
-//                    adapter.visitJumpInsn(Opcodes.IFEQ, end)
-//                    adapter.visitLabel(end)
-
                 }
             }
-        } /*else if (name == "onResume" && className.contains("Fragment")) {
-            adapter = new AutoMethodVisitor(methodVisitor, access, name, desc) {
+//        } else if (name == "onResume" && className.contains("Fragment")) {
+        } else if (name == "onResume" && desc == '()V') {
+            adapter = new AopMethodVisitor(methodVisitor, access, name, desc) {
+
                 @Override
                 protected void onMethodExit(int opcode) {
                     super.onMethodExit(opcode)
-                    // ALOAD
-                    methodVisitor.visitVarInsn(25, 0)
-                    // INVOKESTATIC 184
-                    methodVisitor.visitMethodInsn(184, "com/xishuang/plugintest/AutoHelper", "onFragmentResume", "(Landroid/support/v4/app/Fragment;)V", false)
+
+                    methodVisitor.visitVarInsn(Opcodes.ALOAD, 0)
+                    methodVisitor.visitMethodInsn(Opcodes.INVOKESTATIC, "com/chinapex/android/datacollect/aop/AopHelper", "onFragmentResume", "(Landroid/support/v4/app/Fragment;)V", false)
                 }
             }
-        } else if (name == "onPause" && className.contains("Fragment")) {
-            adapter = new AutoMethodVisitor(methodVisitor, access, name, desc) {
+//        } else if (name == "onPause" && className.contains("Fragment")) {
+        } else if (name == "onPause" && desc == '()V') {
+            adapter = new AopMethodVisitor(methodVisitor, access, name, desc) {
+
                 @Override
                 protected void onMethodExit(int opcode) {
                     super.onMethodExit(opcode)
-                    // ALOAD 25
-                    methodVisitor.visitVarInsn(25, 0)
-                    // INVOKESTATIC 184
-                    methodVisitor.visitMethodInsn(184, "com/xishuang/plugintest/AutoHelper", "onFragmentPause", "(Landroid/support/v4/app/Fragment;)V", false)
+
+                    methodVisitor.visitVarInsn(Opcodes.ALOAD, 0)
+                    methodVisitor.visitMethodInsn(Opcodes.INVOKESTATIC, "com/chinapex/android/datacollect/aop/AopHelper", "onFragmentPause", "(Landroid/support/v4/app/Fragment;)V", false)
                 }
             }
-        } else if (name == "setUserVisibleHint" && className.contains("Fragment")) {
-            adapter = new AutoMethodVisitor(methodVisitor, access, name, desc) {
+//        } else if (name == "setUserVisibleHint" && className.contains("Fragment")) {
+        } else if (name == "setUserVisibleHint" && desc == '(Z)V') {
+            adapter = new AopMethodVisitor(methodVisitor, access, name, desc) {
+
                 @Override
                 protected void onMethodExit(int opcode) {
                     super.onMethodExit(opcode)
-                    // ALOAD 25
-                    methodVisitor.visitVarInsn(25, 0)
-                    // ILOAD 21
-                    methodVisitor.visitVarInsn(21, 1)
-                    // INVOKESTATIC 184
-                    methodVisitor.visitMethodInsn(184, "com/xishuang/plugintest/AutoHelper", "setFragmentUserVisibleHint", "(Landroid/support/v4/app/Fragment;Z)V", false)
+
+                    methodVisitor.visitVarInsn(Opcodes.ALOAD, 0)
+                    methodVisitor.visitVarInsn(Opcodes.ILOAD, 1)
+                    methodVisitor.visitMethodInsn(Opcodes.INVOKESTATIC, "com/chinapex/android/datacollect/aop/AopHelper", "setFragmentUserVisibleHint", "(Landroid/support/v4/app/Fragment;Z)V", false)
                 }
             }
-        } else if (name == "onHiddenChanged" && className.contains("Fragment")) {
-            adapter = new AutoMethodVisitor(methodVisitor, access, name, desc) {
+//        } else if (name == "onHiddenChanged" && className.contains("Fragment")) {
+        } else if (name == "onHiddenChanged" && desc == '(Z)V') {
+            adapter = new AopMethodVisitor(methodVisitor, access, name, desc) {
+
                 @Override
                 protected void onMethodExit(int opcode) {
                     super.onMethodExit(opcode)
-                    // ALOAD 25
-                    methodVisitor.visitVarInsn(25, 0)
-                    // ILOAD 21
-                    methodVisitor.visitVarInsn(21, 1)
-                    // INVOKESTATIC 184
-                    methodVisitor.visitMethodInsn(184, "com/xishuang/plugintest/AutoHelper", "onFragmentHiddenChanged", "(Landroid/support/v4/app/Fragment;Z)V", false)
+
+                    methodVisitor.visitVarInsn(Opcodes.ALOAD, 0)
+                    methodVisitor.visitVarInsn(Opcodes.ILOAD, 1)
+                    methodVisitor.visitMethodInsn(Opcodes.INVOKESTATIC, "com/chinapex/android/datacollect/aop/AopHelper", "onFragmentHiddenChanged", "(Landroid/support/v4/app/Fragment;Z)V", false)
                 }
             }
-        } else if (Controller.isUseAnotation()) {
+        } /*else if (Controller.isUseAnotation()) {
             // 注解的话，使用指定方法
             adapter = getSettingMethodVisitor(methodVisitor, access, name, desc)
         } else if (isMatchingSettingClass(className, interfaces)){

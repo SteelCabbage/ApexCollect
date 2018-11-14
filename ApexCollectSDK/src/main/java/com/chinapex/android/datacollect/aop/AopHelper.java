@@ -1,5 +1,6 @@
 package com.chinapex.android.datacollect.aop;
 
+import android.support.v4.app.Fragment;
 import android.view.View;
 
 import com.chinapex.android.datacollect.global.ApexCache;
@@ -27,5 +28,21 @@ public class AopHelper {
         }
 
         return isMonitor;
+    }
+
+    public static void onFragmentResume(Fragment fragment) {
+        ATLog.d(TAG, "onFragmentResume" + fragment.getClass().getSimpleName());
+    }
+
+    public static void onFragmentPause(Fragment fragment) {
+        ATLog.d(TAG, "onFragmentPause" + fragment.getClass().getSimpleName());
+    }
+
+    public static void setFragmentUserVisibleHint(Fragment fragment, boolean isVisibleToUser) {
+        ATLog.d(TAG, "setFragmentUserVisibleHint->" + isVisibleToUser + "->" + fragment.getClass().getSimpleName());
+    }
+
+    public static void onFragmentHiddenChanged(Fragment fragment, boolean hidden) {
+        ATLog.d(TAG, "onFragmentHiddenChanged->" + hidden + "->" + fragment.getClass().getSimpleName());
     }
 }

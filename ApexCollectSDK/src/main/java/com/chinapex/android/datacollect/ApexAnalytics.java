@@ -65,6 +65,32 @@ public class ApexAnalytics {
     }
 
 
+
+    /* *************************************************************************************************************
+     *                                                Settings                                                     *
+     * *************************************************************************************************************
+     */
+
+    // TODO: 2018/11/14 0014 各种设置 
+
+    /**
+     * setMaxNum 设置上报条数
+     *
+     * @param maxNum Default: 30 (默认30条)
+     */
+    public void setMaxNum(int maxNum) {
+
+    }
+
+    /**
+     * setTimeInterval 设置上报的时间间隔
+     *
+     * @param timeInterval Default: 1000 * 60 * 60 * 1 (默认1小时)
+     */
+    public void setTimeInterval(long timeInterval) {
+
+    }
+
     /**
      * setLogLevel 设置日志输出等级，默认为WARN
      *
@@ -74,4 +100,5 @@ public class ApexAnalytics {
     public void setLogLevel(int logLevel) {
         ATLog.setLevel(logLevel);
     }
+
 }
