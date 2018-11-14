@@ -6,7 +6,8 @@ import com.chinapex.android.datacollect.ApexAnalytics;
 import com.chinapex.android.datacollect.utils.ATLog;
 
 /**
- * Created by SteelCabbage on 2018/5/21 0021.
+ * @author SteelCabbage
+ * @date 2018/11/05
  */
 
 public class SampleApp extends Application {
