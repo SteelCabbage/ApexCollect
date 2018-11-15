@@ -1,4 +1,4 @@
-package com.chinapex.analytics.sample;
+package com.chinapex.analytics.sample.utils;
 
 import android.util.Log;
 

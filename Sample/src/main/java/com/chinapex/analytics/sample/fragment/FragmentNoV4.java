@@ -1,4 +1,4 @@
-package com.chinapex.analytics.sample;
+package com.chinapex.analytics.sample.fragment;
 
 import android.app.Fragment;
 

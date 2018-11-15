@@ -31,18 +31,18 @@ public class AopHelper {
     }
 
     public static void onFragmentResume(Fragment fragment) {
-        ATLog.d(TAG, "onFragmentResume" + fragment.getClass().getSimpleName());
+        ATLog.w(TAG, "onFragmentResume:" + fragment.getClass().getSimpleName());
     }
 
     public static void onFragmentPause(Fragment fragment) {
-        ATLog.d(TAG, "onFragmentPause" + fragment.getClass().getSimpleName());
+        ATLog.w(TAG, "onFragmentPause:" + fragment.getClass().getSimpleName());
     }
 
     public static void setFragmentUserVisibleHint(Fragment fragment, boolean isVisibleToUser) {
-        ATLog.d(TAG, "setFragmentUserVisibleHint->" + isVisibleToUser + "->" + fragment.getClass().getSimpleName());
+        ATLog.w(TAG, "setFragmentUserVisibleHint->" + isVisibleToUser + "->" + fragment.getClass().getSimpleName());
     }
 
     public static void onFragmentHiddenChanged(Fragment fragment, boolean hidden) {
-        ATLog.d(TAG, "onFragmentHiddenChanged->" + hidden + "->" + fragment.getClass().getSimpleName());
+        ATLog.w(TAG, "onFragmentHiddenChanged->" + hidden + "->" + fragment.getClass().getSimpleName());
     }
 }

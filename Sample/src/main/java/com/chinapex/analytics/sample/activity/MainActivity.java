@@ -1,4 +1,4 @@
-package com.chinapex.analytics.sample;
+package com.chinapex.analytics.sample.activity;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -6,8 +6,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.chinapex.analytics.sample.utils.AppLog;
+import com.chinapex.analytics.sample.R;
 import com.chinapex.android.datacollect.testAop.CabbageButton;
 
+
+/**
+ * @author SteelCabbage
+ * @date 2018/10/17
+ */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();

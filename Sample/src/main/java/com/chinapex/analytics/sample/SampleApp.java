@@ -2,6 +2,7 @@ package com.chinapex.analytics.sample;
 
 import android.app.Application;
 
+import com.chinapex.analytics.sample.utils.AppLog;
 import com.chinapex.android.datacollect.ApexAnalytics;
 import com.chinapex.android.datacollect.utils.ATLog;
 

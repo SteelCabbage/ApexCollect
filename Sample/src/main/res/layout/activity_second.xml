@@ -3,12 +3,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SecondActivity">
+    tools:context=".activity.SecondActivity">
+
+    <Button
+        android:id="@+id/bt_show1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="bt_show1" />
+
+    <Button
+        android:id="@+id/bt_hide1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:text="bt_hide1" />
 
     <FrameLayout
-        android:id="@+id/fl"
+        android:id="@+id/second_fl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/holo_blue_light" />
+        android:layout_below="@+id/bt_show1" />
 
 </RelativeLayout>
