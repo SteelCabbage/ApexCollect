@@ -16,9 +16,9 @@ import com.chinapex.android.datacollect.utils.ATLog;
  * @author SteelCabbage
  * @date 2018/10/17
  */
-public class SecondActivity extends AppCompatActivity implements View.OnClickListener {
+public class FragmentActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String TAG = SecondActivity.class.getSimpleName();
+    private static final String TAG = FragmentActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

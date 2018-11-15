@@ -34,8 +34,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         CabbageButton cbJar = findViewById(R.id.cb_jar);
         cbJar.setOnClickListener(this);
 
-        Button bt2second = (Button) findViewById(R.id.bt_2second);
-        bt2second.setOnClickListener(this);
+        Button bt2fragment = (Button) findViewById(R.id.bt_2fragment);
+        bt2fragment.setOnClickListener(this);
+
+        Button bt2rvList = (Button) findViewById(R.id.bt_2rv_list);
+        bt2rvList.setOnClickListener(this);
     }
 
     @Override
@@ -47,10 +50,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.cb_jar:
                 AppLog.i(TAG, "原有逻辑执行 ====== jar包中的button被点击了");
                 break;
-            case R.id.bt_2second:
-                AppLog.i(TAG, "原有逻辑执行 ====== 跳转到第二个activity");
-                Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+            case R.id.bt_2fragment:
+                AppLog.i(TAG, "原有逻辑执行 ====== 跳转到FragmentActivity");
+                Intent intent = new Intent(MainActivity.this, FragmentActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.bt_2rv_list:
+                AppLog.i(TAG, "原有逻辑执行 ====== 跳转到ListRvActivity");
+                Intent intent2 = new Intent(MainActivity.this, ListRvActivity.class);
+                startActivity(intent2);
                 break;
             default:
                 break;
