@@ -1,17 +1,14 @@
 package com.chinapex.android.datacollect.aop;
 
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewParent;
 
 import com.chinapex.android.datacollect.global.ApexCache;
 import com.chinapex.android.datacollect.utils.ATLog;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,6 +21,7 @@ public class AopHelper {
     private static boolean isMonitor = false;
 
     public static boolean onClick(View view) {
+        long currentThreadTimeMillis = SystemClock.currentThreadTimeMillis();
         String path = AssembleXpath.getPath(ApexCache.getInstance().getContext(), view);
         String activityName = AssembleXpath.getActivityName(view);
         path = activityName + ":onClick:" + path;
@@ -39,6 +37,7 @@ public class AopHelper {
             ATLog.i(TAG, "圈选模式关闭，原有逻辑执行======正常上传埋点事件");
         }
 
+        ATLog.e(TAG, "插桩方法耗时======" + (SystemClock.currentThreadTimeMillis() - currentThreadTimeMillis));
         return isMonitor;
     }
 
