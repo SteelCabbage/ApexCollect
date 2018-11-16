@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.chinapex.analytics.sample.R;
 import com.chinapex.analytics.sample.SampleApp;
@@ -40,6 +41,15 @@ public class ListRvActivity extends AppCompatActivity implements RvAdapter.OnIte
         mRvAdapter = new RvAdapter(mDatas);
         mRvAdapter.setOnItemClickListener(this);
         mRv.setAdapter(mRvAdapter);
+
+        mRv.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                AppLog.i(TAG, "onScrollStateChanged newState:" + newState);
+            }
+        });
+
     }
 
     @Override

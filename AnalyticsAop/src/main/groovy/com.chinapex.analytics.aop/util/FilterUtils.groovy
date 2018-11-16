@@ -19,6 +19,8 @@ class FilterUtils {
         isMatchClass = isMatchInterfaces(interfaces, 'android/view/View$OnClickListener')
         if (className.contains('Fragment')) {
             isMatchClass = true
+        } /*else if (className.contains('RecyclerView')) {
+            isMatchClass = true
         } /*else if (isMatchingSettingClass(className, interfaces)) {
             isMatchClass = true
         }*/
@@ -44,6 +46,7 @@ class FilterUtils {
                 || (name == 'onPause' && desc == '()V')
                 || (name == 'setUserVisibleHint' && desc == '(Z)V')
                 || (name == 'onHiddenChanged' && desc == '(Z)V')
+//                || (name == "onScrollStateChanged" && desc == '(Landroid/support/v7/widget/RecyclerView;I)V')
         /*|| isMatchingSettingMethod(name, desc)*/) {
             return true
         } else {
@@ -135,7 +138,21 @@ class FilterUtils {
                     methodVisitor.visitMethodInsn(Opcodes.INVOKESTATIC, "com/chinapex/android/datacollect/aop/AopHelper", "onFragmentHiddenChanged", "(Landroid/support/v4/app/Fragment;Z)V", false)
                 }
             }
-        } /*else if (Controller.isUseAnotation()) {
+        } /*else if (name == "onScrollStateChanged" && desc == '(Landroid/support/v7/widget/RecyclerView;I)V') {
+            AopLog.info("onScrollStateChanged desc == '(Landroid/support/v7/widget/RecyclerView;I)V' is match")
+            adapter = new AopMethodVisitor(methodVisitor, access, name, desc) {
+
+                @Override
+                protected void onMethodExit(int opcode) {
+                    super.onMethodExit(opcode)
+
+                    methodVisitor.visitVarInsn(Opcodes.ALOAD, 0)
+                    methodVisitor.visitVarInsn(Opcodes.ILOAD, 1)
+                    methodVisitor.visitMethodInsn(Opcodes.INVOKESTATIC, "com/chinapex/android/datacollect/aop/AopHelper", "rvOnScrollStateChanged", "(Landroid/support/v7/widget/RecyclerView;I)V", false)
+                }
+            }
+
+        }else if (Controller.isUseAnotation()) {
             // 注解的话，使用指定方法
             adapter = getSettingMethodVisitor(methodVisitor, access, name, desc)
         } else if (isMatchingSettingClass(className, interfaces)){

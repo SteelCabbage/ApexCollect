@@ -1,6 +1,7 @@
 package com.chinapex.android.datacollect.aop;
 
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.chinapex.android.datacollect.global.ApexCache;
@@ -45,4 +46,8 @@ public class AopHelper {
     public static void onFragmentHiddenChanged(Fragment fragment, boolean hidden) {
         ATLog.w(TAG, "onFragmentHiddenChanged->" + hidden + "->" + fragment.getClass().getSimpleName());
     }
+
+//    public static void rvOnScrollStateChanged(RecyclerView recyclerView, int newState) {
+//        ATLog.w(TAG, "rvOnScrollStateChanged->" + "newState:" + newState + recyclerView.getClass().getSimpleName());
+//    }
 }
