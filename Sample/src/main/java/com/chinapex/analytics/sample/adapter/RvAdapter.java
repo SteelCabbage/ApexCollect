@@ -2,7 +2,6 @@ package com.chinapex.analytics.sample.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,7 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.RvHolder> implemen
 
     private OnItemClickListener mOnItemClickListener;
     private OnItemLongClickListener mOnItemLongClickListener;
-    private List<String> mDatas;
+    private List<Student> mDatas;
 
 
     public interface OnItemClickListener {
@@ -31,7 +30,7 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.RvHolder> implemen
         void onItemLongClick(int position);
     }
 
-    public RvAdapter(List<String> datas) {
+    public RvAdapter(List<Student> datas) {
         mDatas = datas;
     }
 
@@ -74,13 +73,14 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.RvHolder> implemen
 
     @Override
     public void onBindViewHolder(@NonNull RvHolder holder, int position) {
-        String content = mDatas.get(position);
-        if (TextUtils.isEmpty(content)) {
-            ATLog.e(TAG, "content is null!");
+        Student student = mDatas.get(position);
+        if (null == student) {
+            ATLog.e(TAG, "student is null!");
             return;
         }
 
-        holder.textContent.setText(content);
+        holder.name.setText(student.getName());
+        holder.age.setText(String.valueOf(student.getAge()));
         holder.itemView.setTag(position);
     }
 
@@ -91,11 +91,13 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.RvHolder> implemen
 
     class RvHolder extends RecyclerView.ViewHolder {
 
-        TextView textContent;
+        TextView name;
+        TextView age;
 
         RvHolder(View itemView) {
             super(itemView);
-            textContent = itemView.findViewById(R.id.tv_rv_list_content);
+            name = itemView.findViewById(R.id.tv_rv_list_name);
+            age = itemView.findViewById(R.id.tv_rv_list_age);
         }
     }
 }

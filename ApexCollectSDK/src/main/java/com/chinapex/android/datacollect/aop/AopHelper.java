@@ -3,9 +3,16 @@ package com.chinapex.android.datacollect.aop;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewParent;
 
 import com.chinapex.android.datacollect.global.ApexCache;
 import com.chinapex.android.datacollect.utils.ATLog;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author SteelCabbage
@@ -22,6 +29,10 @@ public class AopHelper {
         path = activityName + ":onClick:" + path;
         ATLog.i(TAG, "根据View生成xpath:" + path);
 
+        if (view.getParent() instanceof RecyclerView) {
+            getAdapterData(view);
+        }
+
         if (isMonitor) {
             ATLog.d(TAG, "圈选模式开启，不走原有逻辑======记录并加入配置文件中，待后续上传");
         } else {
@@ -29,6 +40,27 @@ public class AopHelper {
         }
 
         return isMonitor;
+    }
+
+    private static void getAdapterData(View view) {
+        int index = ((RecyclerView) view.getParent()).getChildAdapterPosition(view);
+
+        RecyclerView.Adapter adapter = ((RecyclerView) view.getParent()).getAdapter();
+        try {
+            Field mDatas = adapter.getClass().getDeclaredField("mDatas");
+            mDatas.setAccessible(true);
+            List list = (List) mDatas.get(adapter);
+            ATLog.i(TAG, "list -> index:" + index + "=======" + list.get(index));
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+//        Field field = decorViewClazz.getDeclaredField("mSemiTransparentStatusBarColor");
+//        field.setAccessible(true);
+//        field.setInt(getWindow().getDecorView(), Color.TRANSPARENT);
+
     }
 
     public static void onFragmentResume(Fragment fragment) {

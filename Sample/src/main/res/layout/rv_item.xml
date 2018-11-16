@@ -4,11 +4,24 @@
     android:layout_height="50dp">
 
     <TextView
-        android:id="@+id/tv_rv_list_content"
+        android:id="@+id/tv_rv_list_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:text="姓名"
         android:textColor="@android:color/holo_blue_light" />
+
+    <TextView
+        android:id="@+id/tv_rv_list_age"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_toEndOf="@+id/tv_rv_list_name"
+        android:layout_toRightOf="@+id/tv_rv_list_name"
+        android:gravity="center"
+        android:text="年龄"
+        android:textColor="@android:color/holo_red_light" />
 
 
 </RelativeLayout>

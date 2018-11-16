@@ -9,6 +9,7 @@ import android.view.View;
 import com.chinapex.analytics.sample.R;
 import com.chinapex.analytics.sample.SampleApp;
 import com.chinapex.analytics.sample.adapter.RvAdapter;
+import com.chinapex.analytics.sample.adapter.Student;
 import com.chinapex.analytics.sample.utils.AppLog;
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class ListRvActivity extends AppCompatActivity implements RvAdapter.OnIte
     private static final String TAG = ListRvActivity.class.getSimpleName();
     private RecyclerView mRv;
     private RvAdapter mRvAdapter;
-    private ArrayList<String> mDatas;
+    private ArrayList<Student> mDatas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,22 +34,25 @@ public class ListRvActivity extends AppCompatActivity implements RvAdapter.OnIte
 
         mRv.setLayoutManager(new LinearLayoutManager(SampleApp.getInstance(), LinearLayoutManager.VERTICAL, false));
 
-        mDatas = new ArrayList<>();
+        mDatas = new ArrayList<Student>();
         for (int i = 0; i < 20; i++) {
-            mDatas.add("我是第" + i + "条数据");
+            Student student = new Student();
+            student.setName("姓名:" + i);
+            student.setAge(i);
+            mDatas.add(student);
         }
 
         mRvAdapter = new RvAdapter(mDatas);
         mRvAdapter.setOnItemClickListener(this);
         mRv.setAdapter(mRvAdapter);
 
-        mRv.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                AppLog.i(TAG, "onScrollStateChanged newState:" + newState);
-            }
-        });
+//        mRv.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+//                super.onScrollStateChanged(recyclerView, newState);
+//                AppLog.i(TAG, "onScrollStateChanged newState:" + newState);
+//            }
+//        });
 
     }
 
@@ -59,7 +63,7 @@ public class ListRvActivity extends AppCompatActivity implements RvAdapter.OnIte
             return;
         }
 
-        String content = mDatas.get(position);
-        AppLog.i(TAG, "position:" + position + ", content:" + content);
+        Student student = mDatas.get(position);
+//        AppLog.i(TAG, "position:" + position + ", student:" + student);
     }
 }
