@@ -1,5 +1,7 @@
 package com.chinapex.android.datacollect.report;
 
+import com.chinapex.android.datacollect.model.bean.TrackEvent;
+
 /**
  * @author SteelCabbage
  * @date 2018/11/16
@@ -73,7 +75,7 @@ public class EventReport implements Runnable{
 //            return;
 //        }
 //
-//        analyticsDbDao.insert(DbConstant.TABLE_INSTANT_REPORT, mAnalyticsRequest);
+//        analyticsDbDao.insert(DbConstant.TABLE_delay, mAnalyticsRequest);
 //
 //    }
 //

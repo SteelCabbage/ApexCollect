@@ -20,5 +20,13 @@ public class Constant {
     public static final String HEADER_KEY = "";
     public static final String HEADER_VALUE = "";
 
+    public static final int MODE_DELAY = 0;
+    public static final int MODE_INSTANT = 1;
+
+    public static final int EVENT_TYPE_CUSTOM = 0;
+    public static final int EVENT_TYPE_COLD = 1;
+    public static final int EVENT_TYPE_CLICK = 1 << 1;
+    public static final int EVENT_TYPE_PV = 1 << 2;
+
 
 }

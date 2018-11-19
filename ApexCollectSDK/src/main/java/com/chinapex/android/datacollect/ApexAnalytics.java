@@ -5,11 +5,9 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Build;
 
-import com.chinapex.android.datacollect.executor.TaskController;
 import com.chinapex.android.datacollect.global.ApexCache;
 import com.chinapex.android.datacollect.metrics.ApexCollectActivityLifecycleCallbacks;
-import com.chinapex.android.datacollect.report.EventReport;
-import com.chinapex.android.datacollect.report.TrackEvent;
+import com.chinapex.android.datacollect.model.bean.TrackEvent;
 import com.chinapex.android.datacollect.utils.ATLog;
 
 /**
@@ -79,7 +77,7 @@ public class ApexAnalytics {
      */
 
     /**
-     * 延时上报
+     * 上报
      *
      * @param trackEvent
      */
@@ -89,25 +87,9 @@ public class ApexAnalytics {
             return;
         }
 
-        // TODO: 2018/11/16 0016  延时上报
+        ATLog.i(TAG, "trackEvent:" + trackEvent);
+
     }
-
-    /**
-     * 即时上报
-     *
-     * @param trackEvent
-     */
-    public void trackAtOnce(TrackEvent trackEvent) {
-        if (null == trackEvent) {
-            ATLog.e(TAG, "trackEvent is null!");
-            return;
-        }
-
-        EventReport eventReport = new EventReport(trackEvent);
-        TaskController.getInstance().submit(eventReport);
-        ATLog.v(TAG, "track() -> prepare SbEventReport!");
-    }
-
 
     /* *************************************************************************************************************
      *                                                Settings                                                     *

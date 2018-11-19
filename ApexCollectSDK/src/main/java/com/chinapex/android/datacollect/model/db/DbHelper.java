@@ -1,4 +1,4 @@
-package com.chinapex.android.datacollect.model;
+package com.chinapex.android.datacollect.model.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -28,9 +28,10 @@ public class DbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // TODO: 2018/11/14 0014 创建表
-
-//        db.execSQL(Constant.SQL_CREATE_NEO_WALLET);
+        // 创建延时上报的表
+        db.execSQL(DbConstant.SQL_CREATE_DELAY_REPORT);
+        // 创建即时上报错误时的表
+        db.execSQL(DbConstant.SQL_CREATE_INSTANT_ERR);
 
     }
 
