@@ -2,6 +2,8 @@ package com.chinapex.android.datacollect.global;
 
 import android.content.Context;
 
+import com.chinapex.android.datacollect.model.bean.Identity;
+
 /**
  * @author SteelCabbage
  * @date 2018/11/12
@@ -9,6 +11,7 @@ import android.content.Context;
 public class ApexCache {
     private static final String TAG = ApexCache.class.getSimpleName();
     private Context mContext;
+    private Identity mIdentity;
 
     private ApexCache() {
 
@@ -28,5 +31,13 @@ public class ApexCache {
 
     public void setContext(Context context) {
         mContext = context;
+    }
+
+    public Identity getIdentity() {
+        return mIdentity;
+    }
+
+    public void setIdentity(Identity identity) {
+        mIdentity = identity;
     }
 }

@@ -1,32 +1,67 @@
-package com.chinapex.android.datacollect.report;
+package com.chinapex.android.datacollect.executor.runnable;
 
+import com.chinapex.android.datacollect.global.ApexCache;
+import com.chinapex.android.datacollect.global.Constant;
 import com.chinapex.android.datacollect.model.bean.TrackEvent;
+import com.chinapex.android.datacollect.model.bean.request.AnalyticsReport;
+import com.chinapex.android.datacollect.model.db.DbConstant;
+import com.chinapex.android.datacollect.model.db.DbDao;
+import com.chinapex.android.datacollect.utils.ATLog;
+import com.chinapex.android.datacollect.utils.GsonUtils;
+import com.chinapex.android.datacollect.utils.net.INetCallback;
+import com.chinapex.android.datacollect.utils.net.OkHttpClientManager;
+
+import java.util.ArrayList;
 
 /**
  * @author SteelCabbage
  * @date 2018/11/16
  */
-public class EventReport implements Runnable{
+public class InstantEvent implements Runnable, INetCallback {
 
-    private static final String TAG = EventReport.class.getSimpleName();
+    private static final String TAG = InstantEvent.class.getSimpleName();
     private TrackEvent mTrackEvent;
 
-    public EventReport(TrackEvent trackEvent) {
+    public InstantEvent(TrackEvent trackEvent) {
         mTrackEvent = trackEvent;
     }
 
     @Override
     public void run() {
-//        mAnalyticsRequest = new AnalyticsRequest();
-//        mAnalyticsRequest.setApi(DbConstant.API_EVENT);
-//        mAnalyticsRequest.setTime(System.currentTimeMillis());
-//
-//        String eventRequestJson = assembleEventRequestJson();
-//        CpLog.d(TAG, "eventRequestJson:" + eventRequestJson);
-//        mAnalyticsRequest.setRequestJsonStr(eventRequestJson);
-//
-//        OkHttpClientManager.getInstance().postJson(NetConstant.URL_EVENT, eventRequestJson, this);
+        if (null == mTrackEvent) {
+            ATLog.e(TAG, "run() -> mTrackEvent is null!");
+            return;
+        }
 
+        AnalyticsReport analyticsReport = new AnalyticsReport();
+        analyticsReport.setReportTime(System.currentTimeMillis());
+        analyticsReport.setIdentity(ApexCache.getInstance().getIdentity());
+        ArrayList<String> eventDatas = new ArrayList<>();
+        eventDatas.add(mTrackEvent.getValue());
+        analyticsReport.setEventDatas(eventDatas);
+
+        String analyticsReportJson = GsonUtils.toJsonStr(analyticsReport);
+        ATLog.i(TAG, "analyticsReportJson:" + analyticsReportJson);
+        OkHttpClientManager.getInstance().postJson(Constant.URL_EVENT, analyticsReportJson, this);
+    }
+
+    @Override
+    public void onSuccess(int statusCode, String msg, String result) {
+        ATLog.v(TAG, "onSuccess() -> statusCode: " + statusCode + " ,msg: " + msg + " ," + "result:\n" + result);
+
+    }
+
+    @Override
+    public void onFailed(int failedCode, String msg) {
+        ATLog.e(TAG, "onFailed() -> failedCode: " + failedCode + " ,msg: " + msg);
+        // 请求失败，存入数据库
+        DbDao dbDao = DbDao.getInstance(ApexCache.getInstance().getContext());
+        if (null == dbDao) {
+            ATLog.e(TAG, "InstantEvent saveDb() -> dbDao is null!");
+            return;
+        }
+
+        dbDao.insert(DbConstant.TABLE_INSTANT_ERR, mTrackEvent);
     }
 
 //    @Override

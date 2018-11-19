@@ -5,9 +5,14 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Build;
 
+import com.chinapex.android.datacollect.executor.TaskController;
+import com.chinapex.android.datacollect.executor.runnable.InstantEvent;
 import com.chinapex.android.datacollect.global.ApexCache;
+import com.chinapex.android.datacollect.global.Constant;
 import com.chinapex.android.datacollect.metrics.ApexCollectActivityLifecycleCallbacks;
 import com.chinapex.android.datacollect.model.bean.TrackEvent;
+import com.chinapex.android.datacollect.model.db.DbConstant;
+import com.chinapex.android.datacollect.model.db.DbDao;
 import com.chinapex.android.datacollect.utils.ATLog;
 
 /**
@@ -52,8 +57,13 @@ public class ApexAnalytics {
             return;
         }
 
+        // 初始化线程池
+        TaskController.getInstance().doInit();
+
+        // 设置应用的applicationContext
         ApexCache.getInstance().setContext(applicationContext);
 
+        // 注册activity的生命周期回调
         registerApexCollectActivityLifecycleCallbacks();
 
         mIsInit = true;
@@ -82,13 +92,34 @@ public class ApexAnalytics {
      * @param trackEvent
      */
     public void track(TrackEvent trackEvent) {
-        if (null == trackEvent) {
-            ATLog.e(TAG, "trackEvent is null!");
+        if (!mIsInit) {
+            ATLog.e(TAG, "track() -> please initialize!");
             return;
         }
 
-        ATLog.i(TAG, "trackEvent:" + trackEvent);
+        if (null == trackEvent) {
+            ATLog.e(TAG, "track() -> trackEvent is null!");
+            return;
+        }
 
+        ATLog.i(TAG, "track() -> trackEvent:" + trackEvent);
+
+        switch (trackEvent.getMode()) {
+            case Constant.MODE_DELAY:
+                DbDao dbDao = DbDao.getInstance(ApexCache.getInstance().getContext());
+                if (null == dbDao) {
+                    ATLog.e(TAG, "track() -> dbDao is null!");
+                    return;
+                }
+
+                dbDao.insert(DbConstant.TABLE_DELAY_REPORT, trackEvent);
+                break;
+            case Constant.MODE_INSTANT:
+                TaskController.getInstance().submit(new InstantEvent(trackEvent));
+                break;
+            default:
+                break;
+        }
     }
 
     /* *************************************************************************************************************
@@ -108,7 +139,7 @@ public class ApexAnalytics {
     }
 
     /**
-     * setTimeInterval 设置上报的时间间隔
+     * setTimeInterval 设置延时上报的时间间隔
      *
      * @param timeInterval Default: 1000 * 60 * 60 * 1 (默认1小时)
      */
