@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Application;
 import android.content.Context;
 import android.os.Build;
+import android.text.TextUtils;
 
 import com.chinapex.android.datacollect.executor.TaskController;
 import com.chinapex.android.datacollect.executor.runnable.InstantEvent;
@@ -132,20 +133,52 @@ public class ApexAnalytics {
     /**
      * setMaxNum 设置上报条数
      *
-     * @param maxNum Default: 30 (默认30条)
+     * @param reportMaxNum Default: 30 (默认30条)
      */
-    public void setMaxNum(int maxNum) {
-
+    public void setReportMaxNum(int reportMaxNum) {
+        ApexCache.getInstance().setReportMaxNum(reportMaxNum);
     }
+
 
     /**
      * setTimeInterval 设置延时上报的时间间隔
      *
-     * @param timeInterval Default: 1000 * 60 * 60 * 1 (默认1小时)
+     * @param delayReportInterval Default: 1000 * 60 * 60 (默认1小时)
      */
-    public void setTimeInterval(long timeInterval) {
-
+    public void setDelayReportInterval(long delayReportInterval) {
+        ApexCache.getInstance().setDelayReportInterval(delayReportInterval);
     }
+
+
+    /**
+     * 设置延时上报的url,默认为测试url
+     *
+     * @param urlDelay
+     */
+    public void setUrlDelay(String urlDelay) {
+        if (TextUtils.isEmpty(urlDelay)) {
+            ATLog.e(TAG, "setUrlDelay() -> urlDelay is null or empty!");
+            return;
+        }
+
+        ApexCache.getInstance().setUrlDelay(urlDelay);
+    }
+
+
+    /**
+     * 设置即时上报的url，默认为测试url
+     *
+     * @param urlInstant
+     */
+    public void setUrlInstant(String urlInstant) {
+        if (TextUtils.isEmpty(urlInstant)) {
+            ATLog.e(TAG, "setUrlInstant() -> urlInstant is null or empty!");
+            return;
+        }
+
+        ApexCache.getInstance().setUrlInstant(urlInstant);
+    }
+
 
     /**
      * setLogLevel 设置日志输出等级，默认为WARN

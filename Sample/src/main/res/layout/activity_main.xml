@@ -39,4 +39,23 @@
         android:layout_marginTop="10dp"
         android:text="跳转到ListRvActivity" />
 
+    <Button
+        android:id="@+id/bt_delay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bt_2rv_list"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="发送延时事件" />
+
+    <Button
+        android:id="@+id/bt_instant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bt_delay"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="发送即时事件" />
+
+
 </RelativeLayout>

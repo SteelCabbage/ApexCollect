@@ -28,20 +28,6 @@ public class SampleApp extends Application {
         ApexAnalytics.getInstance().init(sSampleApp);
         ApexAnalytics.getInstance().setLogLevel(ATLog.VERBOSE);
 
-        ApexAnalytics.getInstance().track(new TrackEvent.EventBuilder()
-                // 0: delay (default), 1: instant
-//                .setMode(1)
-                // 0: custom (default), 1: cold, 2: click, 4: pv
-//                .setEventType(1)
-                .setLabel("延时上报的label")
-                .setValue("lalalala")
-                .build());
-
-        ApexAnalytics.getInstance().track(new TrackEvent.EventBuilder()
-                .setMode(1)
-                .setLabel("即时上报的label")
-                .setValue("hahahaha")
-                .build());
     }
 
     public static SampleApp getInstance() {

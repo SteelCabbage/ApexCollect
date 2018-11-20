@@ -191,7 +191,7 @@ public class DbDao {
         Long lastResetTime = Long.valueOf(String.valueOf(timeObj));
         ATLog.d(TAG, "avoidIdUnlimitedGrowth() -> lastResetTime is:" + lastResetTime);
 
-        if (currentId <= DbConstant.TABLE_MAX_ID
+        if (currentId <= ApexCache.getInstance().getReportMaxNum()
                 && (System.currentTimeMillis() - lastResetTime) < Constant.RESET_ID_INTERVAL) {
             ATLog.d(TAG, "avoidIdUnlimitedGrowth() -> don't need to deal");
             return;
@@ -249,7 +249,7 @@ public class DbDao {
     private static final String LIMIT = "1";
 
     public int getMaxId(String tableName) {
-        int maxId = DbConstant.TABLE_MAX_ID_DEF;
+        int maxId = DbConstant.MAX_ID_DEF;
         if (TextUtils.isEmpty(tableName)) {
             ATLog.e(TAG, "getMaxId() -> tableName is null or empty!");
             return maxId;

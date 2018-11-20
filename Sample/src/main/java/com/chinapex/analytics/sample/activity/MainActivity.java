@@ -8,6 +8,8 @@ import android.widget.Button;
 
 import com.chinapex.analytics.sample.utils.AppLog;
 import com.chinapex.analytics.sample.R;
+import com.chinapex.android.datacollect.ApexAnalytics;
+import com.chinapex.android.datacollect.model.bean.TrackEvent;
 import com.chinapex.android.datacollect.testAop.CabbageButton;
 
 
@@ -39,9 +41,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Button bt2rvList = (Button) findViewById(R.id.bt_2rv_list);
         bt2rvList.setOnClickListener(this);
+
+        Button btDelay = (Button) findViewById(R.id.bt_delay);
+        btDelay.setOnClickListener(this);
+
+        Button btInstant = (Button) findViewById(R.id.bt_instant);
+        btInstant.setOnClickListener(this);
     }
 
     @Override
+
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bt_test:
@@ -59,6 +68,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 AppLog.i(TAG, "原有逻辑执行 ====== 跳转到ListRvActivity");
                 Intent intent2 = new Intent(MainActivity.this, ListRvActivity.class);
                 startActivity(intent2);
+                break;
+            case R.id.bt_delay:
+                ApexAnalytics.getInstance().track(new TrackEvent.EventBuilder()
+                        // 0: delay (default), 1: instant
+                        //                .setMode(1)
+                        // 0: custom (default), 1: cold, 2: click, 4: pv
+                        //                .setEventType(1)
+                        .setLabel("延时上报的label")
+                        .setValue("lalalala")
+                        .build());
+                break;
+            case R.id.bt_instant:
+                ApexAnalytics.getInstance().track(new TrackEvent.EventBuilder()
+                        // 0: delay (default), 1: instant
+                        .setMode(1)
+                        // 0: custom (default), 1: cold, 2: click, 4: pv
+//                        .setEventType(1)
+                        .setLabel("即时上报的label")
+                        .setValue("hahahaha")
+                        .build());
                 break;
             default:
                 break;

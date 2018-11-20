@@ -3,6 +3,7 @@ package com.chinapex.android.datacollect.global;
 import android.content.Context;
 
 import com.chinapex.android.datacollect.model.bean.Identity;
+import com.chinapex.android.datacollect.model.db.DbConstant;
 
 /**
  * @author SteelCabbage
@@ -20,6 +21,16 @@ public class ApexCache {
      * 身份识别
      */
     private Identity mIdentity;
+
+    /**
+     * 上报的最大条数
+     */
+    private long mReportMaxNum = DbConstant.REPORT_MAX_NUM;
+
+    /**
+     * 延时上报的时间间隔
+     */
+    private long mDelayReportInterval = Constant.DELAY_REPORT_INTERVAL;
 
     /**
      * 延时上报的url
@@ -57,6 +68,22 @@ public class ApexCache {
 
     public void setIdentity(Identity identity) {
         mIdentity = identity;
+    }
+
+    public long getReportMaxNum() {
+        return mReportMaxNum;
+    }
+
+    public void setReportMaxNum(long reportMaxNum) {
+        mReportMaxNum = reportMaxNum;
+    }
+
+    public long getDelayReportInterval() {
+        return mDelayReportInterval;
+    }
+
+    public void setDelayReportInterval(long delayReportInterval) {
+        mDelayReportInterval = delayReportInterval;
     }
 
     public String getUrlDelay() {
