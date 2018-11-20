@@ -24,6 +24,7 @@ public class DelayEvent implements Runnable, INetCallback {
 
     private static final String TAG = DelayEvent.class.getSimpleName();
     private String mTableName;
+    private TreeMap<Long, TrackEvent> mTrackEventTreeMap;
 
     public DelayEvent(String tableName) {
         mTableName = tableName;
@@ -42,15 +43,15 @@ public class DelayEvent implements Runnable, INetCallback {
             return;
         }
 
-        TreeMap<Long, TrackEvent> trackEventTreeMap = dbDao.query(mTableName);
-        if (null == trackEventTreeMap) {
+        mTrackEventTreeMap = dbDao.query(mTableName);
+        if (null == mTrackEventTreeMap) {
             ATLog.e(TAG, "run() -> trackEventTreeMap is null!");
             return;
         }
 
         dealDbId();
 
-        if (trackEventTreeMap.isEmpty()) {
+        if (mTrackEventTreeMap.isEmpty()) {
             ATLog.w(TAG, "run() -> trackEventTreeMap is empty!");
             return;
         }
@@ -60,7 +61,7 @@ public class DelayEvent implements Runnable, INetCallback {
         analyticsReport.setIdentity(ApexCache.getInstance().getIdentity());
         ArrayList<String> eventDatas = new ArrayList<>();
 
-        for (Map.Entry<Long, TrackEvent> entry : trackEventTreeMap.entrySet()) {
+        for (Map.Entry<Long, TrackEvent> entry : mTrackEventTreeMap.entrySet()) {
             if (null == entry) {
                 ATLog.e(TAG, "run() -> entry is null");
                 continue;
@@ -108,24 +109,33 @@ public class DelayEvent implements Runnable, INetCallback {
     @Override
     public void onSuccess(int statusCode, String msg, String result) {
         ATLog.i(TAG, "onSuccess() -> request again ok! need to delete from db");
+        if (null == mTrackEventTreeMap || mTrackEventTreeMap.isEmpty()) {
+            ATLog.e(TAG, "onSuccess() -> mTrackEventTreeMap is null or empty!");
+            return;
+        }
 
-//        delSuccessRequest(analyticsRequest.getTime());
+        for (Map.Entry<Long, TrackEvent> entry : mTrackEventTreeMap.entrySet()) {
+            if (null == entry) {
+                ATLog.e(TAG, "onSuccess() -> entry is null or empty!");
+                continue;
+            }
+
+            delSuccessRequest(entry.getKey());
+        }
     }
 
     @Override
     public void onFailed(int failedCode, String msg) {
-//        ATLog.e(TAG, "onFailed() -> " + analyticsRequest.getApi() + ":" +
-//                analyticsRequest.getTime() + " request again, still " +
-//                "failed!");
-
+        ATLog.e(TAG, "onFailed() -> request again, still failed!");
     }
 
     private void delSuccessRequest(long time) {
-//        AnalyticsDbDao analyticsDbDao = AnalyticsDbDao.getInstance(mContext);
-//        if (null == analyticsDbDao) {
-//            CpLog.e(TAG, "delSuccessRequest() -> analyticsDbDao is null!");
-//            return;
-//        }
-//        analyticsDbDao.deleteByTime(DbConstant.TABLE_INSTANT_REPORT, time);
+        DbDao dbDao = DbDao.getInstance(ApexCache.getInstance().getContext());
+        if (null == dbDao) {
+            ATLog.e(TAG, "delSuccessRequest() -> analyticsDbDao is null!");
+            return;
+        }
+
+        dbDao.deleteByTime(mTableName, time);
     }
 }
