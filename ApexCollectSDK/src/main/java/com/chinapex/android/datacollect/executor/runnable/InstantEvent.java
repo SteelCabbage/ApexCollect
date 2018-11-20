@@ -1,7 +1,6 @@
 package com.chinapex.android.datacollect.executor.runnable;
 
 import com.chinapex.android.datacollect.global.ApexCache;
-import com.chinapex.android.datacollect.global.Constant;
 import com.chinapex.android.datacollect.model.bean.TrackEvent;
 import com.chinapex.android.datacollect.model.bean.request.AnalyticsReport;
 import com.chinapex.android.datacollect.model.db.DbConstant;
@@ -21,9 +20,11 @@ public class InstantEvent implements Runnable, INetCallback {
 
     private static final String TAG = InstantEvent.class.getSimpleName();
     private TrackEvent mTrackEvent;
+    private long mReportTime;
 
-    public InstantEvent(TrackEvent trackEvent) {
+    public InstantEvent(TrackEvent trackEvent, long reportTime) {
         mTrackEvent = trackEvent;
+        mReportTime = reportTime;
     }
 
     @Override
@@ -34,7 +35,7 @@ public class InstantEvent implements Runnable, INetCallback {
         }
 
         AnalyticsReport analyticsReport = new AnalyticsReport();
-        analyticsReport.setReportTime(System.currentTimeMillis());
+        analyticsReport.setReportTime(mReportTime);
         analyticsReport.setIdentity(ApexCache.getInstance().getIdentity());
         ArrayList<String> eventDatas = new ArrayList<>();
         eventDatas.add(mTrackEvent.getValue());
@@ -42,7 +43,7 @@ public class InstantEvent implements Runnable, INetCallback {
 
         String analyticsReportJson = GsonUtils.toJsonStr(analyticsReport);
         ATLog.i(TAG, "analyticsReportJson:" + analyticsReportJson);
-        OkHttpClientManager.getInstance().postJson(Constant.URL_EVENT, analyticsReportJson, this);
+        OkHttpClientManager.getInstance().postJson(ApexCache.getInstance().getUrlInstant(), analyticsReportJson, this);
     }
 
     @Override
@@ -61,7 +62,7 @@ public class InstantEvent implements Runnable, INetCallback {
             return;
         }
 
-        dbDao.insert(DbConstant.TABLE_INSTANT_ERR, mTrackEvent);
+        dbDao.insert(DbConstant.TABLE_INSTANT_ERR, mTrackEvent, mReportTime);
     }
 
 //    @Override

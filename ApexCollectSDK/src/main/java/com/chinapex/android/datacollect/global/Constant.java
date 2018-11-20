@@ -7,6 +7,19 @@ package com.chinapex.android.datacollect.global;
 public class Constant {
 
     /**
+     * 时间
+     */
+    public static final long CHECK_INSTANT_ERR_PERIOD = 1000 * 60 * 2;
+    public static final long RESET_ID_INTERVAL = 1000 * 60 * 60 * 24 * 3;
+
+    /**
+     * SP
+     */
+    public static final String SP_KEY_RESET_ID_TIME = "_resetIdTime";
+    public static final long SP_DEF_VAL_RESET_ID_TIME = 0;
+
+
+    /**
      * Net
      */
     public static final String SERVER_ROOT = "https://www.baidu.com/";
@@ -19,7 +32,8 @@ public class Constant {
     public static final int NET_BODY_NULL = 0;
     public static final String HEADER_KEY = "";
     public static final String HEADER_VALUE = "";
-    public static final String URL_EVENT = SERVER_ROOT + "";
+    public static final String URL_DELAY_REPORT = SERVER_ROOT + "";
+    public static final String URL_INSTANT_REPORT = SERVER_ROOT + "";
 
 
     /**

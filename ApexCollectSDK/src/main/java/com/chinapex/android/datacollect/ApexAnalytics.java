@@ -112,10 +112,10 @@ public class ApexAnalytics {
                     return;
                 }
 
-                dbDao.insert(DbConstant.TABLE_DELAY_REPORT, trackEvent);
+                dbDao.insert(DbConstant.TABLE_DELAY_REPORT, trackEvent, System.currentTimeMillis());
                 break;
             case Constant.MODE_INSTANT:
-                TaskController.getInstance().submit(new InstantEvent(trackEvent));
+                TaskController.getInstance().submit(new InstantEvent(trackEvent, System.currentTimeMillis()));
                 break;
             default:
                 break;

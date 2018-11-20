@@ -10,8 +10,26 @@ import com.chinapex.android.datacollect.model.bean.Identity;
  */
 public class ApexCache {
     private static final String TAG = ApexCache.class.getSimpleName();
+
+    /**
+     * app的context
+     */
     private Context mContext;
+
+    /**
+     * 身份识别
+     */
     private Identity mIdentity;
+
+    /**
+     * 延时上报的url
+     */
+    private String mUrlDelay = Constant.URL_DELAY_REPORT;
+
+    /**
+     * 即时上报的url
+     */
+    private String mUrlInstant = Constant.URL_INSTANT_REPORT;
 
     private ApexCache() {
 
@@ -39,5 +57,21 @@ public class ApexCache {
 
     public void setIdentity(Identity identity) {
         mIdentity = identity;
+    }
+
+    public String getUrlDelay() {
+        return mUrlDelay;
+    }
+
+    public void setUrlDelay(String urlDelay) {
+        mUrlDelay = urlDelay;
+    }
+
+    public String getUrlInstant() {
+        return mUrlInstant;
+    }
+
+    public void setUrlInstant(String urlInstant) {
+        mUrlInstant = urlInstant;
     }
 }
