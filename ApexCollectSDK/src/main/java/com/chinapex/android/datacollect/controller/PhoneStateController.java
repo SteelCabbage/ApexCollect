@@ -1,5 +1,6 @@
 package com.chinapex.android.datacollect.controller;
 
+import android.os.Build;
 import android.text.TextUtils;
 
 import com.chinapex.android.datacollect.executor.TaskController;
@@ -72,19 +73,19 @@ public class PhoneStateController implements IController {
             valueBean.setDeviceIds(deviceIds);
         }
 
-//        valueBean.setAppName();
-//        valueBean.setAppVersion();
+        valueBean.setAppName(PhoneStateUtils.getAppName(ApexCache.getInstance().getContext()));
+        valueBean.setAppVersion(PhoneStateUtils.getVersionName(ApexCache.getInstance().getContext()));
 //        valueBean.setScreenInfo();
-//        valueBean.setOs();
-//        valueBean.setOsVersion();
-//        valueBean.setBrandName();
+        valueBean.setOs(System.getProperty("os.name"));
+        valueBean.setOsVersion(Build.VERSION.RELEASE);
+        valueBean.setBrandName(Build.BRAND);
 //        valueBean.setCustomVersion();
-//        valueBean.setDeviceName();
+        valueBean.setManufacturer(Build.MANUFACTURER);
+        valueBean.setDeviceModel(Build.MODEL);
 //        valueBean.setApiKey();
-//        valueBean.setEventType();
+        valueBean.setEventType(Constant.EVENT_TYPE_COLD);
 
         coldEventData.setValue(valueBean);
-
 
         String coldEventDataJson = GsonUtils.toJsonStr(coldEventData);
         ATLog.d(TAG, "coldEventDataJson:" + coldEventDataJson);

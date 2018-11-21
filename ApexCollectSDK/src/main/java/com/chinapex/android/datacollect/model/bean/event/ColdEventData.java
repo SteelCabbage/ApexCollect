@@ -18,7 +18,7 @@ public class ColdEventData implements IEventData {
      * "osVersion" = "12.0";
      * "brandName" = "HUAWEI or Apple"; //
      * "customVersion" = "EMUI 8.0"; // apple : 同OSVersion
-     * "deviceName" = "iPhone 6 or Mate 20";//
+     * "manufacturer" = "iPhone 6 or Mate 20";//
      * "apiKey" = "xxxxxxxxxxxxxxxxx"
      * "eventType" = "cold initialize";
      */
@@ -62,9 +62,10 @@ public class ColdEventData implements IEventData {
         private String osVersion;
         private String brandName;
         private String customVersion;
-        private String deviceName;
+        private String manufacturer;
+        private String deviceModel;
         private String apiKey;
-        private String eventType;
+        private int eventType;
 
         public String getUid() {
             return uid;
@@ -146,12 +147,20 @@ public class ColdEventData implements IEventData {
             this.customVersion = customVersion;
         }
 
-        public String getDeviceName() {
-            return deviceName;
+        public String getManufacturer() {
+            return manufacturer;
         }
 
-        public void setDeviceName(String deviceName) {
-            this.deviceName = deviceName;
+        public void setManufacturer(String manufacturer) {
+            this.manufacturer = manufacturer;
+        }
+
+        public String getDeviceModel() {
+            return deviceModel;
+        }
+
+        public void setDeviceModel(String deviceModel) {
+            this.deviceModel = deviceModel;
         }
 
         public String getApiKey() {
@@ -162,11 +171,11 @@ public class ColdEventData implements IEventData {
             this.apiKey = apiKey;
         }
 
-        public String getEventType() {
+        public int getEventType() {
             return eventType;
         }
 
-        public void setEventType(String eventType) {
+        public void setEventType(int eventType) {
             this.eventType = eventType;
         }
     }
