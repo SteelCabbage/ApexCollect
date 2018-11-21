@@ -1,5 +1,6 @@
 package com.chinapex.android.datacollect.executor;
 
+import com.chinapex.android.datacollect.controller.IController;
 import com.chinapex.android.datacollect.utils.ATLog;
 
 import java.util.concurrent.Executors;
@@ -12,7 +13,7 @@ import java.util.concurrent.TimeUnit;
  * @date 2018/11/14
  */
 
-public class TaskController {
+public class TaskController implements IController {
 
     private static final String TAG = TaskController.class.getSimpleName();
     private ScheduledExecutorService mScheduledExecutorService;
@@ -29,10 +30,12 @@ public class TaskController {
         return TaskControllerHolder.TASK_CONTROLLER;
     }
 
+    @Override
     public void doInit() {
         mScheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
     }
 
+    @Override
     public void onDestroy() {
         if (null == mScheduledExecutorService) {
             ATLog.e(TAG, "onDestroy() -> mScheduledExecutorService is null!");

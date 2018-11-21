@@ -6,23 +6,24 @@ package com.chinapex.android.datacollect.model.bean.event;
  */
 public class ColdEventData implements IEventData {
     /**
-     * uid
-     * uuid
-     * "$AppName" = "APEX Wallet";
-     * "$AppVersion" = "1.1.1";
-     * "$ScreenInfo" = "[width:414.000000,height:896.000000, density:2]";//
-     * "$OS" = "iOS or Android";//
-     * "$OSVersion" = "12.0";
-     * "$BrandName" = "HUAWEI or Apple"; //
-     * "$CustomVersion" = "EMUI 8.0"; // apple : 同OSVersion
-     * "$DeviceName" = "iPhone 6 or Mate 20";//
-     * "$APIKey" = "xxxxxxxxxxxxxxxxx"
-     * "$eventType" = "cold initialize";
-     * "$userSuperProperties" = {"sss":"xixhahahahahahahah"};//
+     * uid (用户id)
+     * uuid (AndroidId)
+     * deviceIds (当为Android手机时，需用户授权获取设备id)
+     * "appName" = "APEX Wallet";
+     * "appVersion" = "1.1.1";
+     * "screenInfo" = "[width:414.000000,height:896.000000, density:2]";//
+     * "os" = "iOS or Android";//
+     * "osVersion" = "12.0";
+     * "brandName" = "HUAWEI or Apple"; //
+     * "customVersion" = "EMUI 8.0"; // apple : 同OSVersion
+     * "deviceName" = "iPhone 6 or Mate 20";//
+     * "apiKey" = "xxxxxxxxxxxxxxxxx"
+     * "eventType" = "cold initialize";
      */
 
     private String uid;
     private String uuid;
+    private String imei;
     private String appName;
     private String appVersion;
     private String screenInfo;
@@ -33,7 +34,6 @@ public class ColdEventData implements IEventData {
     private String deviceName;
     private String apiKey;
     private String eventType;
-    private String userSuperProperties;
 
     public String getUid() {
         return uid;
@@ -49,6 +49,14 @@ public class ColdEventData implements IEventData {
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
+    }
+
+    public String getImei() {
+        return imei;
+    }
+
+    public void setImei(String imei) {
+        this.imei = imei;
     }
 
     public String getAppName() {
@@ -131,19 +139,12 @@ public class ColdEventData implements IEventData {
         this.eventType = eventType;
     }
 
-    public String getUserSuperProperties() {
-        return userSuperProperties;
-    }
-
-    public void setUserSuperProperties(String userSuperProperties) {
-        this.userSuperProperties = userSuperProperties;
-    }
-
     @Override
     public String toString() {
         return "ColdEventData{" +
                 "uid='" + uid + '\'' +
                 ", uuid='" + uuid + '\'' +
+                ", imei='" + imei + '\'' +
                 ", appName='" + appName + '\'' +
                 ", appVersion='" + appVersion + '\'' +
                 ", screenInfo='" + screenInfo + '\'' +
@@ -154,7 +155,6 @@ public class ColdEventData implements IEventData {
                 ", deviceName='" + deviceName + '\'' +
                 ", apiKey='" + apiKey + '\'' +
                 ", eventType='" + eventType + '\'' +
-                ", userSuperProperties='" + userSuperProperties + '\'' +
                 '}';
     }
 }

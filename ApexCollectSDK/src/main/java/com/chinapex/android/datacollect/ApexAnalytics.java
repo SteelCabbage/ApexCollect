@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Build;
 import android.text.TextUtils;
 
+import com.chinapex.android.datacollect.controller.BaseController;
 import com.chinapex.android.datacollect.executor.TaskController;
 import com.chinapex.android.datacollect.executor.runnable.InstantEvent;
 import com.chinapex.android.datacollect.global.ApexCache;
@@ -37,6 +38,7 @@ public class ApexAnalytics {
         return ApexAnalyticsHolder.APEX_ANALYTICS;
     }
 
+
     /* *************************************************************************************************************
      *                                                Init                                                         *
      * *************************************************************************************************************
@@ -58,27 +60,13 @@ public class ApexAnalytics {
             return;
         }
 
-        // 初始化线程池
-        TaskController.getInstance().doInit();
-
         // 设置应用的applicationContext
         ApexCache.getInstance().setContext(applicationContext);
 
-        // 注册activity的生命周期回调
-        registerApexCollectActivityLifecycleCallbacks();
+        // 初始化BaseController
+        BaseController.getInstance().doInit();
 
         mIsInit = true;
-    }
-
-    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-    private void registerApexCollectActivityLifecycleCallbacks() {
-        if (ApexCache.getInstance().getContext().getApplicationContext() instanceof Application) {
-            Application app = (Application) ApexCache.getInstance().getContext().getApplicationContext();
-            ApexCollectActivityLifecycleCallbacks lifecycleCallbacks = new ApexCollectActivityLifecycleCallbacks();
-            app.registerActivityLifecycleCallbacks(lifecycleCallbacks);
-        } else {
-            ATLog.w(TAG, "Context is not an Application!");
-        }
     }
 
 
@@ -123,6 +111,7 @@ public class ApexAnalytics {
         }
     }
 
+
     /* *************************************************************************************************************
      *                                                Settings                                                     *
      * *************************************************************************************************************
@@ -139,7 +128,6 @@ public class ApexAnalytics {
         ApexCache.getInstance().setReportMaxNum(reportMaxNum);
     }
 
-
     /**
      * setTimeInterval 设置延时上报的时间间隔
      *
@@ -149,9 +137,17 @@ public class ApexAnalytics {
         ApexCache.getInstance().setDelayReportInterval(delayReportInterval);
     }
 
+    /**
+     * setCheckInstantErrInterval 设置检查即时上报是否存在异常的时间间隔
+     *
+     * @param checkInstantErrInterval
+     */
+    public void setCheckInstantErrInterval(long checkInstantErrInterval) {
+        ApexCache.getInstance().setCheckInstantErrInterval(checkInstantErrInterval);
+    }
 
     /**
-     * 设置延时上报的url,默认为测试url
+     * setUrlDelay 设置延时上报的url,默认为测试url
      *
      * @param urlDelay
      */
@@ -164,9 +160,8 @@ public class ApexAnalytics {
         ApexCache.getInstance().setUrlDelay(urlDelay);
     }
 
-
     /**
-     * 设置即时上报的url，默认为测试url
+     * setUrlInstant 设置即时上报的url，默认为测试url
      *
      * @param urlInstant
      */
@@ -178,7 +173,6 @@ public class ApexAnalytics {
 
         ApexCache.getInstance().setUrlInstant(urlInstant);
     }
-
 
     /**
      * setLogLevel 设置日志输出等级，默认为WARN

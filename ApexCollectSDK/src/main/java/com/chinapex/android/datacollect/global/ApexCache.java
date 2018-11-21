@@ -33,6 +33,11 @@ public class ApexCache {
     private long mDelayReportInterval = Constant.DELAY_REPORT_INTERVAL;
 
     /**
+     * 检查即时上报是否存在异常的时间间隔
+     */
+    private long mCheckInstantErrInterval = Constant.CHECK_INSTANT_ERR_INTERVAL;
+
+    /**
      * 延时上报的url
      */
     private String mUrlDelay = Constant.URL_DELAY_REPORT;
@@ -84,6 +89,14 @@ public class ApexCache {
 
     public void setDelayReportInterval(long delayReportInterval) {
         mDelayReportInterval = delayReportInterval;
+    }
+
+    public long getCheckInstantErrInterval() {
+        return mCheckInstantErrInterval;
+    }
+
+    public void setCheckInstantErrInterval(long checkInstantErrInterval) {
+        mCheckInstantErrInterval = checkInstantErrInterval;
     }
 
     public String getUrlDelay() {

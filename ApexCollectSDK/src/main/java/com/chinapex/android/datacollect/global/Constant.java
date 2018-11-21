@@ -7,9 +7,23 @@ package com.chinapex.android.datacollect.global;
 public class Constant {
 
     /**
+     * default base info
+     */
+    public static final String DEFAULT_IMEI = "[defaultImei]";
+    public static final String DEFAULT_ANDROID_ID = "defaultAndroidId";
+    public static final String DEFAULT_APP_NAME = "defaultAppName";
+    public static final String DEFAULT_APP_VERSION = "defaultAppVersion";
+
+    /**
+     * Controller_Constant
+     */
+    public static final String CONTROLLER_TASK = "TaskController";
+    public static final String CONTROLLER_PHONE_STATE = "PhoneStateController";
+
+    /**
      * 时间
      */
-    public static final long CHECK_INSTANT_ERR_PERIOD = 1000 * 60 * 2;
+    public static final long CHECK_INSTANT_ERR_INTERVAL = 1000 * 60 * 2;
     public static final long RESET_ID_INTERVAL = 1000 * 60 * 60 * 24 * 3;
     public static final long DELAY_REPORT_INTERVAL = 1000 * 60 * 60;
 
