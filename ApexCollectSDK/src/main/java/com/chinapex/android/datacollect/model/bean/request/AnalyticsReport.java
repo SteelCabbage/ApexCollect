@@ -11,7 +11,7 @@ import java.util.List;
 public class AnalyticsReport {
     private long reportTime;
     private Identity identity;
-    private List<String> eventDatas;
+    private List<Object> eventDatas;
 
     public long getReportTime() {
         return reportTime;
@@ -29,11 +29,11 @@ public class AnalyticsReport {
         this.identity = identity;
     }
 
-    public List<String> getEventDatas() {
+    public List<Object> getEventDatas() {
         return eventDatas;
     }
 
-    public void setEventDatas(List<String> eventDatas) {
+    public void setEventDatas(List<Object> eventDatas) {
         this.eventDatas = eventDatas;
     }
 

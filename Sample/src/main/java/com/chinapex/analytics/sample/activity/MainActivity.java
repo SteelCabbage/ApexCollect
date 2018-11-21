@@ -1,6 +1,9 @@
 package com.chinapex.analytics.sample.activity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -20,6 +23,7 @@ import com.chinapex.android.datacollect.testAop.CabbageButton;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
+    private static final int REQUEST_PERMISSION = 201;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         initView();
+        checkPermission();
     }
 
     private void initView() {
@@ -76,7 +81,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         // 0: custom (default), 1: cold, 2: click, 4: pv
                         //                .setEventType(1)
                         .setLabel("延时上报的label")
-                        .setValue("lalalala")
+                        .setValue("{\n" +
+                                "                \"custom1\": \"111111\",\n" +
+                                "                \"custom2\": \"222222\",\n" +
+                                "                \"custom3\": \"333333\",\n" +
+                                "                \"custom4\": \"444444\",\n" +
+                                "                \"custom5\": \"555555\"\n" +
+                                "            }")
                         .build());
                 break;
             case R.id.bt_instant:
@@ -86,11 +97,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         // 0: custom (default), 1: cold, 2: click, 4: pv
 //                        .setEventType(1)
                         .setLabel("即时上报的label")
-                        .setValue("hahahaha")
+                        .setValue("{\n" +
+                                "                \"custom1\": \"111111\",\n" +
+                                "                \"custom2\": \"222222\",\n" +
+                                "                \"custom3\": \"333333\",\n" +
+                                "                \"custom4\": \"444444\",\n" +
+                                "                \"custom5\": \"555555\"\n" +
+                                "            }")
                         .build());
                 break;
             default:
                 break;
+        }
+    }
+
+    private void checkPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED
+                /*|| checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED*/) {
+                requestPermissions(new String[]{Manifest.permission.READ_PHONE_STATE
+                                /*, Manifest.permission.CAMERA*/},
+                        REQUEST_PERMISSION);
+            }
         }
     }
 }

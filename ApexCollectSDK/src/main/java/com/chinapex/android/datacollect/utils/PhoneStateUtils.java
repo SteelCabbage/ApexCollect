@@ -15,6 +15,9 @@ import android.view.WindowManager;
 
 import com.chinapex.android.datacollect.global.Constant;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author SteelCabbage
  * @date 2018/11/20
@@ -115,25 +118,29 @@ public class PhoneStateUtils {
      * @param context
      * @return
      */
-    public static String getDeviceIds(Context context) {
+    public static List<String> getDeviceIds(Context context) {
         if (null == context) {
             ATLog.e(TAG, "getImei() -> context is null!");
-            return Constant.DEFAULT_IMEI;
+            return null;
         }
 
         TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         if (null == telephonyManager) {
             ATLog.e(TAG, "getImei() -> telephonyManager is null!");
-            return Constant.DEFAULT_IMEI;
+            return null;
         }
+
+        ArrayList<String> deviceIds = new ArrayList<>();
 
         // < 6.0
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             try {
-                return telephonyManager.getDeviceId();
+                String deviceId = telephonyManager.getDeviceId();
+                deviceIds.add(deviceId);
+                return deviceIds;
             } catch (Exception e) {
                 ATLog.e(TAG, "getImei() -> osVersion < 6.0 exception:" + e.getMessage());
-                return Constant.DEFAULT_IMEI;
+                return null;
             }
         }
 
@@ -142,10 +149,12 @@ public class PhoneStateUtils {
                 && Build.VERSION.SDK_INT < Build.VERSION_CODES.O
                 && PackageManager.PERMISSION_GRANTED == context.checkSelfPermission(Manifest.permission.READ_PHONE_STATE)) {
             try {
-                return telephonyManager.getDeviceId();
+                String deviceId = telephonyManager.getDeviceId();
+                deviceIds.add(deviceId);
+                return deviceIds;
             } catch (Exception e) {
                 ATLog.e(TAG, "getImei() -> osVersion [6.0 , 8.0) exception:" + e.getMessage());
-                return Constant.DEFAULT_IMEI;
+                return null;
             }
         }
 
@@ -154,36 +163,27 @@ public class PhoneStateUtils {
                 && PackageManager.PERMISSION_GRANTED == context.checkSelfPermission(Manifest.permission.READ_PHONE_STATE)) {
             try {
                 int phoneCount = telephonyManager.getPhoneCount();
-                StringBuilder sb = new StringBuilder();
-                sb.append("[");
+
                 for (int i = 0; i < phoneCount; i++) {
                     String gsm = telephonyManager.getImei(i);
                     String cdma = telephonyManager.getMeid(i);
 
                     if (!TextUtils.isEmpty(gsm)) {
-                        if (i == phoneCount - 1) {
-                            sb.append(String.valueOf("gsm:" + gsm));
-                        } else {
-                            sb.append(String.valueOf("gsm:" + gsm + ","));
-                        }
+                        deviceIds.add("gsm:" + gsm);
                     }
 
                     if (!TextUtils.isEmpty(cdma)) {
-                        if (i == phoneCount - 1) {
-                            sb.append(String.valueOf("cdma:" + cdma));
-                        } else {
-                            sb.append(String.valueOf("cdma:" + cdma + ","));
-                        }
+                        deviceIds.add("cdma:" + cdma);
                     }
                 }
-                sb.append("]");
-                return sb.toString();
+
+                return deviceIds;
             } catch (Exception e) {
                 ATLog.e(TAG, "getImei() -> osVersion [6.0 , 8.0) exception:" + e.getMessage());
-                return Constant.DEFAULT_IMEI;
+                return null;
             }
         }
-        return Constant.DEFAULT_IMEI;
+        return null;
     }
 
 

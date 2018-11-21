@@ -9,7 +9,6 @@ public class Constant {
     /**
      * default base info
      */
-    public static final String DEFAULT_IMEI = "[defaultImei]";
     public static final String DEFAULT_ANDROID_ID = "defaultAndroidId";
     public static final String DEFAULT_APP_NAME = "defaultAppName";
     public static final String DEFAULT_APP_VERSION = "defaultAppVersion";
@@ -66,5 +65,12 @@ public class Constant {
     public static final int EVENT_TYPE_CLICK = 1 << 1;
     public static final int EVENT_TYPE_PV = 1 << 2;
 
+
+    /**
+     * 事件label
+     */
+    public static final String EVENT_LABEL_COLD = "cold";
+    public static final String EVENT_LABEL_CLICK = "click";
+    public static final String EVENT_LABEL_PV = "pv";
 
 }

@@ -2,10 +2,12 @@ package com.chinapex.android.datacollect.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by SteelCabbage on 2018/3/23.
@@ -47,6 +49,18 @@ public class GsonUtils {
             }
         }
         return t;
+    }
+
+    public static Map<String, String> json2StringMap(String stringMapJson) {
+        Map<String, String> map = null;
+        try {
+            Type type = new TypeToken<Map<String, String>>() {
+            }.getType();
+            map = sGson.fromJson(stringMapJson, type);
+        } catch (JsonSyntaxException e) {
+            System.out.println("json2Map JsonSyntaxException:" + e.getMessage());
+        }
+        return map;
     }
 
     public static <T> List<T> json2List(String listJson, Class<T> cls) {

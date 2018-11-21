@@ -1,13 +1,19 @@
 package com.chinapex.android.datacollect.controller;
 
-import android.os.Build;
-import android.util.DisplayMetrics;
+import android.text.TextUtils;
 
-import com.chinapex.analytics.BuildConfig;
-import com.chinapex.analytics.changelistener.AnalyticsListenerController;
-import com.chinapex.analytics.entity.general.Ids;
-import com.chinapex.analytics.entity.general.PhoneContext;
-import com.chinapex.analytics.utils.PhoneContextUtils;
+import com.chinapex.android.datacollect.executor.TaskController;
+import com.chinapex.android.datacollect.executor.runnable.InstantEvent;
+import com.chinapex.android.datacollect.global.ApexCache;
+import com.chinapex.android.datacollect.global.Constant;
+import com.chinapex.android.datacollect.model.bean.Identity;
+import com.chinapex.android.datacollect.model.bean.TrackEvent;
+import com.chinapex.android.datacollect.model.bean.event.ColdEventData;
+import com.chinapex.android.datacollect.utils.ATLog;
+import com.chinapex.android.datacollect.utils.GsonUtils;
+import com.chinapex.android.datacollect.utils.PhoneStateUtils;
+
+import java.util.List;
 
 /**
  * @author SteelCabbage
@@ -32,48 +38,64 @@ public class PhoneStateController implements IController {
 
     @Override
     public void doInit() {
+        Identity identity = new Identity();
+        // 获取并设置uid
+
+        // 获取并设置uuid
+        String androidId = PhoneStateUtils.getAndroidId(ApexCache.getInstance().getContext());
+        if (!TextUtils.isEmpty(androidId)) {
+            identity.setUuid(androidId);
+        }
+
+        // 获取并设置deviceIds
+        List<String> deviceIds = PhoneStateUtils.getDeviceIds(ApexCache.getInstance().getContext());
+        if (null != deviceIds && !deviceIds.isEmpty()) {
+            identity.setDeviceIds(deviceIds);
+        }
+
+        // 将Identity放入缓存中，避免使用时重复计算
+        ApexCache.getInstance().setIdentity(identity);
+
+        // 上报冷启动事件
+        ColdEventData coldEventData = new ColdEventData();
+        coldEventData.setEventType(Constant.EVENT_TYPE_COLD);
+        coldEventData.setLabel(Constant.EVENT_LABEL_COLD);
+
+        ColdEventData.ValueBean valueBean = new ColdEventData.ValueBean();
+//        valueBean.setUid();
+
+        if (!TextUtils.isEmpty(androidId)) {
+            valueBean.setUuid(androidId);
+        }
+
+        if (null != deviceIds && !deviceIds.isEmpty()) {
+            valueBean.setDeviceIds(deviceIds);
+        }
+
+//        valueBean.setAppName();
+//        valueBean.setAppVersion();
+//        valueBean.setScreenInfo();
+//        valueBean.setOs();
+//        valueBean.setOsVersion();
+//        valueBean.setBrandName();
+//        valueBean.setCustomVersion();
+//        valueBean.setDeviceName();
+//        valueBean.setApiKey();
+//        valueBean.setEventType();
+
+        coldEventData.setValue(valueBean);
 
 
-        AnalyticsListenerController.getInstance().addOnNetworkTypeChangeListener(this);
+        String coldEventDataJson = GsonUtils.toJsonStr(coldEventData);
+        ATLog.d(TAG, "coldEventDataJson:" + coldEventDataJson);
 
-        mIds = new Ids();
-        mIds.setAndroidid(PhoneContextUtils.getAndroidId(mContext));
-        mIds.setImei(PhoneContextUtils.getImei(mContext));
-
-        mPhoneContext = new PhoneContext();
-
-        PhoneContext.App app = new PhoneContext.App();
-        app.setName(PhoneContextUtils.getAppName(mContext));
-        app.setVersion(PhoneContextUtils.getVersionName(mContext));
-        app.setBuild(PhoneContextUtils.getVersionCode(mContext));
-        mPhoneContext.setApp(app);
-
-        PhoneContext.Device device = new PhoneContext.Device();
-        device.setManufacturer(Build.MANUFACTURER);
-        device.setModel(Build.MODEL);
-        device.setName(Build.DEVICE);
-        device.setType("android");
-        device.setVersion(BuildConfig.VERSION_NAME);
-        mPhoneContext.setDevice(device);
-
-        mNetwork = new PhoneContext.Network();
-        mNetwork.setBluetooth(PhoneContextUtils.getBluetooth(mContext));
-        mNetwork.setCarrier(PhoneContextUtils.getCarrier(mContext));
-        mNetwork.setCellular(PhoneContextUtils.getCellular(mContext));
-        mNetwork.setWifi(PhoneContextUtils.getWifiBssid(mContext));
-        mPhoneContext.setNetwork(mNetwork);
-
-        PhoneContext.Os os = new PhoneContext.Os();
-        os.setName(System.getProperty("os.name"));
-        os.setVersion(Build.VERSION.RELEASE);
-        mPhoneContext.setOs(os);
-
-        PhoneContext.Screen screen = new PhoneContext.Screen();
-        DisplayMetrics displayMetrics = PhoneContextUtils.getDisplayMetrics(mContext);
-        screen.setDensity(displayMetrics.density);
-        screen.setHeight(displayMetrics.heightPixels);
-        screen.setWidth(displayMetrics.widthPixels);
-        mPhoneContext.setScreen(screen);
+        TrackEvent trackEvent = new TrackEvent.EventBuilder()
+                .setMode(Constant.MODE_INSTANT)
+                .setEventType(Constant.EVENT_TYPE_COLD)
+                .setLabel(Constant.EVENT_LABEL_COLD)
+                .setValue(coldEventDataJson)
+                .build();
+        TaskController.getInstance().submit(new InstantEvent(trackEvent, System.currentTimeMillis()));
     }
 
     @Override

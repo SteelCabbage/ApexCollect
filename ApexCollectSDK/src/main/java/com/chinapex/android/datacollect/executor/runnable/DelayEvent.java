@@ -3,7 +3,9 @@ package com.chinapex.android.datacollect.executor.runnable;
 import android.text.TextUtils;
 
 import com.chinapex.android.datacollect.global.ApexCache;
+import com.chinapex.android.datacollect.global.Constant;
 import com.chinapex.android.datacollect.model.bean.TrackEvent;
+import com.chinapex.android.datacollect.model.bean.event.ColdEventData;
 import com.chinapex.android.datacollect.model.bean.request.AnalyticsReport;
 import com.chinapex.android.datacollect.model.db.DbConstant;
 import com.chinapex.android.datacollect.model.db.DbDao;
@@ -13,6 +15,7 @@ import com.chinapex.android.datacollect.utils.net.INetCallback;
 import com.chinapex.android.datacollect.utils.net.OkHttpClientManager;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -59,24 +62,8 @@ public class DelayEvent implements Runnable, INetCallback {
         AnalyticsReport analyticsReport = new AnalyticsReport();
         analyticsReport.setReportTime(System.currentTimeMillis());
         analyticsReport.setIdentity(ApexCache.getInstance().getIdentity());
-        ArrayList<String> eventDatas = new ArrayList<>();
+        analyticsReport.setEventDatas(getEventDatas());
 
-        for (Map.Entry<Long, TrackEvent> entry : mTrackEventTreeMap.entrySet()) {
-            if (null == entry) {
-                ATLog.e(TAG, "run() -> entry is null");
-                continue;
-            }
-
-            TrackEvent trackEvent = entry.getValue();
-            if (null == trackEvent) {
-                ATLog.e(TAG, "run() -> trackEvent is null");
-                continue;
-            }
-
-            eventDatas.add(trackEvent.getValue());
-        }
-
-        analyticsReport.setEventDatas(eventDatas);
         String analyticsReportJson = GsonUtils.toJsonStr(analyticsReport);
         ATLog.i(TAG, "analyticsReportJson:" + analyticsReportJson);
 
@@ -104,6 +91,53 @@ public class DelayEvent implements Runnable, INetCallback {
         }
 
         dbDao.avoidIdUnlimitedGrowth(mTableName);
+    }
+
+    private List<Object> getEventDatas() {
+        ArrayList<Object> eventDatas = new ArrayList<>();
+
+        a:
+        for (Map.Entry<Long, TrackEvent> entry : mTrackEventTreeMap.entrySet()) {
+            if (null == entry) {
+                ATLog.e(TAG, "run() -> entry is null");
+                continue;
+            }
+
+            TrackEvent trackEvent = entry.getValue();
+            if (null == trackEvent) {
+                ATLog.e(TAG, "run() -> trackEvent is null");
+                continue;
+            }
+
+            switch (trackEvent.getEventType()) {
+                case Constant.EVENT_TYPE_CUSTOM:
+                    Map<String, String> customMap = GsonUtils.json2StringMap(trackEvent.getValue());
+                    if (null == customMap || customMap.isEmpty()) {
+                        ATLog.e(TAG, "customMap is null or empty!");
+                        continue a;
+                    }
+
+                    eventDatas.add(customMap);
+                    break;
+                case Constant.EVENT_TYPE_COLD:
+                    ColdEventData coldEventData = GsonUtils.json2Bean(trackEvent.getValue(), ColdEventData.class);
+                    if (null == coldEventData) {
+                        ATLog.e(TAG, "coldEventData is null!");
+                        continue a;
+                    }
+
+                    eventDatas.add(coldEventData);
+                    break;
+                case Constant.EVENT_TYPE_CLICK:
+                    break;
+                case Constant.EVENT_TYPE_PV:
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return eventDatas;
     }
 
     @Override

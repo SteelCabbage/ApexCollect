@@ -5,9 +5,6 @@ import android.app.Application;
 import android.os.Build;
 import android.text.TextUtils;
 
-import com.chinapex.analytics.config.ControllerConstant;
-import com.chinapex.analytics.config.TimeConstant;
-import com.chinapex.analytics.report.period.CheckInstantReportTask;
 import com.chinapex.android.datacollect.executor.TaskController;
 import com.chinapex.android.datacollect.executor.runnable.DelayEvent;
 import com.chinapex.android.datacollect.global.ApexCache;
@@ -51,7 +48,7 @@ public class BaseController {
             case Constant.CONTROLLER_TASK:
                 return TaskController.getInstance();
             case Constant.CONTROLLER_PHONE_STATE:
-                return PhoneStateController.getInstance(ApexCache.getInstance().getContext());
+                return PhoneStateController.getInstance();
             default:
                 break;
         }

@@ -1,7 +1,9 @@
 package com.chinapex.android.datacollect.executor.runnable;
 
 import com.chinapex.android.datacollect.global.ApexCache;
+import com.chinapex.android.datacollect.global.Constant;
 import com.chinapex.android.datacollect.model.bean.TrackEvent;
+import com.chinapex.android.datacollect.model.bean.event.ColdEventData;
 import com.chinapex.android.datacollect.model.bean.request.AnalyticsReport;
 import com.chinapex.android.datacollect.model.db.DbConstant;
 import com.chinapex.android.datacollect.model.db.DbDao;
@@ -11,6 +13,7 @@ import com.chinapex.android.datacollect.utils.net.INetCallback;
 import com.chinapex.android.datacollect.utils.net.OkHttpClientManager;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * @author SteelCabbage
@@ -35,14 +38,41 @@ public class InstantEvent implements Runnable, INetCallback {
         }
 
         AnalyticsReport analyticsReport = new AnalyticsReport();
+        ArrayList<Object> eventDatas = new ArrayList<>();
+        switch (mTrackEvent.getEventType()) {
+            case Constant.EVENT_TYPE_CUSTOM:
+                Map<String, String> customMap = GsonUtils.json2StringMap(mTrackEvent.getValue());
+                if (null == customMap || customMap.isEmpty()) {
+                    ATLog.e(TAG, "customMap is null or empty!");
+                    return;
+                }
+
+                eventDatas.add(customMap);
+                break;
+            case Constant.EVENT_TYPE_COLD:
+                ColdEventData coldEventData = GsonUtils.json2Bean(mTrackEvent.getValue(), ColdEventData.class);
+                if (null == coldEventData) {
+                    ATLog.e(TAG, "coldEventData is null!");
+                    return;
+                }
+
+                eventDatas.add(coldEventData);
+                break;
+            case Constant.EVENT_TYPE_CLICK:
+                break;
+            case Constant.EVENT_TYPE_PV:
+                break;
+            default:
+                break;
+        }
+
+        analyticsReport.setEventDatas(eventDatas);
         analyticsReport.setReportTime(mReportTime);
         analyticsReport.setIdentity(ApexCache.getInstance().getIdentity());
-        ArrayList<String> eventDatas = new ArrayList<>();
-        eventDatas.add(mTrackEvent.getValue());
-        analyticsReport.setEventDatas(eventDatas);
 
         String analyticsReportJson = GsonUtils.toJsonStr(analyticsReport);
         ATLog.i(TAG, "analyticsReportJson:" + analyticsReportJson);
+
         OkHttpClientManager.getInstance().postJson(ApexCache.getInstance().getUrlInstant(), analyticsReportJson, this);
     }
 
