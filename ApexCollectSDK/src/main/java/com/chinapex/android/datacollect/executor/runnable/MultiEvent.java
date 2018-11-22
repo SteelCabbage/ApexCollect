@@ -37,7 +37,7 @@ public class MultiEvent implements Runnable, INetCallback {
     @Override
     public void run() {
         if (TextUtils.isEmpty(mTableName) || null == mTrackEventTreeMap || mTrackEventTreeMap.isEmpty()) {
-            ATLog.e(TAG, "mTableName or mTrackEventTreeMap is null or empty!");
+            ATLog.e(TAG, "MultiEvent mTableName or mTrackEventTreeMap is null or empty!");
             return;
         }
 
@@ -47,7 +47,7 @@ public class MultiEvent implements Runnable, INetCallback {
         analyticsReport.setEventDatas(getEventDatas());
 
         String analyticsReportJson = GsonUtils.toJsonStr(analyticsReport);
-        ATLog.i(TAG, "MultiEvent analyticsReportJson:" + analyticsReportJson);
+        ATLog.i(TAG, mTableName + "MultiEvent analyticsReportJson:" + analyticsReportJson);
 
         String url;
         switch (mTableName) {
@@ -71,13 +71,13 @@ public class MultiEvent implements Runnable, INetCallback {
         a:
         for (Map.Entry<Long, TrackEvent> entry : mTrackEventTreeMap.entrySet()) {
             if (null == entry) {
-                ATLog.e(TAG, "run() -> entry is null");
+                ATLog.e(TAG, mTableName + "run() -> entry is null");
                 continue;
             }
 
             TrackEvent trackEvent = entry.getValue();
             if (null == trackEvent) {
-                ATLog.e(TAG, "run() -> trackEvent is null");
+                ATLog.e(TAG, mTableName + "run() -> trackEvent is null");
                 continue;
             }
 
@@ -85,7 +85,7 @@ public class MultiEvent implements Runnable, INetCallback {
                 case Constant.EVENT_TYPE_CUSTOM:
                     Map<String, String> customMap = GsonUtils.json2StringMap(trackEvent.getValue());
                     if (null == customMap || customMap.isEmpty()) {
-                        ATLog.e(TAG, "customMap is null or empty!");
+                        ATLog.e(TAG, mTableName + "customMap is null or empty!");
                         continue a;
                     }
 
@@ -94,7 +94,7 @@ public class MultiEvent implements Runnable, INetCallback {
                 case Constant.EVENT_TYPE_COLD:
                     ColdEventData coldEventData = GsonUtils.json2Bean(trackEvent.getValue(), ColdEventData.class);
                     if (null == coldEventData) {
-                        ATLog.e(TAG, "coldEventData is null!");
+                        ATLog.e(TAG, mTableName + "coldEventData is null!");
                         continue a;
                     }
 
@@ -114,15 +114,15 @@ public class MultiEvent implements Runnable, INetCallback {
 
     @Override
     public void onSuccess(int statusCode, String msg, String result) {
-        ATLog.i(TAG, "onSuccess() -> request again ok! need to delete from db");
+        ATLog.i(TAG, mTableName + "onSuccess() -> request again ok! need to delete from db");
         if (null == mTrackEventTreeMap || mTrackEventTreeMap.isEmpty()) {
-            ATLog.e(TAG, "onSuccess() -> mTrackEventTreeMap is null or empty!");
+            ATLog.e(TAG, mTableName + "onSuccess() -> mTrackEventTreeMap is null or empty!");
             return;
         }
 
         for (Map.Entry<Long, TrackEvent> entry : mTrackEventTreeMap.entrySet()) {
             if (null == entry) {
-                ATLog.e(TAG, "onSuccess() -> entry is null or empty!");
+                ATLog.e(TAG, mTableName + "onSuccess() -> entry is null or empty!");
                 continue;
             }
 
@@ -133,7 +133,7 @@ public class MultiEvent implements Runnable, INetCallback {
     private void delSuccessRequest(long time) {
         DbDao dbDao = DbDao.getInstance(ApexCache.getInstance().getContext());
         if (null == dbDao) {
-            ATLog.e(TAG, "delSuccessRequest() -> analyticsDbDao is null!");
+            ATLog.e(TAG, mTableName + "delSuccessRequest() -> analyticsDbDao is null!");
             return;
         }
 
@@ -142,6 +142,6 @@ public class MultiEvent implements Runnable, INetCallback {
 
     @Override
     public void onFailed(int failedCode, String msg) {
-        ATLog.e(TAG, "onFailed() -> request again, still failed!");
+        ATLog.e(TAG, mTableName + "onFailed() -> request again, still failed!");
     }
 }

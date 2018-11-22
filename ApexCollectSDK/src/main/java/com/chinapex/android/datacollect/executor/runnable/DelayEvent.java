@@ -18,7 +18,6 @@ public class DelayEvent implements Runnable {
 
     private static final String TAG = DelayEvent.class.getSimpleName();
     private String mTableName;
-    private TreeMap<Long, TrackEvent> mTrackEventTreeMap;
 
     public DelayEvent(String tableName) {
         mTableName = tableName;
@@ -46,7 +45,7 @@ public class DelayEvent implements Runnable {
         while (true) {
             trackEventTreeMap = dbDao.queryOffset(mTableName, offset, ApexCache.getInstance().getReportMaxNum());
             if (null == trackEventTreeMap || trackEventTreeMap.isEmpty()) {
-                ATLog.w(TAG, "DelayEvent trackEventTreeMap is null or empty!");
+                ATLog.w(TAG, mTableName + " DelayEvent trackEventTreeMap is null or empty!");
                 break;
             }
 
