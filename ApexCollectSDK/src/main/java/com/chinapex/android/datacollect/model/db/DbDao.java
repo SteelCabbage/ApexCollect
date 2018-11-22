@@ -85,9 +85,9 @@ public class DbDao {
         SQLiteDatabase db = openDatabase();
         try {
             db.beginTransaction();
-            db.insertOrThrow(tableName, null, contentValues);
+            long insertOrThrow = db.insertOrThrow(tableName, null, contentValues);
             db.setTransactionSuccessful();
-            ATLog.i(TAG, "insert into " + tableName + " ->" + trackEvent);
+            ATLog.i(TAG, "insert into " + tableName + " id = " + insertOrThrow + " ->" + trackEvent);
         } catch (SQLException e) {
             ATLog.e(TAG, "insert into " + tableName + " exception:" + e.getMessage());
         } finally {
@@ -153,6 +153,49 @@ public class DbDao {
         return trackEventTreeMap;
     }
 
+    public TreeMap<Long, TrackEvent> queryOffset(String tableName, int offset, int limit) {
+        if (TextUtils.isEmpty(tableName)) {
+            ATLog.e(TAG, "query() -> tableName is null or empty!");
+            return null;
+        }
+
+        TreeMap<Long, TrackEvent> trackEventTreeMap = new TreeMap<>();
+
+        SQLiteDatabase db = openDatabase();
+        String sqlLimit = String.valueOf(offset + "," + limit);
+        Cursor cursor = db.query(tableName, null, null, null, null, null, null, sqlLimit);
+        if (null != cursor) {
+            while (cursor.moveToNext()) {
+                int idIndex = cursor.getColumnIndex(DbConstant.FIELD_ID);
+                int modeIndex = cursor.getColumnIndex(DbConstant.FIELD_MODE);
+                int eventTypeIndex = cursor.getColumnIndex(DbConstant.FIELD_EVENT_TYPE);
+                int labelIndex = cursor.getColumnIndex(DbConstant.FIELD_LABEL);
+                int timeIndex = cursor.getColumnIndex(DbConstant.FIELD_TIME);
+                int valueIndex = cursor.getColumnIndex(DbConstant.FIELD_VALUE);
+
+                int id = cursor.getInt(idIndex);
+                int mode = cursor.getInt(modeIndex);
+                int eventType = cursor.getInt(eventTypeIndex);
+                String label = cursor.getString(labelIndex);
+                long time = cursor.getLong(timeIndex);
+                String value = cursor.getString(valueIndex);
+
+                TrackEvent trackEvent = new TrackEvent.EventBuilder()
+                        .setMode(mode)
+                        .setEventType(eventType)
+                        .setLabel(label)
+                        .setValue(value)
+                        .build();
+
+                trackEventTreeMap.put(time, trackEvent);
+                ATLog.i(TAG, "queryOffset() -> id:" + id);
+            }
+            cursor.close();
+        }
+        closeDatabase();
+        return trackEventTreeMap;
+    }
+
 
     private static final String WHERE_CLAUSE_TIME_EQ = DbConstant.FIELD_TIME + " = ?";
 
@@ -191,7 +234,7 @@ public class DbDao {
         Long lastResetTime = Long.valueOf(String.valueOf(timeObj));
         ATLog.d(TAG, "avoidIdUnlimitedGrowth() -> lastResetTime is:" + lastResetTime);
 
-        if (currentId <= ApexCache.getInstance().getReportMaxNum()
+        if (currentId <= DbConstant.MAX_ID_TABLE
                 && (System.currentTimeMillis() - lastResetTime) < Constant.RESET_ID_INTERVAL) {
             ATLog.d(TAG, "avoidIdUnlimitedGrowth() -> don't need to deal");
             return;

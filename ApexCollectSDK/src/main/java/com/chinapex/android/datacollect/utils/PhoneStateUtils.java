@@ -136,7 +136,7 @@ public class PhoneStateUtils {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             try {
                 String deviceId = telephonyManager.getDeviceId();
-                deviceIds.add(deviceId);
+                deviceIds.add(String.valueOf("IMEI:" + deviceId));
                 return deviceIds;
             } catch (Exception e) {
                 ATLog.e(TAG, "getImei() -> osVersion < 6.0 exception:" + e.getMessage());
@@ -150,7 +150,7 @@ public class PhoneStateUtils {
                 && PackageManager.PERMISSION_GRANTED == context.checkSelfPermission(Manifest.permission.READ_PHONE_STATE)) {
             try {
                 String deviceId = telephonyManager.getDeviceId();
-                deviceIds.add(deviceId);
+                deviceIds.add(String.valueOf("IMEI:" + deviceId));
                 return deviceIds;
             } catch (Exception e) {
                 ATLog.e(TAG, "getImei() -> osVersion [6.0 , 8.0) exception:" + e.getMessage());
@@ -169,11 +169,11 @@ public class PhoneStateUtils {
                     String cdma = telephonyManager.getMeid(i);
 
                     if (!TextUtils.isEmpty(gsm)) {
-                        deviceIds.add("gsm:" + gsm);
+                        deviceIds.add("GSM:" + gsm);
                     }
 
                     if (!TextUtils.isEmpty(cdma)) {
-                        deviceIds.add("cdma:" + cdma);
+                        deviceIds.add("CDMA:" + cdma);
                     }
                 }
 

@@ -43,13 +43,13 @@ public class DbConstant {
             + FIELD_TIME + " integer, "
             + FIELD_VALUE + " text)";
 
-
     /**
      * 防止数据库db无限制增长
      */
     public static final String SQL_WIPE_DATA = "delete from ";
     public static final String SQL_RESET_ID = "UPDATE sqlite_sequence SET seq = 0 WHERE name = ";
     public static final int MAX_ID_DEF = -1;
+    public static final int MAX_ID_TABLE = 1000;
     public static final int REPORT_MAX_NUM = 30;
 
 }

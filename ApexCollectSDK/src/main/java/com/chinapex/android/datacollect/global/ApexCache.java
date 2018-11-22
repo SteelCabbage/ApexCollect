@@ -25,7 +25,7 @@ public class ApexCache {
     /**
      * 上报的最大条数
      */
-    private long mReportMaxNum = DbConstant.REPORT_MAX_NUM;
+    private int mReportMaxNum = DbConstant.REPORT_MAX_NUM;
 
     /**
      * 延时上报的时间间隔
@@ -75,11 +75,11 @@ public class ApexCache {
         mIdentity = identity;
     }
 
-    public long getReportMaxNum() {
+    public int getReportMaxNum() {
         return mReportMaxNum;
     }
 
-    public void setReportMaxNum(long reportMaxNum) {
+    public void setReportMaxNum(int reportMaxNum) {
         mReportMaxNum = reportMaxNum;
     }
 
