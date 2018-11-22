@@ -64,15 +64,6 @@ public class PhoneStateController implements IController {
 
         ColdEventData.ValueBean valueBean = new ColdEventData.ValueBean();
 //        valueBean.setUid();
-
-        if (!TextUtils.isEmpty(androidId)) {
-            valueBean.setUuid(androidId);
-        }
-
-        if (null != deviceIds && !deviceIds.isEmpty()) {
-            valueBean.setDeviceIds(deviceIds);
-        }
-
         valueBean.setAppName(PhoneStateUtils.getAppName(ApexCache.getInstance().getContext()));
         valueBean.setAppVersion(PhoneStateUtils.getVersionName(ApexCache.getInstance().getContext()));
 //        valueBean.setScreenInfo();
@@ -83,7 +74,6 @@ public class PhoneStateController implements IController {
         valueBean.setManufacturer(Build.MANUFACTURER);
         valueBean.setDeviceModel(Build.MODEL);
 //        valueBean.setApiKey();
-        valueBean.setEventType(Constant.EVENT_TYPE_COLD);
 
         coldEventData.setValue(valueBean);
 

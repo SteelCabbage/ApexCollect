@@ -1,27 +1,10 @@
 package com.chinapex.android.datacollect.model.bean.event;
 
-import java.util.List;
-
 /**
  * @author SteelCabbage
  * @date 2018/11/19
  */
-public class ColdEventData implements IEventData {
-    /**
-     * uid (用户id)
-     * uuid (AndroidId)
-     * deviceIds (当为Android手机时，需用户授权获取设备id)
-     * "appName" = "APEX Wallet";
-     * "appVersion" = "1.1.1";
-     * "screenInfo" = "[width:414.000000,height:896.000000, density:2]";//
-     * "os" = "iOS or Android";//
-     * "osVersion" = "12.0";
-     * "brandName" = "HUAWEI or Apple"; //
-     * "customVersion" = "EMUI 8.0"; // apple : 同OSVersion
-     * "manufacturer" = "iPhone 6 or Mate 20";//
-     * "apiKey" = "xxxxxxxxxxxxxxxxx"
-     * "eventType" = "cold initialize";
-     */
+public class ColdEventData {
 
     private int eventType;
     private String label;
@@ -52,9 +35,21 @@ public class ColdEventData implements IEventData {
     }
 
     public static class ValueBean {
+
+        /**
+         * uid (用户id)
+         * "appName" = "APEX Wallet";
+         * "appVersion" = "1.1.1";
+         * "screenInfo" = "[width:414.000000,height:896.000000, density:2]";//
+         * "os" = "iOS or Android";//
+         * "osVersion" = "12.0";
+         * "brandName" = "HUAWEI or Apple"; //
+         * "customVersion" = "EMUI 8.0"; // apple : 同OSVersion
+         * "manufacturer" = "iPhone 6 or Mate 20";
+         * "deviceModel" = "型号",
+         * "apiKey" = "xxxxxxxxxxxxxxxxx"
+         */
         private String uid;
-        private String uuid;
-        private List<String> deviceIds;
         private String appName;
         private String appVersion;
         private String screenInfo;
@@ -65,7 +60,6 @@ public class ColdEventData implements IEventData {
         private String manufacturer;
         private String deviceModel;
         private String apiKey;
-        private int eventType;
 
         public String getUid() {
             return uid;
@@ -73,22 +67,6 @@ public class ColdEventData implements IEventData {
 
         public void setUid(String uid) {
             this.uid = uid;
-        }
-
-        public String getUuid() {
-            return uuid;
-        }
-
-        public void setUuid(String uuid) {
-            this.uuid = uuid;
-        }
-
-        public List<String> getDeviceIds() {
-            return deviceIds;
-        }
-
-        public void setDeviceIds(List<String> deviceIds) {
-            this.deviceIds = deviceIds;
         }
 
         public String getAppName() {
@@ -171,12 +149,5 @@ public class ColdEventData implements IEventData {
             this.apiKey = apiKey;
         }
 
-        public int getEventType() {
-            return eventType;
-        }
-
-        public void setEventType(int eventType) {
-            this.eventType = eventType;
-        }
     }
 }
