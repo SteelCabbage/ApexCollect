@@ -3,7 +3,6 @@ package com.chinapex.android.datacollect.global;
 import android.content.Context;
 
 import com.chinapex.android.datacollect.model.bean.Identity;
-import com.chinapex.android.datacollect.model.db.DbConstant;
 
 /**
  * @author SteelCabbage
@@ -25,17 +24,17 @@ public class ApexCache {
     /**
      * 上报的最大条数
      */
-    private int mReportMaxNum = DbConstant.REPORT_MAX_NUM;
+    private int mReportMaxNum = Constant.REPORT_MAX_NUM_DEFAULT;
 
     /**
      * 延时上报的时间间隔
      */
-    private long mDelayReportInterval = Constant.DELAY_REPORT_INTERVAL;
+    private long mDelayReportInterval = Constant.DELAY_REPORT_INTERVAL_DEFAULT;
 
     /**
      * 检查即时上报是否存在异常的时间间隔
      */
-    private long mCheckInstantErrInterval = Constant.CHECK_INSTANT_ERR_INTERVAL;
+    private long mCheckInstantErrInterval = Constant.CHECK_INSTANT_ERR_INTERVAL_DEFAULT;
 
     /**
      * 延时上报的url

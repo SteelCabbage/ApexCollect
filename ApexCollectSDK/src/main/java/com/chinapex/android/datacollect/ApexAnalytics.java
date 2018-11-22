@@ -125,24 +125,42 @@ public class ApexAnalytics {
      * @param reportMaxNum Default: 30 (默认30条)
      */
     public void setReportMaxNum(int reportMaxNum) {
+        if (reportMaxNum < Constant.REPORT_MIN_NUM) {
+            ATLog.w(TAG, "reportMaxNum must be >= " + Constant.REPORT_MIN_NUM
+                    + ", default: " + Constant.REPORT_MAX_NUM_DEFAULT + " are currently used");
+            return;
+        }
+
         ApexCache.getInstance().setReportMaxNum(reportMaxNum);
     }
 
     /**
      * setTimeInterval 设置延时上报的时间间隔
      *
-     * @param delayReportInterval Default: 1000 * 60 * 60 (默认1小时)
+     * @param delayReportInterval Default: 1000 * 60 * 5 (默认5分钟)
      */
     public void setDelayReportInterval(long delayReportInterval) {
+        if (delayReportInterval < Constant.DELAY_REPORT_INTERVAL_MIN) {
+            ATLog.w(TAG, "delayReportInterval must be >= " + Constant.DELAY_REPORT_INTERVAL_MIN
+                    + ", default: " + Constant.DELAY_REPORT_INTERVAL_DEFAULT + " are currently used");
+            return;
+        }
+
         ApexCache.getInstance().setDelayReportInterval(delayReportInterval);
     }
 
     /**
-     * setCheckInstantErrInterval 设置检查即时上报是否存在异常的时间间隔
+     * setCheckInstantErrInterval 设置检查即时上报是否存在异常的时间间隔, 默认2分钟
      *
      * @param checkInstantErrInterval
      */
     public void setCheckInstantErrInterval(long checkInstantErrInterval) {
+        if (checkInstantErrInterval < Constant.CHECK_INSTANT_ERR_INTERVAL_MIN) {
+            ATLog.w(TAG, "checkInstantErrInterval must be >= " + Constant.CHECK_INSTANT_ERR_INTERVAL_MIN
+                    + ", default: " + Constant.CHECK_INSTANT_ERR_INTERVAL_DEFAULT + " are currently used");
+            return;
+        }
+
         ApexCache.getInstance().setCheckInstantErrInterval(checkInstantErrInterval);
     }
 

@@ -20,11 +20,14 @@ public class Constant {
     public static final String CONTROLLER_PHONE_STATE = "PhoneStateController";
 
     /**
-     * 时间
+     * Settings 上报条数, 时间
      */
-    public static final long CHECK_INSTANT_ERR_INTERVAL = 1000 * 60 * 2;
-    public static final long RESET_ID_INTERVAL = 1000 * 60 * 60 * 24 * 3;
-    public static final long DELAY_REPORT_INTERVAL = 1000 * 60 * 60;
+    public static final int REPORT_MAX_NUM_DEFAULT = 30;
+    public static final int REPORT_MIN_NUM = 5;
+    public static final long CHECK_INSTANT_ERR_INTERVAL_DEFAULT = 1000 * 60 * 2;
+    public static final long CHECK_INSTANT_ERR_INTERVAL_MIN = 1000 * 60;
+    public static final long DELAY_REPORT_INTERVAL_DEFAULT = 1000 * 60 * 5;
+    public static final long DELAY_REPORT_INTERVAL_MIN = 1000 * 60 * 2;
 
     /**
      * SP

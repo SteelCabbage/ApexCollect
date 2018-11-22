@@ -235,7 +235,7 @@ public class DbDao {
         ATLog.d(TAG, "avoidIdUnlimitedGrowth() -> lastResetTime is:" + lastResetTime);
 
         if (currentId <= DbConstant.MAX_ID_TABLE
-                && (System.currentTimeMillis() - lastResetTime) < Constant.RESET_ID_INTERVAL) {
+                && (System.currentTimeMillis() - lastResetTime) < DbConstant.RESET_ID_INTERVAL) {
             ATLog.d(TAG, "avoidIdUnlimitedGrowth() -> don't need to deal");
             return;
         }

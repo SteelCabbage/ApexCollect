@@ -24,10 +24,13 @@ public class SampleApp extends Application {
         AppLog.i(TAG, "SampleApp start!");
         sSampleApp = this;
 
-        // ch初始化埋点sdk
+        // 初始化埋点sdk
         ApexAnalytics.getInstance().init(sSampleApp);
+        // settings
         ApexAnalytics.getInstance().setLogLevel(ATLog.VERBOSE);
-
+        ApexAnalytics.getInstance().setReportMaxNum(5);
+        ApexAnalytics.getInstance().setDelayReportInterval(1000 * 60 * 2);
+        ApexAnalytics.getInstance().setCheckInstantErrInterval(1000 * 60);
     }
 
     public static SampleApp getInstance() {

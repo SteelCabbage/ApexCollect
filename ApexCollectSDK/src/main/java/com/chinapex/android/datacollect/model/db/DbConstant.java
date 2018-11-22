@@ -46,10 +46,10 @@ public class DbConstant {
     /**
      * 防止数据库db无限制增长
      */
+    public static final long RESET_ID_INTERVAL = 1000 * 60 * 60 * 24 * 3;
     public static final String SQL_WIPE_DATA = "delete from ";
     public static final String SQL_RESET_ID = "UPDATE sqlite_sequence SET seq = 0 WHERE name = ";
     public static final int MAX_ID_DEF = -1;
     public static final int MAX_ID_TABLE = 1000;
-    public static final int REPORT_MAX_NUM = 30;
 
 }
