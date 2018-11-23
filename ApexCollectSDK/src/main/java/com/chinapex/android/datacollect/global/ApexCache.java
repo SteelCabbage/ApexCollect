@@ -2,11 +2,12 @@ package com.chinapex.android.datacollect.global;
 
 import android.content.Context;
 
-import com.chinapex.android.datacollect.model.bean.Identity;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author SteelCabbage
- * @date 2018/11/12
+ * @date 2018/11/23
  */
 public class ApexCache {
     private static final String TAG = ApexCache.class.getSimpleName();
@@ -17,9 +18,34 @@ public class ApexCache {
     private Context mContext;
 
     /**
-     * 身份识别
+     * userId
      */
-    private Identity mIdentity;
+    private String mUserId = "";
+
+    /**
+     * uuid (androidId)
+     */
+    private String mUuid = "";
+
+    /**
+     * deviceIds
+     */
+    private List<String> mDeviceIds = new ArrayList<>();
+
+    /**
+     * country
+     */
+    private String country;
+
+    /**
+     * province
+     */
+    private String province;
+
+    /**
+     * city
+     */
+    private String city;
 
     /**
      * 上报的最大条数
@@ -46,6 +72,7 @@ public class ApexCache {
      */
     private String mUrlInstant = Constant.URL_INSTANT_REPORT;
 
+
     private ApexCache() {
 
     }
@@ -66,12 +93,52 @@ public class ApexCache {
         mContext = context;
     }
 
-    public Identity getIdentity() {
-        return mIdentity;
+    public String getUserId() {
+        return mUserId;
     }
 
-    public void setIdentity(Identity identity) {
-        mIdentity = identity;
+    public void setUserId(String userId) {
+        mUserId = userId;
+    }
+
+    public String getUuid() {
+        return mUuid;
+    }
+
+    public void setUuid(String uuid) {
+        mUuid = uuid;
+    }
+
+    public List<String> getDeviceIds() {
+        return mDeviceIds;
+    }
+
+    public void setDeviceIds(List<String> deviceIds) {
+        mDeviceIds = deviceIds;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public int getReportMaxNum() {

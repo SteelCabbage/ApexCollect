@@ -76,8 +76,16 @@ public class Constant {
     /**
      * 事件label
      */
+    public static final String EVENT_LABEL_CUSTOM = "custom";
     public static final String EVENT_LABEL_COLD = "cold";
     public static final String EVENT_LABEL_CLICK = "click";
     public static final String EVENT_LABEL_PV = "pv";
+
+
+    /**
+     * 上报json格式 company, terminal
+     */
+    public static final String COMPANY = "apex";
+    public static final String TERMINAL = "android";
 
 }

@@ -2,12 +2,12 @@ package com.chinapex.android.datacollect.controller;
 
 import android.os.Build;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 
 import com.chinapex.android.datacollect.executor.TaskController;
 import com.chinapex.android.datacollect.executor.runnable.InstantEvent;
 import com.chinapex.android.datacollect.global.ApexCache;
 import com.chinapex.android.datacollect.global.Constant;
-import com.chinapex.android.datacollect.model.bean.Identity;
 import com.chinapex.android.datacollect.model.bean.TrackEvent;
 import com.chinapex.android.datacollect.model.bean.event.ColdEventData;
 import com.chinapex.android.datacollect.utils.ATLog;
@@ -39,42 +39,53 @@ public class PhoneStateController implements IController {
 
     @Override
     public void doInit() {
-        Identity identity = new Identity();
-        // 获取并设置uid
-
         // 获取并设置uuid
         String androidId = PhoneStateUtils.getAndroidId(ApexCache.getInstance().getContext());
         if (!TextUtils.isEmpty(androidId)) {
-            identity.setUuid(androidId);
+            ApexCache.getInstance().setUuid(androidId);
         }
 
         // 获取并设置deviceIds
         List<String> deviceIds = PhoneStateUtils.getDeviceIds(ApexCache.getInstance().getContext());
         if (null != deviceIds && !deviceIds.isEmpty()) {
-            identity.setDeviceIds(deviceIds);
+            ApexCache.getInstance().setDeviceIds(deviceIds);
         }
 
-        // 将Identity放入缓存中，避免使用时重复计算
-        ApexCache.getInstance().setIdentity(identity);
+        reportColdEvent();
+    }
 
+    @Override
+    public void onDestroy() {
+
+    }
+
+    private void reportColdEvent() {
         // 上报冷启动事件
+        ColdEventData.ValueBean valueBean = new ColdEventData.ValueBean();
+        // 预留字段
+        valueBean.setApiKey("");
+        // 暂取不到厂商定制系统的版本号
+        valueBean.setCustomVersion("");
+        valueBean.setOs(System.getProperty("os.name"));
+        valueBean.setOsVersion(Build.VERSION.RELEASE);
+        valueBean.setDeviceModel(Build.MODEL);
+        valueBean.setManufacturer(Build.MANUFACTURER);
+        valueBean.setBrandName(Build.BRAND);
+        valueBean.setAppName(PhoneStateUtils.getAppName(ApexCache.getInstance().getContext()));
+        valueBean.setAppVersion(PhoneStateUtils.getVersionName(ApexCache.getInstance().getContext()));
+
+        DisplayMetrics displayMetrics = PhoneStateUtils.getDisplayMetrics(ApexCache.getInstance().getContext());
+        valueBean.setScreenWidth(String.valueOf(displayMetrics.widthPixels));
+        valueBean.setScreenHeight(String.valueOf(displayMetrics.heightPixels));
+        valueBean.setScreenDensity(String.valueOf(displayMetrics.density));
+
         ColdEventData coldEventData = new ColdEventData();
         coldEventData.setEventType(Constant.EVENT_TYPE_COLD);
         coldEventData.setLabel(Constant.EVENT_LABEL_COLD);
-
-        ColdEventData.ValueBean valueBean = new ColdEventData.ValueBean();
-//        valueBean.setUid();
-        valueBean.setAppName(PhoneStateUtils.getAppName(ApexCache.getInstance().getContext()));
-        valueBean.setAppVersion(PhoneStateUtils.getVersionName(ApexCache.getInstance().getContext()));
-//        valueBean.setScreenInfo();
-        valueBean.setOs(System.getProperty("os.name"));
-        valueBean.setOsVersion(Build.VERSION.RELEASE);
-        valueBean.setBrandName(Build.BRAND);
-//        valueBean.setCustomVersion();
-        valueBean.setManufacturer(Build.MANUFACTURER);
-        valueBean.setDeviceModel(Build.MODEL);
-//        valueBean.setApiKey();
-
+        coldEventData.setUserId(ApexCache.getInstance().getUserId());
+        coldEventData.setCountry(ApexCache.getInstance().getCountry());
+        coldEventData.setProvince(ApexCache.getInstance().getProvince());
+        coldEventData.setCity(ApexCache.getInstance().getCity());
         coldEventData.setValue(valueBean);
 
         String coldEventDataJson = GsonUtils.toJsonStr(coldEventData);
@@ -86,12 +97,7 @@ public class PhoneStateController implements IController {
                 .setLabel(Constant.EVENT_LABEL_COLD)
                 .setValue(coldEventDataJson)
                 .build();
-        TaskController.getInstance().submit(new InstantEvent(trackEvent, System.currentTimeMillis()));
-    }
-
-    @Override
-    public void onDestroy() {
-
+        TaskController.getInstance().submit(new InstantEvent(trackEvent));
     }
 
 }

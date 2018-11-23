@@ -9,6 +9,7 @@ import com.chinapex.android.datacollect.model.db.DbConstant;
 import com.chinapex.android.datacollect.model.db.DbDao;
 import com.chinapex.android.datacollect.utils.ATLog;
 import com.chinapex.android.datacollect.utils.GsonUtils;
+import com.chinapex.android.datacollect.utils.PhoneStateUtils;
 import com.chinapex.android.datacollect.utils.net.INetCallback;
 import com.chinapex.android.datacollect.utils.net.OkHttpClientManager;
 
@@ -25,9 +26,9 @@ public class InstantEvent implements Runnable, INetCallback {
     private TrackEvent mTrackEvent;
     private long mReportTime;
 
-    public InstantEvent(TrackEvent trackEvent, long reportTime) {
+    public InstantEvent(TrackEvent trackEvent) {
         mTrackEvent = trackEvent;
-        mReportTime = reportTime;
+        mReportTime = System.currentTimeMillis();
     }
 
     @Override
@@ -37,8 +38,7 @@ public class InstantEvent implements Runnable, INetCallback {
             return;
         }
 
-        AnalyticsReport analyticsReport = new AnalyticsReport();
-        ArrayList<Object> eventDatas = new ArrayList<>();
+        ArrayList<Object> events = new ArrayList<>();
         switch (mTrackEvent.getEventType()) {
             case Constant.EVENT_TYPE_CUSTOM:
                 Map<String, String> customMap = GsonUtils.json2StringMap(mTrackEvent.getValue());
@@ -47,7 +47,7 @@ public class InstantEvent implements Runnable, INetCallback {
                     return;
                 }
 
-                eventDatas.add(customMap);
+                events.add(customMap);
                 break;
             case Constant.EVENT_TYPE_COLD:
                 ColdEventData coldEventData = GsonUtils.json2Bean(mTrackEvent.getValue(), ColdEventData.class);
@@ -56,7 +56,7 @@ public class InstantEvent implements Runnable, INetCallback {
                     return;
                 }
 
-                eventDatas.add(coldEventData);
+                events.add(coldEventData);
                 break;
             case Constant.EVENT_TYPE_CLICK:
                 break;
@@ -66,9 +66,17 @@ public class InstantEvent implements Runnable, INetCallback {
                 break;
         }
 
-        analyticsReport.setEventDatas(eventDatas);
-        analyticsReport.setReportTime(mReportTime);
-        analyticsReport.setIdentity(ApexCache.getInstance().getIdentity());
+        AnalyticsReport.DataBean dataBean = new AnalyticsReport.DataBean();
+        dataBean.setReportTime(mReportTime);
+        dataBean.setLanguage(PhoneStateUtils.getLanguage());
+        dataBean.setUuid(ApexCache.getInstance().getUuid());
+        dataBean.setDeviceID(ApexCache.getInstance().getDeviceIds());
+        dataBean.setEvents(events);
+
+        AnalyticsReport analyticsReport = new AnalyticsReport();
+        analyticsReport.setCompany(Constant.COMPANY);
+        analyticsReport.setTerminal(Constant.TERMINAL);
+        analyticsReport.setData(dataBean);
 
         String analyticsReportJson = GsonUtils.toJsonStr(analyticsReport);
         ATLog.i(TAG, "analyticsReportJson:" + analyticsReportJson);

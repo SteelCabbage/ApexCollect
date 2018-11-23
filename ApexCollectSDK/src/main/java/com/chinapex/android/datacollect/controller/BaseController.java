@@ -78,6 +78,9 @@ public class BaseController {
         // 获取手机基本状态信息
         PhoneStateController.getInstance().doInit();
         mIControllerHashMap.put(Constant.CONTROLLER_PHONE_STATE, PhoneStateController.getInstance());
+
+        // test location
+        LocationController.getInstance().doInit();
     }
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)

@@ -1,9 +1,6 @@
 package com.chinapex.android.datacollect;
 
-import android.annotation.TargetApi;
-import android.app.Application;
 import android.content.Context;
-import android.os.Build;
 import android.text.TextUtils;
 
 import com.chinapex.android.datacollect.controller.BaseController;
@@ -11,7 +8,6 @@ import com.chinapex.android.datacollect.executor.TaskController;
 import com.chinapex.android.datacollect.executor.runnable.InstantEvent;
 import com.chinapex.android.datacollect.global.ApexCache;
 import com.chinapex.android.datacollect.global.Constant;
-import com.chinapex.android.datacollect.metrics.ApexCollectActivityLifecycleCallbacks;
 import com.chinapex.android.datacollect.model.bean.TrackEvent;
 import com.chinapex.android.datacollect.model.db.DbConstant;
 import com.chinapex.android.datacollect.model.db.DbDao;
@@ -71,7 +67,7 @@ public class ApexAnalytics {
 
 
     /* *************************************************************************************************************
-     *                                                Track                                                        *
+     *                                          Track, SignIn, SignOut                                             *
      * *************************************************************************************************************
      */
 
@@ -104,11 +100,19 @@ public class ApexAnalytics {
                 dbDao.insert(DbConstant.TABLE_DELAY_REPORT, trackEvent, System.currentTimeMillis());
                 break;
             case Constant.MODE_INSTANT:
-                TaskController.getInstance().submit(new InstantEvent(trackEvent, System.currentTimeMillis()));
+                TaskController.getInstance().submit(new InstantEvent(trackEvent));
                 break;
             default:
                 break;
         }
+    }
+
+    public void signIn(String userId) {
+        ApexCache.getInstance().setUserId(userId);
+    }
+
+    public void signOut() {
+        ApexCache.getInstance().setUserId("");
     }
 
 

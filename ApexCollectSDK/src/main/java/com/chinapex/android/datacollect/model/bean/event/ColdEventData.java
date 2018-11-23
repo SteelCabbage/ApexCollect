@@ -8,6 +8,10 @@ public class ColdEventData {
 
     private int eventType;
     private String label;
+    private String userId;
+    private String country;
+    private String province;
+    private String city;
     private ValueBean value;
 
     public int getEventType() {
@@ -26,6 +30,38 @@ public class ColdEventData {
         this.label = label;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
     public ValueBean getValue() {
         return value;
     }
@@ -37,60 +73,47 @@ public class ColdEventData {
     public static class ValueBean {
 
         /**
-         * uid (用户id)
-         * "appName" = "APEX Wallet";
-         * "appVersion" = "1.1.1";
-         * "screenInfo" = "[width:414.000000,height:896.000000, density:2]";//
-         * "os" = "iOS or Android";//
-         * "osVersion" = "12.0";
-         * "brandName" = "HUAWEI or Apple"; //
-         * "customVersion" = "EMUI 8.0"; // apple : 同OSVersion
-         * "manufacturer" = "iPhone 6 or Mate 20";
-         * "deviceModel" = "型号",
-         * "apiKey" = "xxxxxxxxxxxxxxxxx"
+         * "apiKey": "apikey",
+         * "customVersion": "12.1",
+         * "os": "iOS",
+         * "osVersion": "12.1",
+         * "deviceModel": "iPhone 5",
+         * "manufacturer": "Apple",
+         * "brandName": "Apple, Honor",
+         * "appName": "APEX Wallet",
+         * "appVersion": "1.1.1",
+         * "screenWidth": "",
+         * "screenHeight": "",
+         * "screenDensity": ""
          */
-        private String uid;
-        private String appName;
-        private String appVersion;
-        private String screenInfo;
+
+        private String apiKey;
+        private String customVersion;
         private String os;
         private String osVersion;
-        private String brandName;
-        private String customVersion;
-        private String manufacturer;
         private String deviceModel;
-        private String apiKey;
+        private String manufacturer;
+        private String brandName;
+        private String appName;
+        private String appVersion;
+        private String screenWidth;
+        private String screenHeight;
+        private String screenDensity;
 
-        public String getUid() {
-            return uid;
+        public String getApiKey() {
+            return apiKey;
         }
 
-        public void setUid(String uid) {
-            this.uid = uid;
+        public void setApiKey(String apiKey) {
+            this.apiKey = apiKey;
         }
 
-        public String getAppName() {
-            return appName;
+        public String getCustomVersion() {
+            return customVersion;
         }
 
-        public void setAppName(String appName) {
-            this.appName = appName;
-        }
-
-        public String getAppVersion() {
-            return appVersion;
-        }
-
-        public void setAppVersion(String appVersion) {
-            this.appVersion = appVersion;
-        }
-
-        public String getScreenInfo() {
-            return screenInfo;
-        }
-
-        public void setScreenInfo(String screenInfo) {
-            this.screenInfo = screenInfo;
+        public void setCustomVersion(String customVersion) {
+            this.customVersion = customVersion;
         }
 
         public String getOs() {
@@ -109,20 +132,12 @@ public class ColdEventData {
             this.osVersion = osVersion;
         }
 
-        public String getBrandName() {
-            return brandName;
+        public String getDeviceModel() {
+            return deviceModel;
         }
 
-        public void setBrandName(String brandName) {
-            this.brandName = brandName;
-        }
-
-        public String getCustomVersion() {
-            return customVersion;
-        }
-
-        public void setCustomVersion(String customVersion) {
-            this.customVersion = customVersion;
+        public void setDeviceModel(String deviceModel) {
+            this.deviceModel = deviceModel;
         }
 
         public String getManufacturer() {
@@ -133,21 +148,52 @@ public class ColdEventData {
             this.manufacturer = manufacturer;
         }
 
-        public String getDeviceModel() {
-            return deviceModel;
+        public String getBrandName() {
+            return brandName;
         }
 
-        public void setDeviceModel(String deviceModel) {
-            this.deviceModel = deviceModel;
+        public void setBrandName(String brandName) {
+            this.brandName = brandName;
         }
 
-        public String getApiKey() {
-            return apiKey;
+        public String getAppName() {
+            return appName;
         }
 
-        public void setApiKey(String apiKey) {
-            this.apiKey = apiKey;
+        public void setAppName(String appName) {
+            this.appName = appName;
         }
 
+        public String getAppVersion() {
+            return appVersion;
+        }
+
+        public void setAppVersion(String appVersion) {
+            this.appVersion = appVersion;
+        }
+
+        public String getScreenWidth() {
+            return screenWidth;
+        }
+
+        public void setScreenWidth(String screenWidth) {
+            this.screenWidth = screenWidth;
+        }
+
+        public String getScreenHeight() {
+            return screenHeight;
+        }
+
+        public void setScreenHeight(String screenHeight) {
+            this.screenHeight = screenHeight;
+        }
+
+        public String getScreenDensity() {
+            return screenDensity;
+        }
+
+        public void setScreenDensity(String screenDensity) {
+            this.screenDensity = screenDensity;
+        }
     }
 }

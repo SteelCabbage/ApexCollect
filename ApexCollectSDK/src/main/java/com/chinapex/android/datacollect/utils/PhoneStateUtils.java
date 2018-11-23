@@ -17,6 +17,7 @@ import com.chinapex.android.datacollect.global.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * @author SteelCabbage
@@ -100,14 +101,18 @@ public class PhoneStateUtils {
             return displayMetrics;
         }
 
-        WindowManager windowManager = (WindowManager) context.getSystemService(Context
-                .WINDOW_SERVICE);
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         if (null == windowManager) {
             ATLog.e(TAG, "getDisplayMetrics() -> windowManager is null!");
             return displayMetrics;
         }
 
         Display display = windowManager.getDefaultDisplay();
+        if (null == display) {
+            ATLog.e(TAG, "getDisplayMetrics() -> display is null!");
+            return displayMetrics;
+        }
+
         display.getMetrics(displayMetrics);
         return displayMetrics;
     }
@@ -186,5 +191,8 @@ public class PhoneStateUtils {
         return null;
     }
 
+    public static String getLanguage() {
+        return Locale.getDefault().toString();
+    }
 
 }

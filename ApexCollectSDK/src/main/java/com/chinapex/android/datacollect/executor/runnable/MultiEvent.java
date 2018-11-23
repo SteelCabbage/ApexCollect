@@ -11,6 +11,7 @@ import com.chinapex.android.datacollect.model.db.DbConstant;
 import com.chinapex.android.datacollect.model.db.DbDao;
 import com.chinapex.android.datacollect.utils.ATLog;
 import com.chinapex.android.datacollect.utils.GsonUtils;
+import com.chinapex.android.datacollect.utils.PhoneStateUtils;
 import com.chinapex.android.datacollect.utils.net.INetCallback;
 import com.chinapex.android.datacollect.utils.net.OkHttpClientManager;
 
@@ -41,10 +42,17 @@ public class MultiEvent implements Runnable, INetCallback {
             return;
         }
 
+        AnalyticsReport.DataBean dataBean = new AnalyticsReport.DataBean();
+        dataBean.setReportTime(System.currentTimeMillis());
+        dataBean.setLanguage(PhoneStateUtils.getLanguage());
+        dataBean.setUuid(ApexCache.getInstance().getUuid());
+        dataBean.setDeviceID(ApexCache.getInstance().getDeviceIds());
+        dataBean.setEvents(getEvents());
+
         AnalyticsReport analyticsReport = new AnalyticsReport();
-        analyticsReport.setReportTime(System.currentTimeMillis());
-        analyticsReport.setIdentity(ApexCache.getInstance().getIdentity());
-        analyticsReport.setEventDatas(getEventDatas());
+        analyticsReport.setCompany(Constant.COMPANY);
+        analyticsReport.setTerminal(Constant.TERMINAL);
+        analyticsReport.setData(dataBean);
 
         String analyticsReportJson = GsonUtils.toJsonStr(analyticsReport);
         ATLog.i(TAG, mTableName + "MultiEvent analyticsReportJson:" + analyticsReportJson);
@@ -65,7 +73,7 @@ public class MultiEvent implements Runnable, INetCallback {
         OkHttpClientManager.getInstance().postJson(url, analyticsReportJson, this);
     }
 
-    private List<Object> getEventDatas() {
+    private List<Object> getEvents() {
         ArrayList<Object> eventDatas = new ArrayList<>();
 
         a:
