@@ -7,6 +7,10 @@ package com.chinapex.android.datacollect.model.bean.event;
 public class PvEventData {
     private int eventType;
     private String label;
+    private String userId;
+    private String country;
+    private String province;
+    private String city;
     private ValueBean value;
 
     public int getEventType() {
@@ -25,6 +29,38 @@ public class PvEventData {
         this.label = label;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
     public ValueBean getValue() {
         return value;
     }
@@ -36,6 +72,17 @@ public class PvEventData {
     public static class ValueBean {
 
         /**
+         * "timeStamp": 1542938209329,     毫秒
+         * "reference": "ApexAssetMainController",      From
+         * "pageTitle": "111111",
+         * "pageClassName": "ApexAccountDetailController",
+         * "durationTime": "1.45",
+         * "customPageUrl": "ddddd\/\/ddddd.ddddd",   // ios代码埋点
+         * "customPageProperties": {                  // ios代码埋点
+         *                           "a": "b",
+         *                           "c": "d"
+         *                         },
+         * "customPageTitle": "ddddddd",              // ios代码埋点
          * "exposures": [
          *                     {
          *                         "viewPath": "UITableView(0)/UIView(0) => ApexAssetMainController(ETH)",
@@ -61,11 +108,10 @@ public class PvEventData {
          *                     }
          *                 ],
          *
-         * "uid": "b44ea697-24c6-4873-9e60-2bae86d2023a",
-         * "timeStamp": "1542611704.881565",  毫秒
-         * "pageClassName": "ApexAssetMainController",
-         * "durationTime": "17.57"   秒
-         * "reference": "ApexAssetMainController"       From
+         */
+
+        /**
+
          */
 
     }

@@ -62,6 +62,7 @@ public class PhoneStateController implements IController {
     private void reportColdEvent() {
         // 上报冷启动事件
         ColdEventData.ValueBean valueBean = new ColdEventData.ValueBean();
+        valueBean.setTimeStamp(System.currentTimeMillis());
         // 预留字段
         valueBean.setApiKey("");
         // 暂取不到厂商定制系统的版本号

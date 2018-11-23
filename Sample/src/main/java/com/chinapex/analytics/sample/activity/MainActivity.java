@@ -52,6 +52,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Button btInstant = (Button) findViewById(R.id.bt_instant);
         btInstant.setOnClickListener(this);
+
+        Button btSignIn = (Button) findViewById(R.id.bt_signIn);
+        btSignIn.setOnClickListener(this);
+
+        Button btSignOut = (Button) findViewById(R.id.bt_signOut);
+        btSignOut.setOnClickListener(this);
     }
 
     @Override
@@ -105,6 +111,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 "                \"custom5\": \"555555\"\n" +
                                 "            }")
                         .build());
+                break;
+            case R.id.bt_signIn:
+                ApexAnalytics.getInstance().signIn("userId登入啦");
+                break;
+            case R.id.bt_signOut:
+                ApexAnalytics.getInstance().signOut();
                 break;
             default:
                 break;

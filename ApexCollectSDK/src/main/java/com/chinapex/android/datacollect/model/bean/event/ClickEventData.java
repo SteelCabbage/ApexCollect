@@ -1,7 +1,5 @@
 package com.chinapex.android.datacollect.model.bean.event;
 
-import android.widget.Button;
-
 /**
  * @author SteelCabbage
  * @date 2018/11/22
@@ -9,6 +7,10 @@ import android.widget.Button;
 public class ClickEventData {
     private int eventType;
     private String label;
+    private String userId;
+    private String country;
+    private String province;
+    private String city;
     private ValueBean value;
 
     public int getEventType() {
@@ -27,6 +29,38 @@ public class ClickEventData {
         this.label = label;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
     public ValueBean getValue() {
         return value;
     }
@@ -38,17 +72,87 @@ public class ClickEventData {
     public static class ValueBean {
 
         /**
+         * "pageTitle": "NEO",
+         * "timeStamp": 1542938208826,
+         * "viewPath": "_UIButtonBarButton(9223372036854775807)&_invoke:forEvent: => ApexAssetMainController(NEO)",
+         * "viewPathMD5": "51870df90a2633ba",
+         * "content": "button上的字",
+         * "frame": "{\"x\":0.000000,\"y\":0.000000,\"width\":43.000000,\"height\":44.000000}",
          * "alpha": 1,
-         *                 "viewPathMD5": "cf429db7f07064a8",
-         *                 "frame": "{\"x\":0.000000,\"y\":0.010000,\"width\":384.000000,\"height\":90.000000}",
-         *                 "ViewPath": "ApexAssetMainViewCell(0:0)/UITableView(0)/UIView(0)/UIView(0) =>
-         *                 ApexAssetMainController(ETH)",
-         *                 "pageTitle": "ETH",
-         *                 "content":"button上的字",
-         *                 "timeStamp": "1542611704.378851",
-         *                 "uid": "b44ea697-24c6-4873-9e60-2bae86d2023a"
+         * "invocation": "_invoke:forEvent:"
          */
 
+        private String pageTitle;
+        private long timeStamp;
+        private String viewPath;
+        private String viewPathMD5;
+        private String content;
+        private String frame;
+        private float alpha;
+        private String invocation;
 
+        public String getPageTitle() {
+            return pageTitle;
+        }
+
+        public void setPageTitle(String pageTitle) {
+            this.pageTitle = pageTitle;
+        }
+
+        public long getTimeStamp() {
+            return timeStamp;
+        }
+
+        public void setTimeStamp(long timeStamp) {
+            this.timeStamp = timeStamp;
+        }
+
+        public String getViewPath() {
+            return viewPath;
+        }
+
+        public void setViewPath(String viewPath) {
+            this.viewPath = viewPath;
+        }
+
+        public String getViewPathMD5() {
+            return viewPathMD5;
+        }
+
+        public void setViewPathMD5(String viewPathMD5) {
+            this.viewPathMD5 = viewPathMD5;
+        }
+
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
+        }
+
+        public String getFrame() {
+            return frame;
+        }
+
+        public void setFrame(String frame) {
+            this.frame = frame;
+        }
+
+        public float getAlpha() {
+            return alpha;
+        }
+
+        public void setAlpha(float alpha) {
+            this.alpha = alpha;
+        }
+
+        public String getInvocation() {
+            return invocation;
+        }
+
+        public void setInvocation(String invocation) {
+            this.invocation = invocation;
+        }
     }
 }

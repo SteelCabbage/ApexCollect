@@ -26,6 +26,7 @@ public class SampleApp extends Application {
 
         // 初始化埋点sdk
         ApexAnalytics.getInstance().init(sSampleApp);
+
         // settings
         ApexAnalytics.getInstance().setLogLevel(ATLog.VERBOSE);
         ApexAnalytics.getInstance().setReportMaxNum(5);
