@@ -4,6 +4,7 @@ import com.chinapex.android.datacollect.global.ApexCache;
 import com.chinapex.android.datacollect.global.Constant;
 import com.chinapex.android.datacollect.model.bean.TrackEvent;
 import com.chinapex.android.datacollect.model.bean.event.ColdEventData;
+import com.chinapex.android.datacollect.model.bean.event.CustomEventData;
 import com.chinapex.android.datacollect.model.bean.request.AnalyticsReport;
 import com.chinapex.android.datacollect.model.db.DbConstant;
 import com.chinapex.android.datacollect.model.db.DbDao;
@@ -34,20 +35,20 @@ public class InstantEvent implements Runnable, INetCallback {
     @Override
     public void run() {
         if (null == mTrackEvent) {
-            ATLog.e(TAG, "run() -> mTrackEvent is null!");
+            ATLog.e(TAG, "InstantEvent run() -> mTrackEvent is null!");
             return;
         }
 
         ArrayList<Object> events = new ArrayList<>();
         switch (mTrackEvent.getEventType()) {
             case Constant.EVENT_TYPE_CUSTOM:
-                Map<String, String> customMap = GsonUtils.json2StringMap(mTrackEvent.getValue());
-                if (null == customMap || customMap.isEmpty()) {
-                    ATLog.e(TAG, "customMap is null or empty!");
+                CustomEventData customEventData = GsonUtils.json2Bean(mTrackEvent.getValue(), CustomEventData.class);
+                if (null == customEventData) {
+                    ATLog.e(TAG, "customEventData is null!");
                     return;
                 }
 
-                events.add(customMap);
+                events.add(customEventData);
                 break;
             case Constant.EVENT_TYPE_COLD:
                 ColdEventData coldEventData = GsonUtils.json2Bean(mTrackEvent.getValue(), ColdEventData.class);

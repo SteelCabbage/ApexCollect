@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.chinapex.android.datacollect.controller.BaseController;
 import com.chinapex.android.datacollect.executor.TaskController;
+import com.chinapex.android.datacollect.executor.runnable.CustomEvent;
 import com.chinapex.android.datacollect.executor.runnable.InstantEvent;
 import com.chinapex.android.datacollect.global.ApexCache;
 import com.chinapex.android.datacollect.global.Constant;
@@ -82,29 +83,8 @@ public class ApexAnalytics {
             return;
         }
 
-        if (null == trackEvent) {
-            ATLog.e(TAG, "track() -> trackEvent is null!");
-            return;
-        }
-
         ATLog.i(TAG, "track() -> trackEvent:" + trackEvent);
-
-        switch (trackEvent.getMode()) {
-            case Constant.MODE_DELAY:
-                DbDao dbDao = DbDao.getInstance(ApexCache.getInstance().getContext());
-                if (null == dbDao) {
-                    ATLog.e(TAG, "track() -> dbDao is null!");
-                    return;
-                }
-
-                dbDao.insert(DbConstant.TABLE_DELAY_REPORT, trackEvent, System.currentTimeMillis());
-                break;
-            case Constant.MODE_INSTANT:
-                TaskController.getInstance().submit(new InstantEvent(trackEvent));
-                break;
-            default:
-                break;
-        }
+        TaskController.getInstance().submit(new CustomEvent(trackEvent));
     }
 
     public void signIn(String userId) {

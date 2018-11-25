@@ -4,7 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AnalyticsAop/AnalyticsAop.iml" filepath="$PROJECT_DIR$/AnalyticsAop/AnalyticsAop.iml" />
       <module fileurl="file://$PROJECT_DIR$/ApexCollect.iml" filepath="$PROJECT_DIR$/ApexCollect.iml" />
-      <module fileurl="file://$PROJECT_DIR$/apexcollectsdk/apexcollectsdk.iml" filepath="$PROJECT_DIR$/apexcollectsdk/apexcollectsdk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ApexCollectSDK/ApexCollectSDK.iml" filepath="$PROJECT_DIR$/ApexCollectSDK/ApexCollectSDK.iml" />
       <module fileurl="file://$PROJECT_DIR$/Sample/Sample.iml" filepath="$PROJECT_DIR$/Sample/Sample.iml" />
     </modules>
   </component>

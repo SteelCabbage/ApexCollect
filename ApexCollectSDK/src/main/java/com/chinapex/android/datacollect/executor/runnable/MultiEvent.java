@@ -6,6 +6,7 @@ import com.chinapex.android.datacollect.global.ApexCache;
 import com.chinapex.android.datacollect.global.Constant;
 import com.chinapex.android.datacollect.model.bean.TrackEvent;
 import com.chinapex.android.datacollect.model.bean.event.ColdEventData;
+import com.chinapex.android.datacollect.model.bean.event.CustomEventData;
 import com.chinapex.android.datacollect.model.bean.request.AnalyticsReport;
 import com.chinapex.android.datacollect.model.db.DbConstant;
 import com.chinapex.android.datacollect.model.db.DbDao;
@@ -91,13 +92,13 @@ public class MultiEvent implements Runnable, INetCallback {
 
             switch (trackEvent.getEventType()) {
                 case Constant.EVENT_TYPE_CUSTOM:
-                    Map<String, String> customMap = GsonUtils.json2StringMap(trackEvent.getValue());
-                    if (null == customMap || customMap.isEmpty()) {
-                        ATLog.e(TAG, mTableName + "customMap is null or empty!");
+                    CustomEventData customEventData = GsonUtils.json2Bean(trackEvent.getValue(), CustomEventData.class);
+                    if (null == customEventData) {
+                        ATLog.e(TAG, "customEventData is null!");
                         continue a;
                     }
 
-                    eventDatas.add(customMap);
+                    eventDatas.add(customEventData);
                     break;
                 case Constant.EVENT_TYPE_COLD:
                     ColdEventData coldEventData = GsonUtils.json2Bean(trackEvent.getValue(), ColdEventData.class);

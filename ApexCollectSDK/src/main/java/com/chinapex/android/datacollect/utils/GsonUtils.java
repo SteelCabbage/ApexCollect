@@ -58,7 +58,7 @@ public class GsonUtils {
             }.getType();
             map = sGson.fromJson(stringMapJson, type);
         } catch (JsonSyntaxException e) {
-            System.out.println("json2Map JsonSyntaxException:" + e.getMessage());
+            ATLog.e(TAG, "json2Map JsonSyntaxException:" + e.getMessage());
         }
         return map;
     }

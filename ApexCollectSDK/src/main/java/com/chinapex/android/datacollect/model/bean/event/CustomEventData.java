@@ -1,5 +1,7 @@
 package com.chinapex.android.datacollect.model.bean.event;
 
+import java.util.Map;
+
 /**
  * @author SteelCabbage
  * @date 2018/11/23
@@ -11,7 +13,7 @@ public class CustomEventData {
     private String country;
     private String province;
     private String city;
-    private ValueBean value;
+    private Map<String, String> value;
 
     public int getEventType() {
         return eventType;
@@ -61,19 +63,11 @@ public class CustomEventData {
         this.city = city;
     }
 
-    public ValueBean getValue() {
+    public Map<String, String> getValue() {
         return value;
     }
 
-    public void setValue(ValueBean value) {
+    public void setValue(Map<String, String> value) {
         this.value = value;
-    }
-
-    public static class ValueBean {
-        /**
-         * 自定义
-         * "a":"b",
-         * "c":"d"
-         */
     }
 }

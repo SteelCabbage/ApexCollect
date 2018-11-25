@@ -82,10 +82,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.bt_delay:
                 ApexAnalytics.getInstance().track(new TrackEvent.EventBuilder()
-                        // 0: delay (default), 1: instant
-                        //                .setMode(1)
-                        // 0: custom (default), 1: cold, 2: click, 4: pv
-                        //                .setEventType(1)
                         .setLabel("延时上报的label")
                         .setValue("{\n" +
                                 "                \"custom1\": \"111111\",\n" +
@@ -100,8 +96,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ApexAnalytics.getInstance().track(new TrackEvent.EventBuilder()
                         // 0: delay (default), 1: instant
                         .setMode(1)
-                        // 0: custom (default), 1: cold, 2: click, 4: pv
-//                        .setEventType(1)
                         .setLabel("即时上报的label")
                         .setValue("{\n" +
                                 "                \"custom1\": \"111111\",\n" +
