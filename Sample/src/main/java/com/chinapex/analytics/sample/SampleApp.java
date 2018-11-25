@@ -35,7 +35,7 @@ public class SampleApp extends Application {
         // 初始化埋点sdk
         ApexAnalytics.getInstance().init(sSampleApp);
 
-        ATLog.i(TAG, "init ApexAnalytics cost time:" + (System.currentTimeMillis() - time));
+        ATLog.w(TAG, "================init ApexAnalytics cost time================:" + (System.currentTimeMillis() - time));
     }
 
     public static SampleApp getInstance() {
