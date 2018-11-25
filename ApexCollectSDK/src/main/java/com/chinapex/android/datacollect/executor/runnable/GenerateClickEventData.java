@@ -2,6 +2,9 @@ package com.chinapex.android.datacollect.executor.runnable;
 
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.chinapex.android.datacollect.global.ApexCache;
 import com.chinapex.android.datacollect.global.Constant;
@@ -43,8 +46,20 @@ public class GenerateClickEventData implements Runnable {
         valueBean.setViewPath(mViewPath);
         String viewPathMD5 = MD5Utils.getMD5(mViewPath);
         valueBean.setViewPathMD5(viewPathMD5);
-//        valueBean.setContent();
-//        valueBean.setFrame();
+
+        // view的内容(TextView, Button ...)
+        if (mView instanceof TextView) {
+            CharSequence text = ((TextView) mView).getText();
+            valueBean.setContent(String.valueOf(text));
+        } else {
+            valueBean.setContent("");
+        }
+
+        // view的坐标, 宽高(待定)
+        int[] position = new int[2];
+        mView.getLocationOnScreen(position);
+        valueBean.setFrame("(" + position[0] + "," + position[1] + ")");
+
         valueBean.setAlpha(mView.getAlpha());
 //        valueBean.setInvocation();
 
