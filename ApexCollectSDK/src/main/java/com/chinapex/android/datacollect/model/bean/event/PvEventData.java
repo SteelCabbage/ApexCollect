@@ -75,7 +75,7 @@ public class PvEventData {
          * "timeStamp": 1542938209329,     毫秒
          * "reference": "ApexAssetMainController",      From
          * "pageTitle": "111111",
-         * " ": "ApexAccountDetailController",
+         * "pageClassName": "ApexAccountDetailController",
          * "durationTime": "1.45",
          * "customPageUrl": "ddddd\/\/ddddd.ddddd",   // ios代码埋点
          * "customPageProperties": {                  // ios代码埋点
