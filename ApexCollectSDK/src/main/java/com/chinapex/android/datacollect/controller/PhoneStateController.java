@@ -98,6 +98,7 @@ public class PhoneStateController implements IController {
                 .setLabel(Constant.EVENT_LABEL_COLD)
                 .setValue(coldEventDataJson)
                 .build();
+
         TaskController.getInstance().submit(new InstantEvent(trackEvent));
     }
 

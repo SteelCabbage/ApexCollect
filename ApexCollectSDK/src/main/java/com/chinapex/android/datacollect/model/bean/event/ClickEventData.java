@@ -72,7 +72,7 @@ public class ClickEventData {
     public static class ValueBean {
 
         /**
-         * "pageTitle": "NEO",
+         * "pageClassName": "所属的activity名字，或者当前栈顶的activity名字",
          * "timeStamp": 1542938208826,
          * "viewPath": "_UIButtonBarButton(9223372036854775807)&_invoke:forEvent: => ApexAssetMainController(NEO)",
          * "viewPathMD5": "51870df90a2633ba",
@@ -82,7 +82,7 @@ public class ClickEventData {
          * "invocation": "_invoke:forEvent:"
          */
 
-        private String pageTitle;
+        private String pageClassName;
         private long timeStamp;
         private String viewPath;
         private String viewPathMD5;
@@ -91,12 +91,12 @@ public class ClickEventData {
         private float alpha;
         private String invocation;
 
-        public String getPageTitle() {
-            return pageTitle;
+        public String getPageClassName() {
+            return pageClassName;
         }
 
-        public void setPageTitle(String pageTitle) {
-            this.pageTitle = pageTitle;
+        public void setPageClassName(String pageClassName) {
+            this.pageClassName = pageClassName;
         }
 
         public long getTimeStamp() {

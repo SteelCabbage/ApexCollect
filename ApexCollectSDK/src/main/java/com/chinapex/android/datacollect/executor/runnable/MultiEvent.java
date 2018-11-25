@@ -5,8 +5,10 @@ import android.text.TextUtils;
 import com.chinapex.android.datacollect.global.ApexCache;
 import com.chinapex.android.datacollect.global.Constant;
 import com.chinapex.android.datacollect.model.bean.TrackEvent;
+import com.chinapex.android.datacollect.model.bean.event.ClickEventData;
 import com.chinapex.android.datacollect.model.bean.event.ColdEventData;
 import com.chinapex.android.datacollect.model.bean.event.CustomEventData;
+import com.chinapex.android.datacollect.model.bean.event.PvEventData;
 import com.chinapex.android.datacollect.model.bean.request.AnalyticsReport;
 import com.chinapex.android.datacollect.model.db.DbConstant;
 import com.chinapex.android.datacollect.model.db.DbDao;
@@ -75,7 +77,7 @@ public class MultiEvent implements Runnable, INetCallback {
     }
 
     private List<Object> getEvents() {
-        ArrayList<Object> eventDatas = new ArrayList<>();
+        ArrayList<Object> events = new ArrayList<>();
 
         a:
         for (Map.Entry<Long, TrackEvent> entry : mTrackEventTreeMap.entrySet()) {
@@ -98,7 +100,7 @@ public class MultiEvent implements Runnable, INetCallback {
                         continue a;
                     }
 
-                    eventDatas.add(customEventData);
+                    events.add(customEventData);
                     break;
                 case Constant.EVENT_TYPE_COLD:
                     ColdEventData coldEventData = GsonUtils.json2Bean(trackEvent.getValue(), ColdEventData.class);
@@ -107,18 +109,33 @@ public class MultiEvent implements Runnable, INetCallback {
                         continue a;
                     }
 
-                    eventDatas.add(coldEventData);
+                    events.add(coldEventData);
                     break;
                 case Constant.EVENT_TYPE_CLICK:
+                    ClickEventData clickEventData = GsonUtils.json2Bean(trackEvent.getValue(), ClickEventData.class);
+                    if (null == clickEventData) {
+                        ATLog.e(TAG, mTableName + "clickEventData is null!");
+                        continue a;
+                    }
+
+                    events.add(clickEventData);
                     break;
                 case Constant.EVENT_TYPE_PV:
+                    PvEventData pvEventData = GsonUtils.json2Bean(trackEvent.getValue(), PvEventData.class);
+                    if (null == pvEventData) {
+                        ATLog.e(TAG, mTableName + "pvEventData is null!");
+                        continue a;
+                    }
+
+                    events.add(pvEventData);
                     break;
                 default:
+                    ATLog.e(TAG, "MultiEvent unknown eventType!");
                     break;
             }
         }
 
-        return eventDatas;
+        return events;
     }
 
     @Override

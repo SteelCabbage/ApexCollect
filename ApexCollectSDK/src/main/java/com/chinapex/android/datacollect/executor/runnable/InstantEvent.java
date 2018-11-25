@@ -3,8 +3,10 @@ package com.chinapex.android.datacollect.executor.runnable;
 import com.chinapex.android.datacollect.global.ApexCache;
 import com.chinapex.android.datacollect.global.Constant;
 import com.chinapex.android.datacollect.model.bean.TrackEvent;
+import com.chinapex.android.datacollect.model.bean.event.ClickEventData;
 import com.chinapex.android.datacollect.model.bean.event.ColdEventData;
 import com.chinapex.android.datacollect.model.bean.event.CustomEventData;
+import com.chinapex.android.datacollect.model.bean.event.PvEventData;
 import com.chinapex.android.datacollect.model.bean.request.AnalyticsReport;
 import com.chinapex.android.datacollect.model.db.DbConstant;
 import com.chinapex.android.datacollect.model.db.DbDao;
@@ -60,10 +62,25 @@ public class InstantEvent implements Runnable, INetCallback {
                 events.add(coldEventData);
                 break;
             case Constant.EVENT_TYPE_CLICK:
+                ClickEventData clickEventData = GsonUtils.json2Bean(mTrackEvent.getValue(), ClickEventData.class);
+                if (null == clickEventData) {
+                    ATLog.e(TAG, "clickEventData is null!");
+                    return;
+                }
+
+                events.add(clickEventData);
                 break;
             case Constant.EVENT_TYPE_PV:
+                PvEventData pvEventData = GsonUtils.json2Bean(mTrackEvent.getValue(), PvEventData.class);
+                if (null == pvEventData) {
+                    ATLog.e(TAG, "pvEventData is null!");
+                    return;
+                }
+
+                events.add(pvEventData);
                 break;
             default:
+                ATLog.e(TAG, "InstantEvent unknown eventType!");
                 break;
         }
 
