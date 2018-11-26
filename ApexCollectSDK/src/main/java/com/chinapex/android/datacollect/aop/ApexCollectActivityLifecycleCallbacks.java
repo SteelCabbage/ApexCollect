@@ -2,8 +2,6 @@ package com.chinapex.android.datacollect.aop;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.ComponentName;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 
@@ -12,6 +10,7 @@ import com.chinapex.android.datacollect.executor.runnable.GenerateActivityPvEven
 import com.chinapex.android.datacollect.global.ApexCache;
 import com.chinapex.android.datacollect.utils.ATLog;
 
+import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -24,18 +23,28 @@ public class ApexCollectActivityLifecycleCallbacks implements Application.Activi
 
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-        ATLog.v(TAG, "onActivityCreated");
+        String activityName = activity.getClass().getName();
+        ATLog.v(TAG, "onActivityCreated:" + activityName);
+
+        Stack<String> references = ApexCache.getInstance().getReferences();
+        if (null == references) {
+            ATLog.e(TAG, "onActivityResumed references is null!");
+            return;
+        }
+
+        boolean add = references.add(activityName);
+        ATLog.v(TAG, "onActivityCreated stack add " + activityName + "," + add);
     }
 
     @Override
     public void onActivityStarted(Activity activity) {
-        ATLog.v(TAG, "onActivityStarted");
+        ATLog.v(TAG, "onActivityStarted:" + activity.getClass().getName());
     }
 
     @Override
     public void onActivityResumed(Activity activity) {
         long pvStartTime = System.currentTimeMillis();
-        ATLog.i(TAG, "onActivityResumed() -> pvStartTime:" + pvStartTime);
+        ATLog.v(TAG, "onActivityResumed:" + activity.getClass().getName() + ", pvStartTime:" + pvStartTime);
         ConcurrentHashMap<String, Long> pvDurationTimes = ApexCache.getInstance().getPvDurationTimes();
         if (null == pvDurationTimes) {
             ATLog.e(TAG, "onActivityResumed() -> pvDurationTimes is null!");
@@ -54,23 +63,49 @@ public class ApexCollectActivityLifecycleCallbacks implements Application.Activi
     @Override
     public void onActivityPaused(Activity activity) {
         long pvEndTime = System.currentTimeMillis();
-        ATLog.i(TAG, "onActivityPaused() -> pvEndTime:" + pvEndTime);
-        String reference = AssembleXpath.getReference(activity);
-        TaskController.getInstance().submit(new GenerateActivityPvEventData(activity, reference, pvEndTime));
+        ATLog.v(TAG, "onActivityPaused:" + activity.getClass().getName() + ", pvEndTime:" + pvEndTime);
+        TaskController.getInstance().submit(new GenerateActivityPvEventData(activity, getReference(), pvEndTime));
     }
 
     @Override
     public void onActivityStopped(Activity activity) {
-        ATLog.v(TAG, "onActivityStopped");
+        ATLog.v(TAG, "onActivityStopped:" + activity.getClass().getName());
     }
 
     @Override
     public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-        ATLog.v(TAG, "onActivitySaveInstanceState");
+        ATLog.v(TAG, "onActivitySaveInstanceState:" + activity.getClass().getName());
     }
 
     @Override
     public void onActivityDestroyed(Activity activity) {
-        ATLog.i(TAG, "onActivityDestroyed");
+        String activityName = activity.getClass().getName();
+        ATLog.i(TAG, "onActivityDestroyed:" + activityName);
+
+        Stack<String> references = ApexCache.getInstance().getReferences();
+        if (null == references) {
+            ATLog.e(TAG, "onActivityResumed references is null!");
+            return;
+        }
+
+        boolean remove = references.remove(activityName);
+        ATLog.v(TAG, "onActivityDestroyed stack remove " + activityName + "," + remove);
+    }
+
+    private String getReference() {
+        Stack<String> references = ApexCache.getInstance().getReferences();
+        if (null == references) {
+            ATLog.e(TAG, "getReference() -> references is null!");
+            return "";
+        }
+
+        int size = references.size();
+        if (size <= 1) {
+            ATLog.w(TAG, "getReference() -> references.size is <= 1!");
+            return "";
+        }
+
+        String reference = references.get(size - 2);
+        return null == reference ? "" : reference;
     }
 }

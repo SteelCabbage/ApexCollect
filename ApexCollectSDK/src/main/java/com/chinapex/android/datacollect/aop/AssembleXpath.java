@@ -109,15 +109,4 @@ public class AssembleXpath {
         return (runningTaskInfos.get(0).topActivity).getShortClassName();
     }
 
-    public static String getReference(Context context) {
-        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.RunningTaskInfo> runningTaskInfos = manager.getRunningTasks(1);
-
-        if (null == runningTaskInfos) {
-            ATLog.e(TAG, "getReference() -> runningTaskInfos is null!");
-            return "";
-        }
-
-        return (runningTaskInfos.get(0).topActivity).getClassName();
-    }
 }

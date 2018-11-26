@@ -4,6 +4,7 @@ import android.content.Context;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -11,9 +12,10 @@ import java.util.concurrent.ConcurrentHashMap;
  * @date 2018/11/23
  */
 public class ApexCache {
-    private static final String TAG = ApexCache.class.getSimpleName();
 
+    private static final String TAG = ApexCache.class.getSimpleName();
     private ConcurrentHashMap<String, Long> mPvDurationTimes;
+    private Stack<String> mReferences;
 
     /**
      * app的context
@@ -90,6 +92,7 @@ public class ApexCache {
 
     public void doInit() {
         mPvDurationTimes = new ConcurrentHashMap<>();
+        mReferences = new Stack<>();
     }
 
     public Context getContext() {
@@ -102,6 +105,10 @@ public class ApexCache {
 
     public ConcurrentHashMap<String, Long> getPvDurationTimes() {
         return mPvDurationTimes;
+    }
+
+    public Stack<String> getReferences() {
+        return mReferences;
     }
 
     public String getUserId() {
