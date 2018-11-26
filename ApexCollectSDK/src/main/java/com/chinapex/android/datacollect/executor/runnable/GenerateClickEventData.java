@@ -81,7 +81,7 @@ public class GenerateClickEventData implements Runnable {
 
         DbDao dbDao = DbDao.getInstance(ApexCache.getInstance().getContext());
         if (null == dbDao) {
-            ATLog.e(TAG, "track() -> dbDao is null!");
+            ATLog.e(TAG, "GenerateClickEventData run() -> dbDao is null!");
             return;
         }
 

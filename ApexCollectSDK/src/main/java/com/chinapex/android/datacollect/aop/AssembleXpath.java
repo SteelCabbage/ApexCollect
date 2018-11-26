@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
+import com.chinapex.android.datacollect.utils.ATLog;
+
 import java.util.List;
 
 /**
@@ -17,6 +19,9 @@ import java.util.List;
  * @date 2018/11/05
  */
 public class AssembleXpath {
+
+    private static final String TAG = AssembleXpath.class.getSimpleName();
+
     public static String getPath(Context context, View childView) {
         StringBuilder builder = new StringBuilder();
         String viewType = childView.getClass().getSimpleName();
@@ -58,6 +63,7 @@ public class AssembleXpath {
             resourceName = context.getResources().getResourceEntryName(viewId);
             resourceName = "#" + resourceName;
         } catch (Exception e) {
+            ATLog.e(TAG, "getResourceId() -> Exception:" + e.getMessage());
         }
         return resourceName;
     }
@@ -70,13 +76,14 @@ public class AssembleXpath {
         } else if (context instanceof ContextWrapper) {
             //Activity有可能被系统＂装饰＂，看看context.base是不是Activity
             Activity activity = getActivityFromContextWrapper(context);
-            if (activity != null) {
-                return activity.getClass().getCanonicalName();
-            } else {
+            if (null == activity) {
                 //如果从view.getContext()拿不到Activity的信息（比如view的context是Application）,则返回当前栈顶Activity的名字
                 return getTopActivity(context);
             }
+
+            return activity.getClass().getCanonicalName();
         }
+
         return "";
     }
 
@@ -94,10 +101,23 @@ public class AssembleXpath {
         ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> runningTaskInfos = manager.getRunningTasks(1);
 
-        if (runningTaskInfos != null) {
-            return (runningTaskInfos.get(0).topActivity).getShortClassName();
-        } else {
-            return null;
+        if (null == runningTaskInfos) {
+            ATLog.e(TAG, "getTopActivity() -> runningTaskInfos is null!");
+            return "";
         }
+
+        return (runningTaskInfos.get(0).topActivity).getShortClassName();
+    }
+
+    public static String getReference(Context context) {
+        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> runningTaskInfos = manager.getRunningTasks(1);
+
+        if (null == runningTaskInfos) {
+            ATLog.e(TAG, "getReference() -> runningTaskInfos is null!");
+            return "";
+        }
+
+        return (runningTaskInfos.get(0).topActivity).getClassName();
     }
 }

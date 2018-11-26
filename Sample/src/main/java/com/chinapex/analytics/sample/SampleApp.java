@@ -4,7 +4,6 @@ import android.app.Application;
 
 import com.chinapex.analytics.sample.utils.AppLog;
 import com.chinapex.android.datacollect.ApexAnalytics;
-import com.chinapex.android.datacollect.model.bean.TrackEvent;
 import com.chinapex.android.datacollect.utils.ATLog;
 
 /**
@@ -35,7 +34,8 @@ public class SampleApp extends Application {
         // 初始化埋点sdk
         ApexAnalytics.getInstance().init(sSampleApp);
 
-        ATLog.w(TAG, "================init ApexAnalytics cost time================:" + (System.currentTimeMillis() - time));
+        ATLog.w(TAG, "================init ApexAnalytics cost time================:" + (System
+                .currentTimeMillis() - time));
     }
 
     public static SampleApp getInstance() {

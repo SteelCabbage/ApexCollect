@@ -1,5 +1,7 @@
 package com.chinapex.android.datacollect.model.bean.event;
 
+import java.util.List;
+
 /**
  * @author SteelCabbage
  * @date 2018/11/22
@@ -76,7 +78,7 @@ public class PvEventData {
          * "reference": "ApexAssetMainController",      From
          * "pageTitle": "111111",
          * "pageClassName": "ApexAccountDetailController",
-         * "durationTime": "1.45",
+         * "durationTime": "1.45",       // 改为long 毫秒
          * "customPageUrl": "ddddd\/\/ddddd.ddddd",   // ios代码埋点
          * "customPageProperties": {                  // ios代码埋点
          *                           "a": "b",
@@ -114,5 +116,64 @@ public class PvEventData {
 
          */
 
+        private long timeStamp;
+        private String reference;
+        private String pageTitle;
+        private String pageClassName;
+        private long durationTime;
+
+        // TODO: 2018/11/26 0026  列表曝光率
+        /**
+         * 列表曝光率
+         */
+        private List<Object> exposures;
+
+        public long getTimeStamp() {
+            return timeStamp;
+        }
+
+        public void setTimeStamp(long timeStamp) {
+            this.timeStamp = timeStamp;
+        }
+
+        public String getReference() {
+            return reference;
+        }
+
+        public void setReference(String reference) {
+            this.reference = reference;
+        }
+
+        public String getPageTitle() {
+            return pageTitle;
+        }
+
+        public void setPageTitle(String pageTitle) {
+            this.pageTitle = pageTitle;
+        }
+
+        public String getPageClassName() {
+            return pageClassName;
+        }
+
+        public void setPageClassName(String pageClassName) {
+            this.pageClassName = pageClassName;
+        }
+
+        public long getDurationTime() {
+            return durationTime;
+        }
+
+        public void setDurationTime(long durationTime) {
+            this.durationTime = durationTime;
+        }
+
+        public List<Object> getExposures() {
+            return exposures;
+        }
+
+        public void setExposures(List<Object> exposures) {
+            this.exposures = exposures;
+        }
     }
 }

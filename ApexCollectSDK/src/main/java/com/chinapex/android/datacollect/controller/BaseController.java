@@ -9,7 +9,7 @@ import com.chinapex.android.datacollect.executor.TaskController;
 import com.chinapex.android.datacollect.executor.runnable.DelayEvent;
 import com.chinapex.android.datacollect.global.ApexCache;
 import com.chinapex.android.datacollect.global.Constant;
-import com.chinapex.android.datacollect.metrics.ApexCollectActivityLifecycleCallbacks;
+import com.chinapex.android.datacollect.aop.ApexCollectActivityLifecycleCallbacks;
 import com.chinapex.android.datacollect.model.db.DbConstant;
 import com.chinapex.android.datacollect.utils.ATLog;
 
@@ -61,6 +61,9 @@ public class BaseController {
         // 初始化线程池
         TaskController.getInstance().doInit();
         mIControllerHashMap.put(Constant.CONTROLLER_TASK, TaskController.getInstance());
+
+        // 初始化全局缓存对象ApexCache
+        ApexCache.getInstance().doInit();
 
         // 开启延时上报
         TaskController.getInstance().schedule(new DelayEvent(DbConstant.TABLE_DELAY_REPORT),
