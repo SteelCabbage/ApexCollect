@@ -7,7 +7,7 @@ import org.objectweb.asm.Opcodes
 
 class FilterUtils {
 
-    static boolean isMatchClass(String className, String[] interfaces) {
+    static boolean isMatchClass(String className, String superName, String[] interfaces) {
         boolean isMatchClass = false
 
         //剔除掉以android开头的类，即系统类，以避免出现不可预测的bug
@@ -17,9 +17,11 @@ class FilterUtils {
 
         // 是否满足实现的接口
         isMatchClass = isMatchInterfaces(interfaces, 'android/view/View$OnClickListener')
-        if (className.contains('Fragment')) {
+        if (superName.equals('android/support/v4/app/Fragment')) {
             isMatchClass = true
-        } /*else if (className.contains('RecyclerView')) {
+        } else if (superName.equals("android/app/Fragment")) {
+            isMatchClass = true
+        }/*else if (className.contains('RecyclerView')) {
             isMatchClass = true
         } /*else if (isMatchingSettingClass(className, interfaces)) {
             isMatchClass = true
@@ -67,7 +69,7 @@ class FilterUtils {
         return false
     }
 
-    static MethodVisitor getMethodVisitor(String[] interfaces, String className,
+    static MethodVisitor getMethodVisitor(String[] interfaces, String className, String superName,
                                           MethodVisitor methodVisitor, int access, String name, String desc) {
         MethodVisitor adapter = null
 
@@ -89,7 +91,7 @@ class FilterUtils {
                 }
             }
 //        } else if (name == "onResume" && className.contains("Fragment")) {
-        } else if (name == "onResume" && desc == '()V') {
+        } else if (name == "onResume" && desc == '()V' && superName.equals('android/support/v4/app/Fragment')) {
             adapter = new AopMethodVisitor(methodVisitor, access, name, desc) {
 
                 @Override
@@ -101,7 +103,7 @@ class FilterUtils {
                 }
             }
 //        } else if (name == "onPause" && className.contains("Fragment")) {
-        } else if (name == "onPause" && desc == '()V') {
+        } else if (name == "onPause" && desc == '()V' && superName.equals('android/support/v4/app/Fragment')) {
             adapter = new AopMethodVisitor(methodVisitor, access, name, desc) {
 
                 @Override
@@ -113,7 +115,7 @@ class FilterUtils {
                 }
             }
 //        } else if (name == "setUserVisibleHint" && className.contains("Fragment")) {
-        } else if (name == "setUserVisibleHint" && desc == '(Z)V') {
+        } else if (name == "setUserVisibleHint" && desc == '(Z)V' && superName.equals('android/support/v4/app/Fragment')) {
             adapter = new AopMethodVisitor(methodVisitor, access, name, desc) {
 
                 @Override
@@ -126,7 +128,7 @@ class FilterUtils {
                 }
             }
 //        } else if (name == "onHiddenChanged" && className.contains("Fragment")) {
-        } else if (name == "onHiddenChanged" && desc == '(Z)V') {
+        } else if (name == "onHiddenChanged" && desc == '(Z)V' && superName.equals('android/support/v4/app/Fragment')) {
             adapter = new AopMethodVisitor(methodVisitor, access, name, desc) {
 
                 @Override
@@ -138,7 +140,53 @@ class FilterUtils {
                     methodVisitor.visitMethodInsn(Opcodes.INVOKESTATIC, "com/chinapex/android/datacollect/aop/AopHelper", "onFragmentHiddenChanged", "(Landroid/support/v4/app/Fragment;Z)V", false)
                 }
             }
-        } /*else if (name == "onScrollStateChanged" && desc == '(Landroid/support/v7/widget/RecyclerView;I)V') {
+        } else if (name == "onResume" && desc == '()V' && superName.equals("android/app/Fragment")) {
+            adapter = new AopMethodVisitor(methodVisitor, access, name, desc) {
+
+                @Override
+                protected void onMethodExit(int opcode) {
+                    super.onMethodExit(opcode)
+
+                    methodVisitor.visitVarInsn(Opcodes.ALOAD, 0)
+                    methodVisitor.visitMethodInsn(Opcodes.INVOKESTATIC, "com/chinapex/android/datacollect/aop/AopHelper", "onFragmentResume", "(Landroid/app/Fragment;)V", false)
+                }
+            }
+        } else if (name == "onPause" && desc == '()V' && superName.equals("android/app/Fragment")) {
+            adapter = new AopMethodVisitor(methodVisitor, access, name, desc) {
+
+                @Override
+                protected void onMethodExit(int opcode) {
+                    super.onMethodExit(opcode)
+
+                    methodVisitor.visitVarInsn(Opcodes.ALOAD, 0)
+                    methodVisitor.visitMethodInsn(Opcodes.INVOKESTATIC, "com/chinapex/android/datacollect/aop/AopHelper", "onFragmentPause", "(Landroid/app/Fragment;)V", false)
+                }
+            }
+        } else if (name == "setUserVisibleHint" && desc == '(Z)V' && superName.equals("android/app/Fragment")) {
+            adapter = new AopMethodVisitor(methodVisitor, access, name, desc) {
+
+                @Override
+                protected void onMethodExit(int opcode) {
+                    super.onMethodExit(opcode)
+
+                    methodVisitor.visitVarInsn(Opcodes.ALOAD, 0)
+                    methodVisitor.visitVarInsn(Opcodes.ILOAD, 1)
+                    methodVisitor.visitMethodInsn(Opcodes.INVOKESTATIC, "com/chinapex/android/datacollect/aop/AopHelper", "setFragmentUserVisibleHint", "(Landroid/app/Fragment;Z)V", false)
+                }
+            }
+        } else if (name == "onHiddenChanged" && desc == '(Z)V' && superName.equals("android/app/Fragment")) {
+            adapter = new AopMethodVisitor(methodVisitor, access, name, desc) {
+
+                @Override
+                protected void onMethodExit(int opcode) {
+                    super.onMethodExit(opcode)
+
+                    methodVisitor.visitVarInsn(Opcodes.ALOAD, 0)
+                    methodVisitor.visitVarInsn(Opcodes.ILOAD, 1)
+                    methodVisitor.visitMethodInsn(Opcodes.INVOKESTATIC, "com/chinapex/android/datacollect/aop/AopHelper", "onFragmentHiddenChanged", "(Landroid/app/Fragment;Z)V", false)
+                }
+            }
+        }/*else if (name == "onScrollStateChanged" && desc == '(Landroid/support/v7/widget/RecyclerView;I)V') {
             AopLog.info("onScrollStateChanged desc == '(Landroid/support/v7/widget/RecyclerView;I)V' is match")
             adapter = new AopMethodVisitor(methodVisitor, access, name, desc) {
 

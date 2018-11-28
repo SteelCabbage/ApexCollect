@@ -1,5 +1,6 @@
 package com.chinapex.analytics.sample.activity;
 
+import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import com.chinapex.analytics.sample.R;
 import com.chinapex.analytics.sample.fragment.BaseFragmentV4;
 import com.chinapex.analytics.sample.fragment.FragmentFactory;
+import com.chinapex.analytics.sample.fragment.FragmentNoV4;
 import com.chinapex.android.datacollect.utils.ATLog;
 
 /**
@@ -25,7 +27,10 @@ public class FragmentActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
 
-        initFragment();
+        //test v4
+        //initFragment();
+
+        initFragmentNoV4();
         initView();
     }
 
@@ -33,6 +38,13 @@ public class FragmentActivity extends AppCompatActivity implements View.OnClickL
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.second_fl, FragmentFactory.getFragment("FragmentV4"), "FragmentV4");
+        fragmentTransaction.commit();
+    }
+
+    private void initFragmentNoV4() {
+        android.app.FragmentManager fragmentManager = getFragmentManager();
+        android.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.second_fl, FragmentFactory.getFragmentNoV4("FragmentNoV4"), "FragmentNoV4");
         fragmentTransaction.commit();
     }
 
@@ -48,19 +60,32 @@ public class FragmentActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bt_show1:
-                ATLog.i(TAG, "bt_show1 clicked=======showFragmentV4");
-                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                BaseFragmentV4 fragment = FragmentFactory.getFragment("FragmentV4");
-                if (!fragment.isAdded()) {
-                    fragmentTransaction.add(R.id.second_fl, fragment, "FragmentV4");
+//                ATLog.i(TAG, "bt_show1 clicked=======showFragmentV4");
+//                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+//                BaseFragmentV4 fragment = FragmentFactory.getFragment("FragmentV4");
+//                if (!fragment.isAdded()) {
+//                    fragmentTransaction.add(R.id.second_fl, fragment, "FragmentV4");
+//                }
+//                fragmentTransaction.show(fragment).commit();
+
+                ATLog.i(TAG, "bt_show1 clicked=======showFragmentNoV4");
+                android.app.FragmentTransaction ftNoV4 = getFragmentManager().beginTransaction();
+                Fragment fragmentNoV4 = FragmentFactory.getFragmentNoV4("FragmentNoV4");
+                if (!fragmentNoV4.isAdded()) {
+                    ftNoV4.add(R.id.second_fl, fragmentNoV4, "FragmentNoV4");
                 }
-                fragmentTransaction.show(fragment).commit();
+                ftNoV4.show(fragmentNoV4).commit();
                 break;
             case R.id.bt_hide1:
-                ATLog.i(TAG, "bt_hide1 clicked=======hideFragmentV4");
-                FragmentTransaction fragmentTransaction2 = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction2.hide(FragmentFactory.getFragment("FragmentV4"));
-                fragmentTransaction2.commit();
+//                ATLog.i(TAG, "bt_hide1 clicked=======hideFragmentV4");
+//                FragmentTransaction fragmentTransaction2 = getSupportFragmentManager().beginTransaction();
+//                fragmentTransaction2.hide(FragmentFactory.getFragment("FragmentV4"));
+//                fragmentTransaction2.commit();
+
+                ATLog.i(TAG, "bt_hide1 clicked=======hideFragmentNoV4");
+                android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.hide(FragmentFactory.getFragmentNoV4("FragmentNoV4"));
+                ft.commit();
                 break;
             default:
                 break;

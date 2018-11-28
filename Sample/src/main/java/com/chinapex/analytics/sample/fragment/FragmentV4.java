@@ -29,28 +29,4 @@ public class FragmentV4 extends BaseFragmentV4 {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
     }
-
-    @Override
-    public void onResume() {
-        ATLog.i(TAG, "FragmentV4 onResume");
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        ATLog.i(TAG, "FragmentV4 onPause");
-        super.onPause();
-    }
-
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        ATLog.i(TAG, "FragmentV4 onHiddenChanged:" + hidden);
-        super.onHiddenChanged(hidden);
-    }
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        ATLog.i(TAG, "FragmentV4 setUserVisibleHint:" + isVisibleToUser);
-        super.setUserVisibleHint(isVisibleToUser);
-    }
 }

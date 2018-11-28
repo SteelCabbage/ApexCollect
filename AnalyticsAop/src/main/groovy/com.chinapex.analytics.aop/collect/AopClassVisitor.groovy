@@ -12,6 +12,7 @@ class AopClassVisitor extends ClassVisitor {
     private boolean isMatchClass = false
     private String mClassName
     private String[] mInterfaces
+    private String mSuperName
 
     AopClassVisitor(ClassVisitor cv) {
         super(Opcodes.ASM5, cv)
@@ -19,9 +20,10 @@ class AopClassVisitor extends ClassVisitor {
 
     @Override
     void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
-        isMatchClass = FilterUtils.isMatchClass(name, interfaces)
+        isMatchClass = FilterUtils.isMatchClass(name, superName, interfaces)
         mClassName = name
         mInterfaces = interfaces
+        mSuperName = superName
         super.visit(version, access, name, signature, superName, interfaces)
     }
 
@@ -37,9 +39,9 @@ class AopClassVisitor extends ClassVisitor {
 
         if ((isMatchClass && FilterUtils.isMatchMethod(name, desc))) {
             //指定方法名，根据满足的类条件和方法名
-            AopLog.info("||-----------------开始修改方法${name}--------------------------")
+            AopLog.info("||-----------------开始修改方法${mClassName}#${name}--------------------------")
             try {
-                adapter = FilterUtils.getMethodVisitor(mInterfaces, mClassName, methodVisitor, access, name, desc)
+                adapter = FilterUtils.getMethodVisitor(mInterfaces, mClassName, mSuperName, methodVisitor, access, name, desc)
             } catch (Exception e) {
                 e.printStackTrace()
                 adapter = null

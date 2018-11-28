@@ -67,22 +67,38 @@ public class AopHelper {
     }
 
     public static void onFragmentResume(Fragment fragment) {
-        ATLog.w(TAG, "onFragmentResume:" + fragment.getClass().getSimpleName());
+        ATLog.w(TAG, "onFragmentResume(v4):" + fragment.getClass().getSimpleName());
     }
 
     public static void onFragmentPause(Fragment fragment) {
-        ATLog.w(TAG, "onFragmentPause:" + fragment.getClass().getSimpleName());
+        ATLog.w(TAG, "onFragmentPause(v4):" + fragment.getClass().getSimpleName());
     }
 
     public static void setFragmentUserVisibleHint(Fragment fragment, boolean isVisibleToUser) {
-        ATLog.w(TAG, "setFragmentUserVisibleHint->" + isVisibleToUser + "->" + fragment.getClass().getSimpleName());
+        ATLog.w(TAG, "setFragmentUserVisibleHint(v4)->" + isVisibleToUser + "->" + fragment.getClass().getSimpleName());
     }
 
     public static void onFragmentHiddenChanged(Fragment fragment, boolean hidden) {
+        ATLog.w(TAG, "onFragmentHiddenChanged(v4)->" + hidden + "->" + fragment.getClass().getSimpleName());
+    }
+
+    public static void onFragmentResume(android.app.Fragment fragment) {
+        ATLog.w(TAG, "onFragmentResume:" + fragment.getClass().getSimpleName());
+    }
+
+    public static void onFragmentPause(android.app.Fragment fragment) {
+        ATLog.w(TAG, "onFragmentPause:" + fragment.getClass().getSimpleName());
+    }
+
+    public static void setFragmentUserVisibleHint(android.app.Fragment fragment, boolean isVisibleToUser) {
+        ATLog.w(TAG, "setFragmentUserVisibleHint->" + isVisibleToUser + "->" + fragment.getClass().getSimpleName());
+    }
+
+    public static void onFragmentHiddenChanged(android.app.Fragment fragment, boolean hidden) {
         ATLog.w(TAG, "onFragmentHiddenChanged->" + hidden + "->" + fragment.getClass().getSimpleName());
     }
 
-//    public static void rvOnScrollStateChanged(RecyclerView recyclerView, int newState) {
+    //    public static void rvOnScrollStateChanged(RecyclerView recyclerView, int newState) {
 //        ATLog.w(TAG, "rvOnScrollStateChanged->" + "newState:" + newState + recyclerView.getClass().getSimpleName());
 //    }
 }
