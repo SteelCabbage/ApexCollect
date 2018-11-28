@@ -15,14 +15,23 @@
         android:id="@+id/bt_hide1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:text="bt_hide1" />
+        android:layout_toEndOf="@id/bt_show1"
+        android:text="bt_hide1"
+        tools:ignore="RtlCompat" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@+id/bt_show1">
+
+        <requestFocus />
+    </android.support.v4.view.ViewPager>
 
     <FrameLayout
         android:id="@+id/second_fl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/bt_show1" />
+        android:layout_below="@+id/view_pager" />
 
 </RelativeLayout>

@@ -1,18 +1,23 @@
 package com.chinapex.analytics.sample.activity;
 
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
 import com.chinapex.analytics.sample.R;
-import com.chinapex.analytics.sample.fragment.BaseFragmentV4;
+import com.chinapex.analytics.sample.adapter.ViewPagerAdapter;
 import com.chinapex.analytics.sample.fragment.FragmentFactory;
-import com.chinapex.analytics.sample.fragment.FragmentNoV4;
+import com.chinapex.analytics.sample.fragment.ViewPagerFragment1;
+import com.chinapex.analytics.sample.fragment.ViewPagerFragment2;
 import com.chinapex.android.datacollect.utils.ATLog;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author SteelCabbage
@@ -21,17 +26,26 @@ import com.chinapex.android.datacollect.utils.ATLog;
 public class FragmentActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = FragmentActivity.class.getSimpleName();
+    private ViewPager mViewPager;
+    private List<Fragment> mFragmentList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_second);
+        setContentView(R.layout.activity_fragment_test);
 
         //test v4
         //initFragment();
 
         initFragmentNoV4();
         initView();
+        initData();
+    }
+
+    private void initData() {
+        mFragmentList.add(new ViewPagerFragment1());
+        mFragmentList.add(new ViewPagerFragment2());
+        mViewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(), mFragmentList));
     }
 
     private void initFragment() {
@@ -51,6 +65,7 @@ public class FragmentActivity extends AppCompatActivity implements View.OnClickL
     private void initView() {
         Button btShow1 = (Button) findViewById(R.id.bt_show1);
         Button btHide1 = (Button) findViewById(R.id.bt_hide1);
+        mViewPager = findViewById(R.id.view_pager);
 
         btShow1.setOnClickListener(this);
         btHide1.setOnClickListener(this);
@@ -70,7 +85,7 @@ public class FragmentActivity extends AppCompatActivity implements View.OnClickL
 
                 ATLog.i(TAG, "bt_show1 clicked=======showFragmentNoV4");
                 android.app.FragmentTransaction ftNoV4 = getFragmentManager().beginTransaction();
-                Fragment fragmentNoV4 = FragmentFactory.getFragmentNoV4("FragmentNoV4");
+                android.app.Fragment fragmentNoV4 = FragmentFactory.getFragmentNoV4("FragmentNoV4");
                 if (!fragmentNoV4.isAdded()) {
                     ftNoV4.add(R.id.second_fl, fragmentNoV4, "FragmentNoV4");
                 }
