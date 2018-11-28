@@ -5,6 +5,9 @@ version = "1.0"
 android {
     compileSdkVersion 27
 
+    lintOptions {
+        abortOnError false
+    }
 
 
     defaultConfig {
