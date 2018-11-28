@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
 
 version = "1.0"
 
@@ -56,3 +57,11 @@ task makeJar(type: Copy) {
 }
 
 makeJar.dependsOn(build)
+
+publish {
+    userOrg = 'apextechnologies'
+    groupId = 'com.chinapex.android.datacollect'
+    artifactId = 'ApexCollectSDK'
+    publishVersion = '1.0.0'
+    desc = 'collect SDK'
+}
