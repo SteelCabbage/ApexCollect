@@ -25,6 +25,7 @@
         </activity>
         <activity android:name=".activity.FragmentActivity" />
         <activity android:name=".activity.ListRvActivity" />
+        <activity android:name=".activity.ClickTestActivity" />
     </application>
 
 </manifest>
