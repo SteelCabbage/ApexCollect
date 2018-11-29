@@ -7,6 +7,13 @@ import org.objectweb.asm.Opcodes
 
 class FilterUtils {
 
+    private static String[] SUPER_NAME_WHITE_LIST = [
+        "android/support/v4/app/Fragment",
+        "android/app/Fragment",
+        "android/support/v4/app/DialogFragment",
+        "android/app/DialogFragment",
+    ]
+
     static boolean isMatchClass(String className, String superName, String[] interfaces) {
         boolean isMatchClass = false
 
@@ -17,7 +24,15 @@ class FilterUtils {
 
         // 是否满足实现的接口
         isMatchClass = isMatchInterfaces(interfaces, 'android/view/View$OnClickListener')
-        if (superName.equals('android/support/v4/app/Fragment')) {
+
+        for (String name:SUPER_NAME_WHITE_LIST) {
+            if (name == superName) {
+                AopLog.info("name: " + name + " supername: " + superName)
+                isMatchClass = true
+                break
+            }
+        }
+        /*if (superName.equals('android/support/v4/app/Fragment')) {
             isMatchClass = true
         } else if (superName.equals("android/app/Fragment")) {
             isMatchClass = true
@@ -91,7 +106,8 @@ class FilterUtils {
                 }
             }
 //        } else if (name == "onResume" && className.contains("Fragment")) {
-        } else if (name == "onResume" && desc == '()V' && superName.equals('android/support/v4/app/Fragment')) {
+        } else if (name == "onResume" && desc == '()V' &&
+                (superName.equals('android/support/v4/app/Fragment') || superName.equals("android/support/v4/app/DialogFragment"))) {
             adapter = new AopMethodVisitor(methodVisitor, access, name, desc) {
 
                 @Override
@@ -103,7 +119,8 @@ class FilterUtils {
                 }
             }
 //        } else if (name == "onPause" && className.contains("Fragment")) {
-        } else if (name == "onPause" && desc == '()V' && superName.equals('android/support/v4/app/Fragment')) {
+        } else if (name == "onPause" && desc == '()V' &&
+                (superName.equals('android/support/v4/app/Fragment') || superName.equals("android/support/v4/app/DialogFragment"))) {
             adapter = new AopMethodVisitor(methodVisitor, access, name, desc) {
 
                 @Override
@@ -115,7 +132,8 @@ class FilterUtils {
                 }
             }
 //        } else if (name == "setUserVisibleHint" && className.contains("Fragment")) {
-        } else if (name == "setUserVisibleHint" && desc == '(Z)V' && superName.equals('android/support/v4/app/Fragment')) {
+        } else if (name == "setUserVisibleHint" && desc == '(Z)V' &&
+                (superName.equals('android/support/v4/app/Fragment') || superName.equals("android/support/v4/app/DialogFragment"))) {
             adapter = new AopMethodVisitor(methodVisitor, access, name, desc) {
 
                 @Override
@@ -128,7 +146,8 @@ class FilterUtils {
                 }
             }
 //        } else if (name == "onHiddenChanged" && className.contains("Fragment")) {
-        } else if (name == "onHiddenChanged" && desc == '(Z)V' && superName.equals('android/support/v4/app/Fragment')) {
+        } else if (name == "onHiddenChanged" && desc == '(Z)V' &&
+                (superName.equals('android/support/v4/app/Fragment') || superName.equals("android/support/v4/app/DialogFragment"))) {
             adapter = new AopMethodVisitor(methodVisitor, access, name, desc) {
 
                 @Override
@@ -140,7 +159,8 @@ class FilterUtils {
                     methodVisitor.visitMethodInsn(Opcodes.INVOKESTATIC, "com/chinapex/android/datacollect/aop/AopHelper", "onFragmentHiddenChanged", "(Landroid/support/v4/app/Fragment;Z)V", false)
                 }
             }
-        } else if (name == "onResume" && desc == '()V' && superName.equals("android/app/Fragment")) {
+        } else if (name == "onResume" && desc == '()V' &&
+                (superName.equals("android/app/Fragment") || superName.equals("android/app/DialogFragment"))) {
             adapter = new AopMethodVisitor(methodVisitor, access, name, desc) {
 
                 @Override
@@ -151,7 +171,8 @@ class FilterUtils {
                     methodVisitor.visitMethodInsn(Opcodes.INVOKESTATIC, "com/chinapex/android/datacollect/aop/AopHelper", "onFragmentResume", "(Landroid/app/Fragment;)V", false)
                 }
             }
-        } else if (name == "onPause" && desc == '()V' && superName.equals("android/app/Fragment")) {
+        } else if (name == "onPause" && desc == '()V' &&
+                (superName.equals("android/app/Fragment") || superName.equals("android/app/DialogFragment"))) {
             adapter = new AopMethodVisitor(methodVisitor, access, name, desc) {
 
                 @Override
@@ -162,7 +183,8 @@ class FilterUtils {
                     methodVisitor.visitMethodInsn(Opcodes.INVOKESTATIC, "com/chinapex/android/datacollect/aop/AopHelper", "onFragmentPause", "(Landroid/app/Fragment;)V", false)
                 }
             }
-        } else if (name == "setUserVisibleHint" && desc == '(Z)V' && superName.equals("android/app/Fragment")) {
+        } else if (name == "setUserVisibleHint" && desc == '(Z)V' &&
+                (superName.equals("android/app/Fragment") || superName.equals("android/app/DialogFragment"))) {
             adapter = new AopMethodVisitor(methodVisitor, access, name, desc) {
 
                 @Override
@@ -174,7 +196,8 @@ class FilterUtils {
                     methodVisitor.visitMethodInsn(Opcodes.INVOKESTATIC, "com/chinapex/android/datacollect/aop/AopHelper", "setFragmentUserVisibleHint", "(Landroid/app/Fragment;Z)V", false)
                 }
             }
-        } else if (name == "onHiddenChanged" && desc == '(Z)V' && superName.equals("android/app/Fragment")) {
+        } else if (name == "onHiddenChanged" && desc == '(Z)V' &&
+                (superName.equals("android/app/Fragment") || superName.equals("android/app/DialogFragment"))){
             adapter = new AopMethodVisitor(methodVisitor, access, name, desc) {
 
                 @Override
