@@ -39,10 +39,8 @@ public class Constant {
     /**
      * Net
      */
-    public static final String SERVER_ROOT = "http://172.16.13.129:8082/";
-    //    public static final String SERVER_ROOT = "https://www.baidu.com";
-    public static final String HOSTNAME_VERIFIER = "172.16.13.129";
-    //    public static final String HOSTNAME_VERIFIER = "www.baidu.com";
+    public static final String SERVER_ROOT = "http://139.219.5.206:8083/";
+    public static final String HOSTNAME_VERIFIER = "139.219.5.206";
     public static final long CONNECT_TIMEOUT = 5;
     public static final long READ_TIMEOUT = 5;
     public static final long WRITE_TIMEOUT = 5;
@@ -52,9 +50,7 @@ public class Constant {
     public static final String HEADER_KEY = "";
     public static final String HEADER_VALUE = "";
     public static final String URL_DELAY_REPORT = SERVER_ROOT + "eventReport/Android";
-    //    public static final String URL_DELAY_REPORT = SERVER_ROOT + "";
     public static final String URL_INSTANT_REPORT = SERVER_ROOT + "eventReport/Android";
-//    public static final String URL_INSTANT_REPORT = SERVER_ROOT + "";
 
 
     /**
