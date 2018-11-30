@@ -1,7 +1,7 @@
 apply plugin: 'groovy'
 apply plugin: 'maven'
 apply plugin: 'java'
-//apply plugin: 'com.novoda.bintray-release'
+apply plugin: 'com.novoda.bintray-release'
 
 dependencies {
     compile gradleApi()
@@ -19,16 +19,16 @@ repositories {
     mavenCentral()
 }
 
-//publish {
-//    userOrg = 'apextechnologies'
-//    groupId = 'com.chinapex.analytics.aop'
-//    artifactId = 'AnalyticsAop'
-//    publishVersion = '1.0.0'
-//    desc = 'ASM AOP'
-//}
+publish {
+    userOrg = 'apextechnologies'
+    groupId = 'com.chinapex.analytics.aop'
+    artifactId = 'AnalyticsAop'
+    publishVersion = '1.0.1'
+    desc = 'ASM AOP'
+}
 
 group = 'com.chinapex.analytics.aop'
-version = '1.0.0'
+version = '1.0.1'
 
 uploadArchives {
     repositories {
