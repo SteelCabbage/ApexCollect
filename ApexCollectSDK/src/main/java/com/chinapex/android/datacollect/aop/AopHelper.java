@@ -75,22 +75,27 @@ public class AopHelper {
     public static void onFragmentResume(Fragment fragment) {
         long pvStartTime = System.currentTimeMillis();
 
-        ATLog.w(TAG, "onFragmentResume(v4)  name: " + fragment.getClass().getSimpleName()
-                + " isVisibleToUser: " + fragment.getUserVisibleHint() + " hidden: " + fragment.isHidden() + " resumeTime: " + pvStartTime);
+        ATLog.v(TAG, "onFragmentResume(v4)  name: " + fragment.getClass().getSimpleName()
+                + " isVisibleToUser: " + fragment.getUserVisibleHint() + " hidden: " + fragment.isHidden() + " resumeTime: " +
+                pvStartTime);
 
         if (fragment.getUserVisibleHint() && !fragment.isHidden()) {
             ConcurrentHashMap<String, Long> pvDurationTimes = ApexCache.getInstance().getPvDurationTimes();
-            pvDurationTimes.put(fragment.getClass().getName(), pvStartTime);
+            if (null == pvDurationTimes) {
+                ATLog.e(TAG, "onFragmentResume(v4) pvDurationTimes is null!");
+                return;
+            }
 
-            ATLog.w(TAG, "onFragmentResume(v4)  name: " + fragment.getClass().getSimpleName() + " put show time success !!!");
+            pvDurationTimes.put(fragment.getClass().getName(), pvStartTime);
         }
     }
 
     public static void onFragmentPause(Fragment fragment) {
         long pvEndTime = System.currentTimeMillis();
 
-        ATLog.w(TAG, "onFragmentPause(v4)  name: " + fragment.getClass().getSimpleName()
-                + " isVisibleToUser: " + fragment.getUserVisibleHint() + " hidden: " + fragment.isHidden() + " pauseTime: " + pvEndTime);
+        ATLog.v(TAG, "onFragmentPause(v4)  name: " + fragment.getClass().getSimpleName()
+                + " isVisibleToUser: " + fragment.getUserVisibleHint() + " hidden: " + fragment.isHidden()
+                + " pauseTime: " + pvEndTime);
 
         if (fragment.getUserVisibleHint() && !fragment.isHidden()) {
             FragmentActivity activity = fragment.getActivity();
@@ -99,21 +104,25 @@ public class AopHelper {
                 return;
             }
 
-            TaskController.getInstance().submit(new GenerateFragmentV4PvEventData(fragment, activity.getClass().getName(), pvEndTime));
+            TaskController.getInstance().submit(new GenerateFragmentV4PvEventData(fragment, activity.getClass().getName(),
+                    pvEndTime));
         }
     }
 
     public static void setFragmentUserVisibleHint(Fragment fragment, boolean isVisibleToUser) {
         long time = System.currentTimeMillis();
 
-        ATLog.w(TAG, "setFragmentUserVisibleHint(v4)  name: " + fragment.getClass().getSimpleName()
+        ATLog.v(TAG, "setFragmentUserVisibleHint(v4)  name: " + fragment.getClass().getSimpleName()
                 + " isVisibleToUser: " + isVisibleToUser + " hidden: " + fragment.isHidden() + " time: " + time);
 
         if (isVisibleToUser && !fragment.isHidden()) {
             ConcurrentHashMap<String, Long> pvDurationTimes = ApexCache.getInstance().getPvDurationTimes();
-            pvDurationTimes.put(fragment.getClass().getName(), time);
+            if (null == pvDurationTimes) {
+                ATLog.e(TAG, "setFragmentUserVisibleHint(v4) pvDurationTimes is null!");
+                return;
+            }
 
-            ATLog.w(TAG, "setFragmentUserVisibleHint(V4)  name: " + fragment.getClass().getSimpleName() + " put showTime success !!!");
+            pvDurationTimes.put(fragment.getClass().getName(), time);
             return;
         }
 
@@ -129,14 +138,17 @@ public class AopHelper {
     public static void onFragmentHiddenChanged(Fragment fragment, boolean hidden) {
         long time = System.currentTimeMillis();
 
-        ATLog.w(TAG, "onFragmentHiddenChanged(v4) name: " + fragment.getClass().getSimpleName()
+        ATLog.v(TAG, "onFragmentHiddenChanged(v4) name: " + fragment.getClass().getSimpleName()
                 + " isVisibleToUser: " + fragment.getUserVisibleHint() + " hidden: " + hidden + " time: " + time);
 
         if (!hidden && fragment.getUserVisibleHint()) {
             ConcurrentHashMap<String, Long> pvDurationTimes = ApexCache.getInstance().getPvDurationTimes();
-            pvDurationTimes.put(fragment.getClass().getName(), time);
+            if (null == pvDurationTimes) {
+                ATLog.e(TAG, "onFragmentHiddenChanged(v4) pvDurationTimes is null!");
+                return;
+            }
 
-            ATLog.w(TAG, "onFragmentHiddenChanged(v4)   name: " + fragment.getClass().getSimpleName() + " put showTime success !!! ");
+            pvDurationTimes.put(fragment.getClass().getName(), time);
             return;
         }
 
@@ -147,7 +159,6 @@ public class AopHelper {
         }
 
         TaskController.getInstance().submit(new GenerateFragmentV4PvEventData(fragment, activity.getClass().getName(), time));
-
     }
 
     public static void onFragmentResume(android.app.Fragment fragment) {
@@ -156,26 +167,33 @@ public class AopHelper {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
 
-            ATLog.w(TAG, "onFragmentResume  name: " + fragment.getClass().getSimpleName()
-                    + " isVisibleToUser: " + fragment.getUserVisibleHint() + " hidden: " + fragment.isHidden() + " resumeTime: " + pvStartTime);
+            ATLog.v(TAG, "onFragmentResume  name: " + fragment.getClass().getSimpleName()
+                    + " isVisibleToUser: " + fragment.getUserVisibleHint() + " hidden: " + fragment.isHidden() + " resumeTime: " +
+                    "" + pvStartTime);
 
             if (fragment.getUserVisibleHint() && !fragment.isHidden()) {
                 ConcurrentHashMap<String, Long> pvDurationTimes = ApexCache.getInstance().getPvDurationTimes();
-                pvDurationTimes.put(fragmentName, pvStartTime);
+                if (null == pvDurationTimes) {
+                    ATLog.e(TAG, "onFragmentResume() pvDurationTimes is null!");
+                    return;
+                }
 
-                ATLog.w(TAG, "onFragmentResume name: " + fragment.getClass().getSimpleName() + " put show time success !!!");
+                pvDurationTimes.put(fragmentName, pvStartTime);
                 return;
             }
         }
 
-        ATLog.w(TAG, "onFragmentResume  name: " + fragment.getClass().getSimpleName()
+        ATLog.v(TAG, "onFragmentResume  name: " + fragment.getClass().getSimpleName()
                 + " hidden: " + fragment.isHidden() + " resumeTime: " + pvStartTime);
 
         if (!fragment.isHidden()) {
             ConcurrentHashMap<String, Long> pvDurationTimes = ApexCache.getInstance().getPvDurationTimes();
-            pvDurationTimes.put(fragmentName, pvStartTime);
+            if (null == pvDurationTimes) {
+                ATLog.e(TAG, "onFragmentResume() pvDurationTimes is null!");
+                return;
+            }
 
-            ATLog.w(TAG, "onFragmentResume name: " + fragment.getClass().getSimpleName() + " put show time success !!!");
+            pvDurationTimes.put(fragmentName, pvStartTime);
         }
     }
 
@@ -183,8 +201,9 @@ public class AopHelper {
         long pvEndTime = System.currentTimeMillis();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-            ATLog.w(TAG, "onFragmentPause  name: " + fragment.getClass().getSimpleName()
-                    + " isVisibleToUser: " + fragment.getUserVisibleHint() + " hidden: " + fragment.isHidden() + " pauseTime: " + pvEndTime);
+            ATLog.v(TAG, "onFragmentPause  name: " + fragment.getClass().getSimpleName()
+                    + " isVisibleToUser: " + fragment.getUserVisibleHint() + " hidden: " + fragment.isHidden()
+                    + " pauseTime: " + pvEndTime);
 
             if (fragment.getUserVisibleHint() && !fragment.isHidden()) {
                 Activity activity = fragment.getActivity();
@@ -193,7 +212,8 @@ public class AopHelper {
                     return;
                 }
 
-                TaskController.getInstance().submit(new GenerateFragmentNotV4PvEventData(fragment, activity.getClass().getName(), pvEndTime));
+                TaskController.getInstance().submit(
+                        new GenerateFragmentNotV4PvEventData(fragment, activity.getClass().getName(), pvEndTime));
             }
         }
     }
@@ -201,14 +221,17 @@ public class AopHelper {
     public static void setFragmentUserVisibleHint(android.app.Fragment fragment, boolean isVisibleToUser) {
         long time = System.currentTimeMillis();
 
-        ATLog.w(TAG, "setFragmentUserVisibleHint  name: " + fragment.getClass().getSimpleName()
+        ATLog.v(TAG, "setFragmentUserVisibleHint  name: " + fragment.getClass().getSimpleName()
                 + " isVisibleToUser: " + isVisibleToUser + " hidden: " + fragment.isHidden() + " time: " + time);
 
         if (isVisibleToUser && !fragment.isHidden()) {
             ConcurrentHashMap<String, Long> pvDurationTimes = ApexCache.getInstance().getPvDurationTimes();
-            pvDurationTimes.put(fragment.getClass().getName(), time);
+            if (null == pvDurationTimes) {
+                ATLog.e(TAG, "setFragmentUserVisibleHint() pvDurationTimes is null!");
+                return;
+            }
 
-            ATLog.w(TAG, "setFragmentUserVisibleHint  name: " + fragment.getClass().getSimpleName() + " put showTime success !!!");
+            pvDurationTimes.put(fragment.getClass().getName(), time);
             return;
         }
 
@@ -225,14 +248,17 @@ public class AopHelper {
         long time = System.currentTimeMillis();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-            ATLog.w(TAG, "onFragmentHiddenChanged name: " + fragment.getClass().getSimpleName()
+            ATLog.v(TAG, "onFragmentHiddenChanged name: " + fragment.getClass().getSimpleName()
                     + " isVisibleToUser: " + fragment.getUserVisibleHint() + " hidden: " + hidden + " time: " + time);
 
             if (!hidden && fragment.getUserVisibleHint()) {
                 ConcurrentHashMap<String, Long> pvDurationTimes = ApexCache.getInstance().getPvDurationTimes();
-                pvDurationTimes.put(fragment.getClass().getName(), time);
+                if (null == pvDurationTimes) {
+                    ATLog.e(TAG, "onFragmentHiddenChanged() pvDurationTimes is null!");
+                    return;
+                }
 
-                ATLog.w(TAG, "onFragmentHiddenChanged   name: " + fragment.getClass().getSimpleName() + " put showTime success !!! ");
+                pvDurationTimes.put(fragment.getClass().getName(), time);
                 return;
             }
 
@@ -242,22 +268,25 @@ public class AopHelper {
                 return;
             }
 
-            TaskController.getInstance().submit(new GenerateFragmentNotV4PvEventData(fragment, activity.getClass().getName(), time));
+            TaskController.getInstance().submit(
+                    new GenerateFragmentNotV4PvEventData(fragment, activity.getClass().getName(), time));
             return;
-
         }
 
 
-        ATLog.w(TAG, "onFragmentHiddenChanged name: " + fragment.getClass().getSimpleName() + " hidden: " + hidden + " time: " + time);
+        ATLog.v(TAG, "onFragmentHiddenChanged name: " + fragment.getClass().getSimpleName()
+                + " hidden: " + hidden + " time: " + time);
 
         if (!hidden) {
             ConcurrentHashMap<String, Long> pvDurationTimes = ApexCache.getInstance().getPvDurationTimes();
-            pvDurationTimes.put(fragment.getClass().getName(), time);
+            if (null == pvDurationTimes) {
+                ATLog.e(TAG, "onFragmentHiddenChanged() pvDurationTimes is null!");
+                return;
+            }
 
-            ATLog.w(TAG, "onFragmentHiddenChanged   name: " + fragment.getClass().getSimpleName() + " put showTime success !!! ");
+            pvDurationTimes.put(fragment.getClass().getName(), time);
             return;
         }
-
 
         Activity activity = fragment.getActivity();
         if (null == activity) {
@@ -267,7 +296,9 @@ public class AopHelper {
 
         TaskController.getInstance().submit(new GenerateFragmentNotV4PvEventData(fragment, activity.getClass().getName(), time));
     }
+
 //    public static void rvOnScrollStateChanged(RecyclerView recyclerView, int newState) {
 //        ATLog.w(TAG, "rvOnScrollStateChanged->" + "newState:" + newState + recyclerView.getClass().getSimpleName());
 //    }
+
 }
