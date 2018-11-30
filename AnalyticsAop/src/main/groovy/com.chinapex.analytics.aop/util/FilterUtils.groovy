@@ -96,13 +96,13 @@ class FilterUtils {
                 void visitCode() {
                     super.visitCode()
 
-                    adapter.visitVarInsn(Opcodes.ALOAD, 1)
-                    adapter.visitMethodInsn(Opcodes.INVOKESTATIC, "com/chinapex/android/datacollect/aop/AopHelper", "onClick", "(Landroid/view/View;)Z", false)
+                    methodVisitor.visitVarInsn(Opcodes.ALOAD, 1)
+                    methodVisitor.visitMethodInsn(Opcodes.INVOKESTATIC, "com/chinapex/android/datacollect/aop/AopHelper", "onClick", "(Landroid/view/View;)Z", false)
 
                     Label label = new Label()
-                    adapter.visitJumpInsn(Opcodes.IFEQ, label)
-                    adapter.visitInsn(Opcodes.RETURN)
-                    adapter.visitLabel(label)
+                    methodVisitor.visitJumpInsn(Opcodes.IFEQ, label)
+                    methodVisitor.visitInsn(Opcodes.RETURN)
+                    methodVisitor.visitLabel(label)
                 }
             }
 //        } else if (name == "onResume" && className.contains("Fragment")) {
