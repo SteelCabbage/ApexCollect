@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.chinapex.analytics.sample.R;
+import com.chinapex.analytics.sample.utils.AppLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,7 @@ import java.util.List;
  */
 public class ClickTestActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private static final String TAG = ClickTestActivity.class.getSimpleName();
     private ListView mListView;
     private GridView mGridView;
 
@@ -49,23 +51,22 @@ public class ClickTestActivity extends AppCompatActivity implements View.OnClick
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.start:
-                Toast.makeText(this, "开始游戏", Toast.LENGTH_SHORT).show();
+                AppLog.i(TAG, "开始游戏");
                 break;
             case R.id.over:
-                Toast.makeText(this, "结束游戏", Toast.LENGTH_SHORT).show();
+                AppLog.i(TAG, "结束游戏");
                 break;
             case R.id.setting1:
-                Toast.makeText(this, "声音設置", Toast.LENGTH_SHORT).show();
+                AppLog.i(TAG, "声音設置");
                 break;
             case R.id.setting2:
-                Toast.makeText(this, "背景設置", Toast.LENGTH_SHORT).show();
+                AppLog.i(TAG, "背景設置");
                 break;
             default:
                 break;
         }
 
         return super.onOptionsItemSelected(item);
-
     }
 
 
@@ -89,14 +90,14 @@ public class ClickTestActivity extends AppCompatActivity implements View.OnClick
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(ClickTestActivity.this, "mGridView item is clicked !!!  position: " + position, Toast.LENGTH_SHORT).show();
+                AppLog.i(TAG, "mGridView item is clicked !!!  position: " + position);
             }
         });
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(ClickTestActivity.this, "mListView item is clicked !!!  position: " + position, Toast.LENGTH_SHORT).show();
+                AppLog.i(TAG, "mListView item is clicked !!!  position: " + position);
             }
         });
 
@@ -106,7 +107,7 @@ public class ClickTestActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_button:
-                Toast.makeText(this, "onClick ImageButton is clicked !!!", Toast.LENGTH_SHORT).show();
+                AppLog.i(TAG, "onClick ImageButton is clicked !!!");
                 break;
             default:
                 break;
@@ -116,10 +117,10 @@ public class ClickTestActivity extends AppCompatActivity implements View.OnClick
     public void xmlOnClick(View view) {
         switch (view.getId()) {
             case R.id.clickable_text:
-                Toast.makeText(this, "xmlOnClick Text is clicked !!!", Toast.LENGTH_SHORT).show();
+                AppLog.i(TAG, "xmlOnClick Text is clicked !!!");
                 break;
             case R.id.clickable_image_view:
-                Toast.makeText(this, "xmlOnClick ImageView is clicked !!!", Toast.LENGTH_SHORT).show();
+                AppLog.i(TAG, "xmlOnClick ImageView is clicked !!!");
                 break;
             default:
                 break;

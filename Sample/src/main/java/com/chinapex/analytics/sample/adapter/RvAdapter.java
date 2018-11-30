@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.chinapex.analytics.sample.R;
+import com.chinapex.analytics.sample.utils.AppLog;
 import com.chinapex.android.datacollect.utils.ATLog;
 
 import java.util.List;
@@ -75,7 +76,7 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.RvHolder> implemen
     public void onBindViewHolder(@NonNull RvHolder holder, int position) {
         Student student = mDatas.get(position);
         if (null == student) {
-            ATLog.e(TAG, "student is null!");
+            AppLog.e(TAG, "student is null!");
             return;
         }
 

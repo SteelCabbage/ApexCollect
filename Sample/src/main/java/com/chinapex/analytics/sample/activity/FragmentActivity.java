@@ -12,9 +12,7 @@ import android.widget.Button;
 import com.chinapex.analytics.sample.R;
 import com.chinapex.analytics.sample.adapter.ViewPagerAdapter;
 import com.chinapex.analytics.sample.fragment.FragmentFactory;
-import com.chinapex.analytics.sample.fragment.ViewPagerFragment1;
-import com.chinapex.analytics.sample.fragment.ViewPagerFragment2;
-import com.chinapex.android.datacollect.utils.ATLog;
+import com.chinapex.analytics.sample.utils.AppLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,8 +41,8 @@ public class FragmentActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void initData() {
-        mFragmentList.add(new ViewPagerFragment1());
-        mFragmentList.add(new ViewPagerFragment2());
+        mFragmentList.add(FragmentFactory.getFragment("ViewPagerFragment1"));
+        mFragmentList.add(FragmentFactory.getFragment("ViewPagerFragment2"));
         mViewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(), mFragmentList));
     }
 
@@ -75,7 +73,7 @@ public class FragmentActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bt_show1:
-//                ATLog.i(TAG, "bt_show1 clicked=======showFragmentV4");
+//                AppLog.i(TAG, "bt_show1 clicked=======showFragmentV4");
 //                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 //                BaseFragmentV4 fragment = FragmentFactory.getFragment("FragmentV4");
 //                if (!fragment.isAdded()) {
@@ -83,7 +81,7 @@ public class FragmentActivity extends AppCompatActivity implements View.OnClickL
 //                }
 //                fragmentTransaction.show(fragment).commit();
 
-                ATLog.i(TAG, "bt_show1 clicked=======showFragmentNoV4");
+                AppLog.i(TAG, "bt_show1 clicked=======showFragmentNoV4");
                 android.app.FragmentTransaction ftNoV4 = getFragmentManager().beginTransaction();
                 android.app.Fragment fragmentNoV4 = FragmentFactory.getFragmentNoV4("FragmentNoV4");
                 if (!fragmentNoV4.isAdded()) {
@@ -92,12 +90,12 @@ public class FragmentActivity extends AppCompatActivity implements View.OnClickL
                 ftNoV4.show(fragmentNoV4).commit();
                 break;
             case R.id.bt_hide1:
-//                ATLog.i(TAG, "bt_hide1 clicked=======hideFragmentV4");
+//                AppLog.i(TAG, "bt_hide1 clicked=======hideFragmentV4");
 //                FragmentTransaction fragmentTransaction2 = getSupportFragmentManager().beginTransaction();
 //                fragmentTransaction2.hide(FragmentFactory.getFragment("FragmentV4"));
 //                fragmentTransaction2.commit();
 
-                ATLog.i(TAG, "bt_hide1 clicked=======hideFragmentNoV4");
+                AppLog.i(TAG, "bt_hide1 clicked=======hideFragmentNoV4");
                 android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.hide(FragmentFactory.getFragmentNoV4("FragmentNoV4"));
                 ft.commit();

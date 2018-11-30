@@ -11,6 +11,8 @@ public class FragmentFactory {
 
     private static FragmentV4 sFragmentV4;
     private static FragmentNoV4 sFragmentNoV4;
+    private static ViewPagerFragment1 sViewPagerFragment1;
+    private static ViewPagerFragment2 sViewPagerFragment2;
 
     public static BaseFragmentV4 getFragment(String fragmentTag) {
         BaseFragmentV4 baseFragmentV4 = null;
@@ -20,6 +22,18 @@ public class FragmentFactory {
                     sFragmentV4 = new FragmentV4();
                 }
                 baseFragmentV4 = sFragmentV4;
+                break;
+            case "ViewPagerFragment1":
+                if (null == sViewPagerFragment1) {
+                    sViewPagerFragment1 = new ViewPagerFragment1();
+                }
+                baseFragmentV4 = sViewPagerFragment1;
+                break;
+            case "ViewPagerFragment2":
+                if (null == sViewPagerFragment2) {
+                    sViewPagerFragment2 = new ViewPagerFragment2();
+                }
+                baseFragmentV4 = sViewPagerFragment2;
                 break;
             default:
                 break;

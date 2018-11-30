@@ -2,7 +2,7 @@ package com.chinapex.analytics.sample.fragment;
 
 import android.support.v4.app.Fragment;
 
-import com.chinapex.android.datacollect.utils.ATLog;
+import com.chinapex.analytics.sample.utils.AppLog;
 
 
 /**
@@ -15,25 +15,25 @@ public class BaseFragmentV4 extends Fragment {
 
     @Override
     public void onResume() {
-        ATLog.i(TAG, "FragmentV4 onResume");
+        AppLog.i(TAG, "FragmentV4 onResume");
         super.onResume();
     }
 
     @Override
     public void onPause() {
-        ATLog.i(TAG, "FragmentV4 onPause");
+        AppLog.i(TAG, "FragmentV4 onPause");
         super.onPause();
     }
 
     @Override
     public void onHiddenChanged(boolean hidden) {
-        ATLog.i(TAG, "FragmentV4 onHiddenChanged:" + hidden);
+        AppLog.i(TAG, "FragmentV4 onHiddenChanged:" + hidden);
         super.onHiddenChanged(hidden);
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
-        ATLog.i(TAG, "FragmentV4 setUserVisibleHint:" + isVisibleToUser);
+        AppLog.i(TAG, "FragmentV4 setUserVisibleHint:" + isVisibleToUser);
         super.setUserVisibleHint(isVisibleToUser);
     }
 }

@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.chinapex.analytics.sample.R;
-import com.chinapex.android.datacollect.utils.ATLog;
+import com.chinapex.analytics.sample.utils.AppLog;
 
 /**
  * @author SteelCabbage
@@ -26,25 +26,25 @@ public class FragmentNoV4 extends Fragment {
 
     @Override
     public void onResume() {
-        ATLog.i(TAG, "Fragment onResume");
+        AppLog.i(TAG, "Fragment onResume");
         super.onResume();
     }
 
     @Override
     public void onPause() {
-        ATLog.i(TAG, "Fragment onPause");
+        AppLog.i(TAG, "Fragment onPause");
         super.onPause();
     }
 
     @Override
     public void onHiddenChanged(boolean hidden) {
-        ATLog.i(TAG, "Fragment onHiddenChanged:" + hidden);
+        AppLog.i(TAG, "Fragment onHiddenChanged:" + hidden);
         super.onHiddenChanged(hidden);
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
-        ATLog.i(TAG, "Fragment setUserVisibleHint:" + isVisibleToUser);
+        AppLog.i(TAG, "Fragment setUserVisibleHint:" + isVisibleToUser);
         super.setUserVisibleHint(isVisibleToUser);
     }
 }
