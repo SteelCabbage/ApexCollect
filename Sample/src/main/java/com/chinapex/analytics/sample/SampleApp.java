@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.chinapex.analytics.sample.utils.AppLog;
 import com.chinapex.android.datacollect.ApexAnalytics;
+import com.chinapex.android.datacollect.model.bean.AnalyticsSettings;
 import com.chinapex.android.datacollect.utils.ATLog;
 
 /**
@@ -25,17 +26,15 @@ public class SampleApp extends Application {
 
         long time = System.currentTimeMillis();
 
-        // settings
-        ApexAnalytics.getInstance().setLogLevel(ATLog.VERBOSE);
-        ApexAnalytics.getInstance().setDelayReportInterval(1000 * 60 * 2);
-        ApexAnalytics.getInstance().setCheckInstantErrInterval(1000 * 60);
-        ApexAnalytics.getInstance().setReportMaxNum(5);
-
         // 初始化埋点sdk
-        ApexAnalytics.getInstance().init(sSampleApp);
+        ApexAnalytics.getInstance().init(new AnalyticsSettings.SettingsBuilder(sSampleApp)
+                .setLogLevel(ATLog.VERBOSE)
+                .setDelayReportInterval(1000 * 60 * 2)
+                .setCheckInstantErrInterval(1000 * 60)
+                .setReportMaxNum(5)
+                .build());
 
-        AppLog.w(TAG, "================init ApexAnalytics cost time================:"
-                + (System.currentTimeMillis() - time));
+        AppLog.d(TAG, "================init ApexAnalytics cost time================:" + (System.currentTimeMillis() - time));
     }
 
     public static SampleApp getInstance() {

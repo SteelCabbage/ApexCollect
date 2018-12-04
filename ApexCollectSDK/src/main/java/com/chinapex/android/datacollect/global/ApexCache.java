@@ -1,6 +1,11 @@
 package com.chinapex.android.datacollect.global;
 
 import android.content.Context;
+import android.text.TextUtils;
+
+import com.chinapex.android.datacollect.changelistener.AnalyticsListenerController;
+import com.chinapex.android.datacollect.changelistener.OnNetworkTypeChangeListener;
+import com.chinapex.android.datacollect.utils.ATLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author SteelCabbage
  * @date 2018/11/23
  */
-public class ApexCache {
+public class ApexCache implements OnNetworkTypeChangeListener {
 
     private static final String TAG = ApexCache.class.getSimpleName();
     private ConcurrentHashMap<String, Long> mPvDurationTimes;
@@ -77,6 +82,7 @@ public class ApexCache {
      */
     private String mUrlInstant = Constant.URL_INSTANT_REPORT;
 
+    private String mNetworkType;
 
     private ApexCache() {
 
@@ -93,6 +99,7 @@ public class ApexCache {
     public void doInit() {
         mPvDurationTimes = new ConcurrentHashMap<>();
         mReferences = new Stack<>();
+        AnalyticsListenerController.getInstance().addOnNetworkTypeChangeListener(this);
     }
 
     public Context getContext() {
@@ -197,5 +204,20 @@ public class ApexCache {
 
     public void setUrlInstant(String urlInstant) {
         mUrlInstant = urlInstant;
+    }
+
+    public String getNetworkType() {
+        return mNetworkType;
+    }
+
+    @Override
+    public void networkTypeChange(String networkType) {
+        if (TextUtils.isEmpty(networkType)) {
+            ATLog.e(TAG, "networkTypeChange() -> mNetworkType is null!");
+            return;
+        }
+
+        mNetworkType = networkType;
+        ATLog.d(TAG, "networkTypeChange():" + mNetworkType);
     }
 }

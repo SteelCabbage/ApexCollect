@@ -23,9 +23,10 @@ import java.util.List;
  * @author : Seven
  * @date : 2018/11/28
  */
-public class ClickTestActivity extends AppCompatActivity implements View.OnClickListener {
+public class ClickTestActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     private static final String TAG = ClickTestActivity.class.getSimpleName();
+
     private ListView mListView;
     private GridView mGridView;
 
@@ -36,16 +37,13 @@ public class ClickTestActivity extends AppCompatActivity implements View.OnClick
 
         initView();
         initData();
-
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -69,40 +67,6 @@ public class ClickTestActivity extends AppCompatActivity implements View.OnClick
         return super.onOptionsItemSelected(item);
     }
 
-
-    private void initData() {
-        List<String> list = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            list.add("" + i);
-        }
-
-        mListView.setAdapter(new ArrayAdapter<>(this, R.layout.list_view_item, R.id.list_view_item_text, list));
-        mGridView.setAdapter(new ArrayAdapter<>(this, R.layout.list_view_item, R.id.list_view_item_text, list));
-    }
-
-    private void initView() {
-        mListView = findViewById(R.id.list_view);
-        mGridView = findViewById(R.id.grid_view);
-        ImageButton imageButton = findViewById(R.id.image_button);
-
-        imageButton.setOnClickListener(this);
-
-        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                AppLog.i(TAG, "mGridView item is clicked !!!  position: " + position);
-            }
-        });
-
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                AppLog.i(TAG, "mListView item is clicked !!!  position: " + position);
-            }
-        });
-
-    }
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -111,6 +75,18 @@ public class ClickTestActivity extends AppCompatActivity implements View.OnClick
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (parent instanceof GridView) {
+            Toast.makeText(ClickTestActivity.this, "mGridView item is clicked !!!  position: " + position, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (parent instanceof ListView) {
+            Toast.makeText(ClickTestActivity.this, "mListView item is clicked !!!  position: " + position, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -125,6 +101,26 @@ public class ClickTestActivity extends AppCompatActivity implements View.OnClick
             default:
                 break;
         }
+    }
+
+    private void initView() {
+        mListView = findViewById(R.id.list_view);
+        mGridView = findViewById(R.id.grid_view);
+        ImageButton imageButton = findViewById(R.id.image_button);
+
+        imageButton.setOnClickListener(this);
+        mGridView.setOnItemClickListener(this);
+        mListView.setOnItemClickListener(this);
+    }
+
+    private void initData() {
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            list.add("" + i);
+        }
+
+        mListView.setAdapter(new ArrayAdapter<>(this, R.layout.list_view_item, R.id.list_view_item_text, list));
+        mGridView.setAdapter(new ArrayAdapter<>(this, R.layout.list_view_item, R.id.list_view_item_text, list));
     }
 
 }

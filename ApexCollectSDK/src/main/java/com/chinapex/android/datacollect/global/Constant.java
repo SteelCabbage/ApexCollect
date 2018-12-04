@@ -17,6 +17,8 @@ public class Constant {
      * Controller_Constant
      */
     public static final String CONTROLLER_TASK = "TaskController";
+    public static final String CONTROLLER_ANALYTICS_LISTENER = "AnalyticsListenerController";
+    public static final String CONTROLLER_BROADCAST = "BroadcastController";
     public static final String CONTROLLER_PHONE_STATE = "PhoneStateController";
 
     /**
@@ -39,6 +41,12 @@ public class Constant {
     /**
      * Net
      */
+    public static final String NETWORK_TYPE_UNKNOWN = "unknown";
+    public static final String NETWORK_TYPE_WIFI = "WIFI";
+    public static final String NETWORK_TYPE_MOBILE = "MOBILE";
+    public static final String NETWORK_TYPE_2G = "2G";
+    public static final String NETWORK_TYPE_3G = "3G";
+    public static final String NETWORK_TYPE_4G = "4G";
     public static final String SERVER_ROOT = "http://139.219.5.206:8083/";
     public static final String HOSTNAME_VERIFIER = "139.219.5.206";
     public static final long CONNECT_TIMEOUT = 5;

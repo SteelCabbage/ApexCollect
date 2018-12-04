@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
@@ -120,8 +122,8 @@ public class PhoneStateUtils {
     /**
      * getDeviceIds (用户授权的情况下，获取)
      *
-     * @param context
-     * @return
+     * @param context application context
+     * @return deviceId 的数组
      */
     public static List<String> getDeviceIds(Context context) {
         if (null == context) {
@@ -191,8 +193,94 @@ public class PhoneStateUtils {
         return null;
     }
 
+    /**
+     * 获取系统语言
+     *
+     * @return 语言
+     */
     public static String getLanguage() {
         return Locale.getDefault().toString();
+    }
+
+    /**
+     * 获取网络类型
+     *
+     * @param context context
+     * @return 网络类型
+     */
+    public static String getNetworkType(Context context) {
+        if (null == context) {
+            ATLog.e(TAG, "getNetworkType() -> context is null!");
+            return Constant.NETWORK_TYPE_UNKNOWN;
+        }
+
+        TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        if (null == telephonyManager) {
+            ATLog.e(TAG, "getNetworkType() -> telephonyManager is null!");
+            return Constant.NETWORK_TYPE_UNKNOWN;
+        }
+
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (null == connectivityManager) {
+            ATLog.e(TAG, "getNetworkType() -> connectivityManager is null!");
+            return Constant.NETWORK_TYPE_UNKNOWN;
+        }
+
+        try {
+            NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+            if (null == activeNetworkInfo) {
+                ATLog.e(TAG, "getNetworkType() -> activeNetworkInfo is null!");
+                return Constant.NETWORK_TYPE_UNKNOWN;
+            }
+
+            if (!activeNetworkInfo.isConnected()) {
+                ATLog.e(TAG, "getNetworkType() -> activeNetworkInfo is not connected!");
+                return Constant.NETWORK_TYPE_UNKNOWN;
+            }
+
+            String typeName = activeNetworkInfo.getTypeName();
+            if (TextUtils.isEmpty(typeName)) {
+                ATLog.e(TAG, "getNetworkType() -> typeName is null!");
+                return Constant.NETWORK_TYPE_UNKNOWN;
+            }
+
+            switch (typeName) {
+                case Constant.NETWORK_TYPE_WIFI:
+                    return typeName;
+                case Constant.NETWORK_TYPE_MOBILE:
+                    int networkType = telephonyManager.getNetworkType();
+                    switch (networkType) {
+                        case TelephonyManager.NETWORK_TYPE_GPRS:
+                        case TelephonyManager.NETWORK_TYPE_GSM:
+                        case TelephonyManager.NETWORK_TYPE_EDGE:
+                        case TelephonyManager.NETWORK_TYPE_CDMA:
+                        case TelephonyManager.NETWORK_TYPE_1xRTT:
+                        case TelephonyManager.NETWORK_TYPE_IDEN:
+                            return Constant.NETWORK_TYPE_2G;
+                        case TelephonyManager.NETWORK_TYPE_UMTS:
+                        case TelephonyManager.NETWORK_TYPE_EVDO_0:
+                        case TelephonyManager.NETWORK_TYPE_EVDO_A:
+                        case TelephonyManager.NETWORK_TYPE_HSDPA:
+                        case TelephonyManager.NETWORK_TYPE_HSUPA:
+                        case TelephonyManager.NETWORK_TYPE_HSPA:
+                        case TelephonyManager.NETWORK_TYPE_EVDO_B:
+                        case TelephonyManager.NETWORK_TYPE_EHRPD:
+                        case TelephonyManager.NETWORK_TYPE_HSPAP:
+                        case TelephonyManager.NETWORK_TYPE_TD_SCDMA:
+                            return Constant.NETWORK_TYPE_3G;
+                        case TelephonyManager.NETWORK_TYPE_LTE:
+                        case TelephonyManager.NETWORK_TYPE_IWLAN:
+                            return Constant.NETWORK_TYPE_4G;
+                        default:
+                            return Constant.NETWORK_TYPE_UNKNOWN;
+                    }
+                default:
+                    return Constant.NETWORK_TYPE_UNKNOWN;
+            }
+        } catch (Exception e) {
+            ATLog.e(TAG, "getNetworkType() -> exception:" + e.getMessage());
+            return Constant.NETWORK_TYPE_UNKNOWN;
+        }
     }
 
 }

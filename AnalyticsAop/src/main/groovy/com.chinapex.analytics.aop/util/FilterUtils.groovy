@@ -8,10 +8,15 @@ import org.objectweb.asm.Opcodes
 class FilterUtils {
 
     private static String[] SUPER_NAME_WHITE_LIST = [
-        "android/support/v4/app/Fragment",
-        "android/app/Fragment",
-        "android/support/v4/app/DialogFragment",
-        "android/app/DialogFragment",
+            "android/support/v4/app/Fragment",
+            "android/app/Fragment",
+            "android/support/v4/app/DialogFragment",
+            "android/app/DialogFragment",
+    ]
+
+    private static String[] INTERFACE_NAME_WHITE_LIST = [
+            'android/widget/AdapterView$OnItemClickListener',
+            'android/view/View$OnClickListener'
     ]
 
     static boolean isMatchClass(String className, String superName, String[] interfaces) {
@@ -23,11 +28,17 @@ class FilterUtils {
         }
 
         // 是否满足实现的接口
-        isMatchClass = isMatchInterfaces(interfaces, 'android/view/View$OnClickListener')
+        for (String name : INTERFACE_NAME_WHITE_LIST) {
+            if (isMatchInterfaces(interfaces, name)) {
+                AopLog.info("interface name: " + name)
+                isMatchClass = true
+                break
+            }
+        }
 
-        for (String name:SUPER_NAME_WHITE_LIST) {
+        for (String name : SUPER_NAME_WHITE_LIST) {
             if (name == superName) {
-                AopLog.info("name: " + name + " supername: " + superName)
+                AopLog.info("classname: " + name + " supername: " + superName)
                 isMatchClass = true
                 break
             }
@@ -59,6 +70,7 @@ class FilterUtils {
 
     static boolean isMatchMethod(String name, String desc) {
         if ((name == 'onClick' && desc == '(Landroid/view/View;)V')
+                || (name == 'onItemClick' && desc == '(Landroid/widget/AdapterView;Landroid/view/View;IJ)V')
                 || (name == 'onResume' && desc == '()V')
                 || (name == 'onPause' && desc == '()V')
                 || (name == 'setUserVisibleHint' && desc == '(Z)V')
@@ -88,7 +100,6 @@ class FilterUtils {
                                           MethodVisitor methodVisitor, int access, String name, String desc) {
         MethodVisitor adapter = null
 
-//        if (name == "onClick" && isMatchInterfaces(interfaces, 'android/view/View$OnClickListener')) {
         if (name == "onClick" && desc == '(Landroid/view/View;)V') {
             adapter = new AopMethodVisitor(methodVisitor, access, name, desc) {
 
@@ -105,7 +116,28 @@ class FilterUtils {
                     methodVisitor.visitLabel(label)
                 }
             }
-//        } else if (name == "onResume" && className.contains("Fragment")) {
+        } else if (name == "onItemClick" && desc == '(Landroid/widget/AdapterView;Landroid/view/View;IJ)V') {
+            AopLog.info("FilterUtils" + "getMethodVisitor onItemClick ")
+
+            adapter = new AopMethodVisitor(methodVisitor, access, name, desc) {
+
+                @Override
+                void visitCode() {
+                    super.visitCode()
+
+                    methodVisitor.visitVarInsn(Opcodes.ALOAD, 1)
+                    methodVisitor.visitVarInsn(Opcodes.ALOAD, 2)
+                    methodVisitor.visitVarInsn(Opcodes.ILOAD, 3)
+                    methodVisitor.visitVarInsn(Opcodes.LLOAD, 4)
+                    methodVisitor.visitMethodInsn(Opcodes.INVOKESTATIC, "com/chinapex/android/datacollect/aop/AopHelper", "onItemClick", "(Landroid/widget/AdapterView;Landroid/view/View;IJ)Z", false)
+
+                    Label label = new Label()
+                    methodVisitor.visitJumpInsn(Opcodes.IFEQ, label)
+                    methodVisitor.visitInsn(Opcodes.RETURN)
+                    methodVisitor.visitLabel(label)
+                }
+
+            }
         } else if (name == "onResume" && desc == '()V' &&
                 (superName.equals('android/support/v4/app/Fragment') || superName.equals("android/support/v4/app/DialogFragment"))) {
             adapter = new AopMethodVisitor(methodVisitor, access, name, desc) {

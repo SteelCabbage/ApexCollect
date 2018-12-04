@@ -5,6 +5,8 @@ import android.app.Application;
 import android.os.Build;
 import android.text.TextUtils;
 
+import com.chinapex.android.datacollect.broadcast.BroadcastController;
+import com.chinapex.android.datacollect.changelistener.AnalyticsListenerController;
 import com.chinapex.android.datacollect.executor.TaskController;
 import com.chinapex.android.datacollect.executor.runnable.DelayEvent;
 import com.chinapex.android.datacollect.global.ApexCache;
@@ -38,6 +40,10 @@ public class BaseController {
         return BaseControllerHolder.BASE_CONTROLLER;
     }
 
+    public HashMap<String, IController> getIControllerHashMap() {
+        return mIControllerHashMap;
+    }
+
     public IController getIController(String controllerName) {
         if (TextUtils.isEmpty(controllerName)) {
             ATLog.e(TAG, "getIController() -> controllerName is null or empty!");
@@ -58,12 +64,9 @@ public class BaseController {
     }
 
     public void doInit() {
-        // 初始化线程池
-        TaskController.getInstance().doInit();
-        mIControllerHashMap.put(Constant.CONTROLLER_TASK, TaskController.getInstance());
-
-        // 初始化全局缓存对象ApexCache
-        ApexCache.getInstance().doInit();
+        // 注册广播
+        BroadcastController.getInstance().doInit();
+        mIControllerHashMap.put(Constant.CONTROLLER_BROADCAST, BroadcastController.getInstance());
 
         // 开启延时上报
         TaskController.getInstance().schedule(new DelayEvent(DbConstant.TABLE_DELAY_REPORT),

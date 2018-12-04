@@ -3,16 +3,21 @@ package com.chinapex.android.datacollect;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.chinapex.android.datacollect.changelistener.AnalyticsListenerController;
 import com.chinapex.android.datacollect.controller.BaseController;
+import com.chinapex.android.datacollect.controller.IController;
 import com.chinapex.android.datacollect.executor.TaskController;
 import com.chinapex.android.datacollect.executor.runnable.CustomEvent;
 import com.chinapex.android.datacollect.executor.runnable.InstantEvent;
 import com.chinapex.android.datacollect.global.ApexCache;
 import com.chinapex.android.datacollect.global.Constant;
+import com.chinapex.android.datacollect.model.bean.AnalyticsSettings;
 import com.chinapex.android.datacollect.model.bean.TrackEvent;
 import com.chinapex.android.datacollect.model.db.DbConstant;
 import com.chinapex.android.datacollect.model.db.DbDao;
 import com.chinapex.android.datacollect.utils.ATLog;
+
+import java.util.HashMap;
 
 /**
  * @author SteelCabbage
@@ -44,21 +49,52 @@ public class ApexAnalytics {
     /**
      * Initialize 初始化
      *
-     * @param applicationContext 必须为Application的Context
+     * @param analyticsSettings 初始化参数
      */
-    public void init(Context applicationContext) {
+    public void init(AnalyticsSettings analyticsSettings) {
         if (mIsInit) {
             ATLog.e(TAG, "ApexAnalytics can only be initialized once!");
             return;
         }
 
+        if (null == analyticsSettings) {
+            ATLog.e(TAG, "analyticsSettings is null!");
+            return;
+        }
+
+        Context applicationContext = analyticsSettings.getApplicationContext();
         if (null == applicationContext) {
             ATLog.e(TAG, "applicationContext is null!");
             return;
         }
 
+        HashMap<String, IController> iControllerHashMap = BaseController.getInstance().getIControllerHashMap();
+        if (null == iControllerHashMap) {
+            ATLog.e(TAG, "iControllerHashMap is null!");
+            return;
+        }
+
+        // 初始化线程池
+        TaskController.getInstance().doInit();
+        iControllerHashMap.put(Constant.CONTROLLER_TASK, TaskController.getInstance());
+
+        // 初始化全局监听管理类
+        AnalyticsListenerController.getInstance().doInit();
+        iControllerHashMap.put(Constant.CONTROLLER_ANALYTICS_LISTENER, AnalyticsListenerController.getInstance());
+
+        // 初始化全局缓存对象ApexCache
+        ApexCache.getInstance().doInit();
+
         // 设置应用的applicationContext
         ApexCache.getInstance().setContext(applicationContext);
+
+        // 可自定义的Settings
+        setReportMaxNum(analyticsSettings.getReportMaxNum());
+        setDelayReportInterval(analyticsSettings.getDelayReportInterval());
+        setCheckInstantErrInterval(analyticsSettings.getCheckInstantErrInterval());
+        setUrlDelay(analyticsSettings.getUrlDelay());
+        setUrlInstant(analyticsSettings.getUrlInstant());
+        setLogLevel(analyticsSettings.getLogLevel());
 
         // 初始化BaseController
         BaseController.getInstance().doInit();
@@ -108,7 +144,7 @@ public class ApexAnalytics {
      *
      * @param reportMaxNum Default: 30 (默认30条)
      */
-    public void setReportMaxNum(int reportMaxNum) {
+    private void setReportMaxNum(int reportMaxNum) {
         if (reportMaxNum < Constant.REPORT_MIN_NUM) {
             ATLog.w(TAG, "reportMaxNum must be >= " + Constant.REPORT_MIN_NUM
                     + ", default: " + Constant.REPORT_MAX_NUM_DEFAULT + " are currently used");
@@ -123,7 +159,7 @@ public class ApexAnalytics {
      *
      * @param delayReportInterval Default: 1000 * 60 * 5 (默认5分钟)
      */
-    public void setDelayReportInterval(long delayReportInterval) {
+    private void setDelayReportInterval(long delayReportInterval) {
         if (delayReportInterval < Constant.DELAY_REPORT_INTERVAL_MIN) {
             ATLog.w(TAG, "delayReportInterval must be >= " + Constant.DELAY_REPORT_INTERVAL_MIN
                     + ", default: " + Constant.DELAY_REPORT_INTERVAL_DEFAULT + " are currently used");
@@ -138,7 +174,7 @@ public class ApexAnalytics {
      *
      * @param checkInstantErrInterval
      */
-    public void setCheckInstantErrInterval(long checkInstantErrInterval) {
+    private void setCheckInstantErrInterval(long checkInstantErrInterval) {
         if (checkInstantErrInterval < Constant.CHECK_INSTANT_ERR_INTERVAL_MIN) {
             ATLog.w(TAG, "checkInstantErrInterval must be >= " + Constant.CHECK_INSTANT_ERR_INTERVAL_MIN
                     + ", default: " + Constant.CHECK_INSTANT_ERR_INTERVAL_DEFAULT + " are currently used");
@@ -153,9 +189,9 @@ public class ApexAnalytics {
      *
      * @param urlDelay
      */
-    public void setUrlDelay(String urlDelay) {
+    private void setUrlDelay(String urlDelay) {
         if (TextUtils.isEmpty(urlDelay)) {
-            ATLog.e(TAG, "setUrlDelay() -> urlDelay is null or empty!");
+            ATLog.w(TAG, "setUrlDelay() -> urlDelay is null or empty!");
             return;
         }
 
@@ -167,9 +203,9 @@ public class ApexAnalytics {
      *
      * @param urlInstant
      */
-    public void setUrlInstant(String urlInstant) {
+    private void setUrlInstant(String urlInstant) {
         if (TextUtils.isEmpty(urlInstant)) {
-            ATLog.e(TAG, "setUrlInstant() -> urlInstant is null or empty!");
+            ATLog.w(TAG, "setUrlInstant() -> urlInstant is null or empty!");
             return;
         }
 
@@ -182,7 +218,12 @@ public class ApexAnalytics {
      * @param logLevel One of {@link ATLog#VERBOSE}, {@link ATLog#DEBUG}, {@link ATLog#INFO}
      *                 ,{@link ATLog#WARN}, or {@link ATLog#ERROR}.
      */
-    public void setLogLevel(int logLevel) {
+    private void setLogLevel(int logLevel) {
+        if (logLevel < ATLog.VERBOSE) {
+            ATLog.w(TAG, "logLevel must be >= " + ATLog.VERBOSE + ", default: " + ATLog.WARN + " are currently used");
+            return;
+        }
+
         ATLog.setLevel(logLevel);
     }
 

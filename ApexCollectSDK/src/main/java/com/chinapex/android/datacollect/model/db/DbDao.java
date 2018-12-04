@@ -188,7 +188,6 @@ public class DbDao {
                         .build();
 
                 trackEventTreeMap.put(time, trackEvent);
-                ATLog.i(TAG, tableName + " queryOffset() -> id:" + id);
             }
             cursor.close();
         }
@@ -226,13 +225,13 @@ public class DbDao {
         }
 
         int currentId = getMaxId(tableName);
-        ATLog.d(TAG, "avoidIdUnlimitedGrowth() -> currentId is:" + currentId);
+        ATLog.d(TAG, "avoidIdUnlimitedGrowth() -> " + tableName + " currentId is:" + currentId);
 
         Object timeObj = SpUtils.getParam(ApexCache.getInstance().getContext(),
                 (tableName + Constant.SP_KEY_RESET_ID_TIME),
                 Constant.SP_DEF_VAL_RESET_ID_TIME);
         Long lastResetTime = Long.valueOf(String.valueOf(timeObj));
-        ATLog.d(TAG, "avoidIdUnlimitedGrowth() -> lastResetTime is:" + lastResetTime);
+        ATLog.d(TAG, "avoidIdUnlimitedGrowth() -> " + tableName + " lastResetTime is:" + lastResetTime);
 
         if (currentId <= DbConstant.MAX_ID_TABLE
                 && (System.currentTimeMillis() - lastResetTime) < DbConstant.RESET_ID_INTERVAL) {
@@ -256,9 +255,9 @@ public class DbDao {
         try {
             wipeDataAndResetId(tableName);
             insertTreeMap(tableName, tp);
-            ATLog.d(TAG, "avoidIdUnlimitedGrowth() -> successful!");
+            ATLog.d(TAG, "avoidIdUnlimitedGrowth() -> " + tableName + " successful!");
         } catch (Exception e) {
-            ATLog.e(TAG, "avoidIdUnlimitedGrowth() -> exception!");
+            ATLog.e(TAG, "avoidIdUnlimitedGrowth() -> " + tableName + " exception:" + e.getMessage());
         } finally {
             mReentrantLock.unlock();
         }
@@ -279,9 +278,9 @@ public class DbDao {
             SpUtils.putParam(ApexCache.getInstance().getContext(),
                     (tableName + Constant.SP_KEY_RESET_ID_TIME),
                     System.currentTimeMillis());
-            ATLog.d(TAG, "wipeDataAndResetId() -> wipe and reset successful!");
+            ATLog.d(TAG, "wipeDataAndResetId() -> " + tableName + " wipe and reset successful!");
         } catch (Exception e) {
-            ATLog.e(TAG, "wipeDataAndResetId() -> exception:" + e.getMessage());
+            ATLog.e(TAG, "wipeDataAndResetId() -> " + tableName + " exception:" + e.getMessage());
         } finally {
             db.endTransaction();
         }
@@ -300,7 +299,7 @@ public class DbDao {
 
         SQLiteDatabase db = openDatabase();
 
-        Cursor cursor = db.query(DbConstant.TABLE_INSTANT_ERR,
+        Cursor cursor = db.query(tableName,
                 new String[]{DbConstant.FIELD_ID},
                 null,
                 null,
