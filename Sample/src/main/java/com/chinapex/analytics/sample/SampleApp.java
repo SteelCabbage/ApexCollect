@@ -28,6 +28,7 @@ public class SampleApp extends Application {
 
         // 初始化埋点sdk
         ApexAnalytics.getInstance().init(new AnalyticsSettings.SettingsBuilder(sSampleApp)
+                .setUuid("testUuid")
                 .setLogLevel(ATLog.VERBOSE)
                 .setDelayReportInterval(1000 * 60 * 2)
                 .setCheckInstantErrInterval(1000 * 60)

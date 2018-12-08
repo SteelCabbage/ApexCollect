@@ -188,6 +188,7 @@ public class DbDao {
                         .build();
 
                 trackEventTreeMap.put(time, trackEvent);
+                ATLog.i(TAG, tableName + " queryOffset trackEventTreeMap put id is:" + id);
             }
             cursor.close();
         }
@@ -209,7 +210,7 @@ public class DbDao {
             db.beginTransaction();
             db.delete(tableName, WHERE_CLAUSE_TIME_EQ, new String[]{time + ""});
             db.setTransactionSuccessful();
-            ATLog.i(TAG, "deleteByTime from table " + tableName + " ->" + time);
+            ATLog.v(TAG, "deleteByTime from table " + tableName + " ->" + time);
         } catch (Exception e) {
             ATLog.e(TAG, "deleteByTime from table " + tableName + " exception:" + e.getMessage());
         } finally {

@@ -40,7 +40,6 @@ public class GenerateActivityPvEventData implements Runnable {
         }
 
         PvEventData.ValueBean valueBean = new PvEventData.ValueBean();
-        valueBean.setTimeStamp(mPvEndTime);
         valueBean.setReference(mReference);
 //        valueBean.setPageTitle();
         String pageClassName = mActivity.getClass().getName();
@@ -66,6 +65,7 @@ public class GenerateActivityPvEventData implements Runnable {
         pvEventData.setCountry(ApexCache.getInstance().getCountry());
         pvEventData.setProvince(ApexCache.getInstance().getProvince());
         pvEventData.setCity(ApexCache.getInstance().getCity());
+        pvEventData.setTimeStamp(mPvEndTime);
         pvEventData.setValue(valueBean);
 
         TrackEvent trackEvent = new TrackEvent.EventBuilder()

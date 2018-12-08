@@ -11,7 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.chinapex.analytics.sample.R;
 import com.chinapex.analytics.sample.utils.AppLog;
@@ -81,12 +80,12 @@ public class ClickTestActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (parent instanceof GridView) {
-            Toast.makeText(ClickTestActivity.this, "mGridView item is clicked !!!  position: " + position, Toast.LENGTH_SHORT).show();
+            AppLog.i(TAG, "mGridView item is clicked !!!  position: " + position);
             return;
         }
 
         if (parent instanceof ListView) {
-            Toast.makeText(ClickTestActivity.this, "mListView item is clicked !!!  position: " + position, Toast.LENGTH_SHORT).show();
+            AppLog.i(TAG, "mListView item is clicked !!!  position: " + position);
         }
     }
 

@@ -8,10 +8,12 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.chinapex.analytics.sample.R;
 import com.chinapex.analytics.sample.utils.AppLog;
 import com.chinapex.android.datacollect.ApexAnalytics;
+import com.chinapex.android.datacollect.model.bean.ApexLocation;
 import com.chinapex.android.datacollect.model.bean.TrackEvent;
 import com.chinapex.android.datacollect.testAop.CabbageButton;
 
@@ -24,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int REQUEST_PERMISSION = 201;
+    private EditText mEtLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +64,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Button btnClick = (Button) findViewById(R.id.bt_click_test);
         btnClick.setOnClickListener(this);
+
+        Button btSetLocaction = (Button) findViewById(R.id.bt_setLocaction);
+        btSetLocaction.setOnClickListener(this);
     }
 
     @Override
@@ -117,6 +123,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.bt_click_test:
                 startActivity(new Intent(this, ClickTestActivity.class));
+                break;
+            case R.id.bt_setLocaction:
+                ApexAnalytics.getInstance().setApexLocation(new ApexLocation.LocationBuilder()
+                        .setLongitude(11.22)
+                        .setLatitude(55.66)
+                        .setCountry(String.valueOf("中国" + System.currentTimeMillis()))
+                        .setProvince(String.valueOf("上海" + System.currentTimeMillis()))
+                        .setCity(String.valueOf("上海市" + System.currentTimeMillis()))
+                        .setDistrict("浦东新区")
+                        .build());
                 break;
             default:
                 break;

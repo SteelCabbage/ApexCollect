@@ -1,32 +1,38 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    app:actionViewClass="android.support.v7.widget.SearchView"
     tools:context="com.example.menutest.MainActivity">
 
     <item
         android:id="@+id/start"
         android:orderInCategory="100"
         android:title="Start"
+        app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/over"
         android:orderInCategory="200"
         android:title="Over"
+        app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="never" />
     <item
         android:id="@+id/setting"
-        android:title="setting">
+        android:title="setting"
+        app:actionViewClass="android.support.v7.widget.SearchView">
         <menu>
             <item
                 android:id="@+id/setting1"
                 android:orderInCategory="300"
                 android:title="声音設置"
+                app:actionViewClass="android.support.v7.widget.SearchView"
                 app:showAsAction="never" />
             <item
                 android:id="@+id/setting2"
                 android:orderInCategory="400"
                 android:title="背景設置"
+                app:actionViewClass="android.support.v7.widget.SearchView"
                 app:showAsAction="never" />
         </menu>
     </item>

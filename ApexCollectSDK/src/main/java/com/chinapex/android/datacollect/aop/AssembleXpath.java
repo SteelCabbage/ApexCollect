@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -57,6 +60,21 @@ public class AssembleXpath {
         return builder.toString();
     }
 
+
+    public static String getMenuPath(Context context, MenuItem menuItem) {
+        StringBuilder builder = new StringBuilder();
+        SearchView childView = (SearchView) MenuItemCompat.getActionView(menuItem);
+        String viewType = childView.getClass().getSimpleName();
+
+        builder.insert(0, getResourceId(context, menuItem.getGroupId()));
+        builder.insert(0, "]");
+        builder.insert(0, getResourceId(context, menuItem.getItemId()));
+        builder.insert(0, "[");
+        builder.insert(0, viewType);
+
+        return builder.toString();
+    }
+
     private static String getResourceId(Context context, int viewId) {
         String resourceName = "";
         try {
@@ -69,6 +87,11 @@ public class AssembleXpath {
     }
 
     public static String getActivityName(View view) {
+        if (null == view) {
+            ATLog.e(TAG, "getActivityName() -> view is null!");
+            return "";
+        }
+
         Context context = view.getContext();
         if (context instanceof Activity) {
             //context本身是Activity的实例

@@ -2,8 +2,6 @@ package com.chinapex.android.datacollect.executor.runnable;
 
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.chinapex.android.datacollect.global.ApexCache;
@@ -36,13 +34,13 @@ public class GenerateClickEventData implements Runnable {
     @Override
     public void run() {
         if (null == mView || TextUtils.isEmpty(mPageClassName) || TextUtils.isEmpty(mViewPath)) {
-            ATLog.e(TAG, "GenerateClickEventData run() -> mView or mPageClassName or mViewPath is null!");
+            ATLog.e(TAG, "GenerateClickEventData run() -> mView or mPageClassName or mViewPath is" +
+                    " null!");
             return;
         }
 
         ClickEventData.ValueBean valueBean = new ClickEventData.ValueBean();
         valueBean.setPageClassName(mPageClassName);
-        valueBean.setTimeStamp(System.currentTimeMillis());
         valueBean.setViewPath(mViewPath);
         String viewPathMD5 = MD5Utils.getMD5(mViewPath);
         valueBean.setViewPathMD5(viewPathMD5);
@@ -70,6 +68,7 @@ public class GenerateClickEventData implements Runnable {
         clickEventData.setCountry(ApexCache.getInstance().getCountry());
         clickEventData.setProvince(ApexCache.getInstance().getProvince());
         clickEventData.setCity(ApexCache.getInstance().getCity());
+        clickEventData.setTimeStamp(System.currentTimeMillis());
         clickEventData.setValue(valueBean);
 
         TrackEvent trackEvent = new TrackEvent.EventBuilder()

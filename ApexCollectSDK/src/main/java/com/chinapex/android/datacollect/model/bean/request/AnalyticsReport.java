@@ -17,6 +17,7 @@ public class AnalyticsReport {
 
     private String company;
     private String terminal;
+    private String configVersion;
     private DataBean data;
 
     public String getCompany() {
@@ -33,6 +34,14 @@ public class AnalyticsReport {
 
     public void setTerminal(String terminal) {
         this.terminal = terminal;
+    }
+
+    public String getConfigVersion() {
+        return configVersion;
+    }
+
+    public void setConfigVersion(String configVersion) {
+        this.configVersion = configVersion;
     }
 
     public DataBean getData() {

@@ -13,6 +13,11 @@ public class AnalyticsSettings {
     private final Context applicationContext;
 
     /**
+     * 可选参数, 若无，则默认androidId
+     */
+    private final String uuid;
+
+    /**
      * 可选参数, 日志输出等级，默认为WARN
      */
     private final int logLevel;
@@ -45,6 +50,7 @@ public class AnalyticsSettings {
 
     private AnalyticsSettings(SettingsBuilder settingsBuilder) {
         this.applicationContext = settingsBuilder.applicationContext;
+        this.uuid = settingsBuilder.uuid;
         this.logLevel = settingsBuilder.logLevel;
         this.reportMaxNum = settingsBuilder.reportMaxNum;
         this.delayReportInterval = settingsBuilder.delayReportInterval;
@@ -55,6 +61,10 @@ public class AnalyticsSettings {
 
     public Context getApplicationContext() {
         return applicationContext;
+    }
+
+    public String getUuid() {
+        return uuid;
     }
 
     public int getLogLevel() {
@@ -83,6 +93,7 @@ public class AnalyticsSettings {
 
     public static class SettingsBuilder {
         private final Context applicationContext;
+        private String uuid;
         private int logLevel;
         private int reportMaxNum;
         private long delayReportInterval;
@@ -92,6 +103,11 @@ public class AnalyticsSettings {
 
         public SettingsBuilder(Context applicationContext) {
             this.applicationContext = applicationContext;
+        }
+
+        public SettingsBuilder setUuid(String uuid) {
+            this.uuid = uuid;
+            return this;
         }
 
         public SettingsBuilder setLogLevel(int logLevel) {
@@ -133,6 +149,7 @@ public class AnalyticsSettings {
     public String toString() {
         return "AnalyticsSettings{" +
                 "applicationContext=" + applicationContext +
+                ", uuid='" + uuid + '\'' +
                 ", logLevel=" + logLevel +
                 ", reportMaxNum=" + reportMaxNum +
                 ", delayReportInterval=" + delayReportInterval +

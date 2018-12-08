@@ -11,6 +11,7 @@ public class ClickEventData {
     private String country;
     private String province;
     private String city;
+    private long timeStamp;
     private ValueBean value;
 
     public int getEventType() {
@@ -61,6 +62,14 @@ public class ClickEventData {
         this.city = city;
     }
 
+    public long getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(long timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+
     public ValueBean getValue() {
         return value;
     }
@@ -73,7 +82,6 @@ public class ClickEventData {
 
         /**
          * "pageClassName": "所属的activity名字，或者当前栈顶的activity名字",
-         * "timeStamp": 1542938208826,
          * "viewPath": "_UIButtonBarButton(9223372036854775807)&_invoke:forEvent: => ApexAssetMainController(NEO)",
          * "viewPathMD5": "51870df90a2633ba",
          * "content": "button上的字",
@@ -83,7 +91,6 @@ public class ClickEventData {
          */
 
         private String pageClassName;
-        private long timeStamp;
         private String viewPath;
         private String viewPathMD5;
         private String content;
@@ -97,14 +104,6 @@ public class ClickEventData {
 
         public void setPageClassName(String pageClassName) {
             this.pageClassName = pageClassName;
-        }
-
-        public long getTimeStamp() {
-            return timeStamp;
-        }
-
-        public void setTimeStamp(long timeStamp) {
-            this.timeStamp = timeStamp;
         }
 
         public String getViewPath() {

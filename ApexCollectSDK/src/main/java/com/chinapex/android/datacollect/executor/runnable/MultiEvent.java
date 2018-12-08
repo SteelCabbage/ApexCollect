@@ -2,6 +2,7 @@ package com.chinapex.android.datacollect.executor.runnable;
 
 import android.text.TextUtils;
 
+import com.chinapex.android.datacollect.executor.callback.IMultiEventCallback;
 import com.chinapex.android.datacollect.global.ApexCache;
 import com.chinapex.android.datacollect.global.Constant;
 import com.chinapex.android.datacollect.model.bean.TrackEvent;
@@ -32,16 +33,20 @@ public class MultiEvent implements Runnable, INetCallback {
     private static final String TAG = MultiEvent.class.getSimpleName();
     private String mTableName;
     private TreeMap<Long, TrackEvent> mTrackEventTreeMap;
+    private IMultiEventCallback mIMultiEventCallback;
 
-    public MultiEvent(String tableName, TreeMap<Long, TrackEvent> trackEventTreeMap) {
+    public MultiEvent(String tableName, TreeMap<Long, TrackEvent> trackEventTreeMap, IMultiEventCallback iMultiEventCallback) {
         mTableName = tableName;
         mTrackEventTreeMap = trackEventTreeMap;
+        mIMultiEventCallback = iMultiEventCallback;
     }
 
     @Override
     public void run() {
-        if (TextUtils.isEmpty(mTableName) || null == mTrackEventTreeMap || mTrackEventTreeMap.isEmpty()) {
-            ATLog.e(TAG, "MultiEvent mTableName or mTrackEventTreeMap is null or empty!");
+        if (TextUtils.isEmpty(mTableName)
+                || null == mTrackEventTreeMap || mTrackEventTreeMap.isEmpty()
+                || null == mIMultiEventCallback) {
+            ATLog.e(TAG, "MultiEvent mTableName or mTrackEventTreeMap or mIMultiEventCallback is null or empty!");
             return;
         }
 
@@ -55,10 +60,11 @@ public class MultiEvent implements Runnable, INetCallback {
         AnalyticsReport analyticsReport = new AnalyticsReport();
         analyticsReport.setCompany(Constant.COMPANY);
         analyticsReport.setTerminal(Constant.TERMINAL);
+        analyticsReport.setConfigVersion(ApexCache.getInstance().getConfigVersion());
         analyticsReport.setData(dataBean);
 
         String analyticsReportJson = GsonUtils.toJsonStr(analyticsReport);
-        ATLog.i(TAG, mTableName + "MultiEvent analyticsReportJson:" + analyticsReportJson);
+        ATLog.i(TAG, mTableName + " MultiEvent analyticsReportJson:" + analyticsReportJson);
 
         String url;
         switch (mTableName) {
@@ -82,13 +88,13 @@ public class MultiEvent implements Runnable, INetCallback {
         a:
         for (Map.Entry<Long, TrackEvent> entry : mTrackEventTreeMap.entrySet()) {
             if (null == entry) {
-                ATLog.e(TAG, mTableName + "run() -> entry is null");
+                ATLog.e(TAG, mTableName + " run() -> entry is null");
                 continue;
             }
 
             TrackEvent trackEvent = entry.getValue();
             if (null == trackEvent) {
-                ATLog.e(TAG, mTableName + "run() -> trackEvent is null");
+                ATLog.e(TAG, mTableName + " run() -> trackEvent is null");
                 continue;
             }
 
@@ -96,7 +102,7 @@ public class MultiEvent implements Runnable, INetCallback {
                 case Constant.EVENT_TYPE_CUSTOM:
                     CustomEventData customEventData = GsonUtils.json2Bean(trackEvent.getValue(), CustomEventData.class);
                     if (null == customEventData) {
-                        ATLog.e(TAG, "customEventData is null!");
+                        ATLog.e(TAG, mTableName + " customEventData is null!");
                         continue a;
                     }
 
@@ -105,7 +111,7 @@ public class MultiEvent implements Runnable, INetCallback {
                 case Constant.EVENT_TYPE_COLD:
                     ColdEventData coldEventData = GsonUtils.json2Bean(trackEvent.getValue(), ColdEventData.class);
                     if (null == coldEventData) {
-                        ATLog.e(TAG, mTableName + "coldEventData is null!");
+                        ATLog.e(TAG, mTableName + " coldEventData is null!");
                         continue a;
                     }
 
@@ -114,23 +120,24 @@ public class MultiEvent implements Runnable, INetCallback {
                 case Constant.EVENT_TYPE_CLICK:
                     ClickEventData clickEventData = GsonUtils.json2Bean(trackEvent.getValue(), ClickEventData.class);
                     if (null == clickEventData) {
-                        ATLog.e(TAG, mTableName + "clickEventData is null!");
+                        ATLog.e(TAG, mTableName + " clickEventData is null!");
                         continue a;
                     }
 
                     events.add(clickEventData);
                     break;
                 case Constant.EVENT_TYPE_PV:
-                    PvEventData pvEventData = GsonUtils.json2Bean(trackEvent.getValue(), PvEventData.class);
+                    PvEventData pvEventData = GsonUtils.json2Bean(trackEvent.getValue(),
+                            PvEventData.class);
                     if (null == pvEventData) {
-                        ATLog.e(TAG, mTableName + "pvEventData is null!");
+                        ATLog.e(TAG, mTableName + " pvEventData is null!");
                         continue a;
                     }
 
                     events.add(pvEventData);
                     break;
                 default:
-                    ATLog.e(TAG, "MultiEvent unknown eventType!");
+                    ATLog.e(TAG, " MultiEvent unknown eventType!");
                     break;
             }
         }
@@ -140,26 +147,34 @@ public class MultiEvent implements Runnable, INetCallback {
 
     @Override
     public void onSuccess(int statusCode, String msg, String result) {
-        ATLog.i(TAG, mTableName + "onSuccess() -> request again ok! need to delete from db");
+        ATLog.i(TAG, mTableName + " MultiEvent onSuccess() -> request again ok! need to delete from db");
         if (null == mTrackEventTreeMap || mTrackEventTreeMap.isEmpty()) {
-            ATLog.e(TAG, mTableName + "onSuccess() -> mTrackEventTreeMap is null or empty!");
+            ATLog.e(TAG, mTableName + " MultiEvent onSuccess() -> mTrackEventTreeMap is null or empty!");
             return;
         }
 
         for (Map.Entry<Long, TrackEvent> entry : mTrackEventTreeMap.entrySet()) {
             if (null == entry) {
-                ATLog.e(TAG, mTableName + "onSuccess() -> entry is null or empty!");
+                ATLog.e(TAG, mTableName + " MultiEvent onSuccess() -> entry is null or empty!");
                 continue;
             }
 
             delSuccessRequest(entry.getKey());
         }
+
+        if (null == mIMultiEventCallback) {
+            ATLog.e(TAG, mTableName + " MultiEvent onSuccess() -> mIMultiEventCallback is null!");
+            return;
+        }
+
+        // 如果result解析无异常且数据库中正常删除后, 再查询的offset应为0, 否则offset应为数据集合的长度, 保证后续数据正常发送
+        mIMultiEventCallback.continueSend(0);
     }
 
     private void delSuccessRequest(long time) {
         DbDao dbDao = DbDao.getInstance(ApexCache.getInstance().getContext());
         if (null == dbDao) {
-            ATLog.e(TAG, mTableName + "delSuccessRequest() -> analyticsDbDao is null!");
+            ATLog.e(TAG, mTableName + " delSuccessRequest() -> analyticsDbDao is null!");
             return;
         }
 
@@ -168,6 +183,13 @@ public class MultiEvent implements Runnable, INetCallback {
 
     @Override
     public void onFailed(int failedCode, String msg) {
-        ATLog.e(TAG, mTableName + "onFailed() -> request again, still failed!");
+        ATLog.e(TAG, mTableName + " MultiEvent onFailed() -> request again, still failed!");
+
+        if (null == mIMultiEventCallback) {
+            ATLog.e(TAG, mTableName + " MultiEvent onFailed() -> mIMultiEventCallback is null!");
+            return;
+        }
+
+        mIMultiEventCallback.stopSend(msg);
     }
 }

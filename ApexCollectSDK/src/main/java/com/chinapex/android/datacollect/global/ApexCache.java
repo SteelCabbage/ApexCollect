@@ -26,63 +26,41 @@ public class ApexCache implements OnNetworkTypeChangeListener {
      * app的context
      */
     private Context mContext;
-
     /**
-     * userId
+     * 配置文件的版本号, appVersion#时间戳
      */
+    private String mConfigVersion;
     private String mUserId = "";
-
     /**
-     * uuid (androidId)
+     * uuid (由使用者设置)
      */
-    private String mUuid = "";
-
-    /**
-     * deviceIds
-     */
+    private String mUuid;
     private List<String> mDeviceIds = new ArrayList<>();
-
-    /**
-     * country
-     */
-    private String country;
-
-    /**
-     * province
-     */
-    private String province;
-
-    /**
-     * city
-     */
-    private String city;
-
+    private String country = "country";
+    private String province = "province";
+    private String city = "city";
     /**
      * 上报的最大条数
      */
     private int mReportMaxNum = Constant.REPORT_MAX_NUM_DEFAULT;
-
     /**
      * 延时上报的时间间隔
      */
     private long mDelayReportInterval = Constant.DELAY_REPORT_INTERVAL_DEFAULT;
-
     /**
      * 检查即时上报是否存在异常的时间间隔
      */
     private long mCheckInstantErrInterval = Constant.CHECK_INSTANT_ERR_INTERVAL_DEFAULT;
-
     /**
      * 延时上报的url
      */
     private String mUrlDelay = Constant.URL_DELAY_REPORT;
-
     /**
      * 即时上报的url
      */
     private String mUrlInstant = Constant.URL_INSTANT_REPORT;
-
     private String mNetworkType;
+
 
     private ApexCache() {
 
@@ -108,6 +86,14 @@ public class ApexCache implements OnNetworkTypeChangeListener {
 
     public void setContext(Context context) {
         mContext = context;
+    }
+
+    public String getConfigVersion() {
+        return mConfigVersion;
+    }
+
+    public void setConfigVersion(String configVersion) {
+        mConfigVersion = configVersion;
     }
 
     public ConcurrentHashMap<String, Long> getPvDurationTimes() {

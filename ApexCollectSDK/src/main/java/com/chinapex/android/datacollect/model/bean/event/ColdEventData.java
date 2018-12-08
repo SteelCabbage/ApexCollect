@@ -12,6 +12,7 @@ public class ColdEventData {
     private String country;
     private String province;
     private String city;
+    private long timeStamp;
     private ValueBean value;
 
     public int getEventType() {
@@ -62,6 +63,14 @@ public class ColdEventData {
         this.city = city;
     }
 
+    public long getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(long timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+
     public ValueBean getValue() {
         return value;
     }
@@ -73,7 +82,6 @@ public class ColdEventData {
     public static class ValueBean {
 
         /**
-         * "timeStamp": 15687651321121    毫秒级
          * "apiKey": "apikey",
          * "customVersion": "12.1",
          * "os": "iOS",
@@ -88,7 +96,6 @@ public class ColdEventData {
          * "screenDensity": ""
          */
 
-        private long timeStamp;
         private String apiKey;
         private String customVersion;
         private String os;
@@ -101,14 +108,6 @@ public class ColdEventData {
         private String screenWidth;
         private String screenHeight;
         private String screenDensity;
-
-        public long getTimeStamp() {
-            return timeStamp;
-        }
-
-        public void setTimeStamp(long timeStamp) {
-            this.timeStamp = timeStamp;
-        }
 
         public String getApiKey() {
             return apiKey;

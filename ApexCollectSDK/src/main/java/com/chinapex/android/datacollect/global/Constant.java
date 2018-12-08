@@ -36,6 +36,8 @@ public class Constant {
      */
     public static final String SP_KEY_RESET_ID_TIME = "_resetIdTime";
     public static final long SP_DEF_VAL_RESET_ID_TIME = 0;
+    public static final String SP_KEY_CONFIG_VERSION = "_configVersion";
+    public static final String SP_DEF_VAL_CONFIG_VERSION = "defConfigVersion";
 
 
     /**

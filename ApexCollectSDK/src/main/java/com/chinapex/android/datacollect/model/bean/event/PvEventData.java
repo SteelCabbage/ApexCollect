@@ -13,6 +13,7 @@ public class PvEventData {
     private String country;
     private String province;
     private String city;
+    private long timeStamp;
     private ValueBean value;
 
     public int getEventType() {
@@ -63,6 +64,14 @@ public class PvEventData {
         this.city = city;
     }
 
+    public long getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(long timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+
     public ValueBean getValue() {
         return value;
     }
@@ -74,7 +83,6 @@ public class PvEventData {
     public static class ValueBean {
 
         /**
-         * "timeStamp": 1542938209329,     毫秒
          * "reference": "ApexAssetMainController",      From
          * "pageTitle": "111111",
          * "pageClassName": "ApexAccountDetailController",
@@ -116,7 +124,6 @@ public class PvEventData {
 
          */
 
-        private long timeStamp;
         private String reference;
         private String pageTitle;
         private String pageClassName;
@@ -128,13 +135,6 @@ public class PvEventData {
          */
         private List<Object> exposures;
 
-        public long getTimeStamp() {
-            return timeStamp;
-        }
-
-        public void setTimeStamp(long timeStamp) {
-            this.timeStamp = timeStamp;
-        }
 
         public String getReference() {
             return reference;

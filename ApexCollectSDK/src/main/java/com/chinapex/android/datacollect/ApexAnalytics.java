@@ -7,15 +7,16 @@ import com.chinapex.android.datacollect.changelistener.AnalyticsListenerControll
 import com.chinapex.android.datacollect.controller.BaseController;
 import com.chinapex.android.datacollect.controller.IController;
 import com.chinapex.android.datacollect.executor.TaskController;
-import com.chinapex.android.datacollect.executor.runnable.CustomEvent;
-import com.chinapex.android.datacollect.executor.runnable.InstantEvent;
+import com.chinapex.android.datacollect.executor.runnable.GenerateCustomEventData;
+import com.chinapex.android.datacollect.executor.runnable.UpdateConfig;
 import com.chinapex.android.datacollect.global.ApexCache;
 import com.chinapex.android.datacollect.global.Constant;
 import com.chinapex.android.datacollect.model.bean.AnalyticsSettings;
+import com.chinapex.android.datacollect.model.bean.ApexLocation;
 import com.chinapex.android.datacollect.model.bean.TrackEvent;
-import com.chinapex.android.datacollect.model.db.DbConstant;
-import com.chinapex.android.datacollect.model.db.DbDao;
 import com.chinapex.android.datacollect.utils.ATLog;
+import com.chinapex.android.datacollect.utils.PhoneStateUtils;
+import com.chinapex.android.datacollect.utils.SpUtils;
 
 import java.util.HashMap;
 
@@ -89,12 +90,22 @@ public class ApexAnalytics {
         ApexCache.getInstance().setContext(applicationContext);
 
         // 可自定义的Settings
+        setUuid(analyticsSettings.getUuid());
         setReportMaxNum(analyticsSettings.getReportMaxNum());
         setDelayReportInterval(analyticsSettings.getDelayReportInterval());
         setCheckInstantErrInterval(analyticsSettings.getCheckInstantErrInterval());
         setUrlDelay(analyticsSettings.getUrlDelay());
         setUrlInstant(analyticsSettings.getUrlInstant());
         setLogLevel(analyticsSettings.getLogLevel());
+
+        // 获取并设置当前配置文件版本号
+        String configVersion = (String) SpUtils.getParam(ApexCache.getInstance().getContext(),
+                Constant.SP_KEY_CONFIG_VERSION,
+                Constant.SP_DEF_VAL_CONFIG_VERSION);
+        ApexCache.getInstance().setConfigVersion(configVersion);
+
+        // 更新配置文件
+        TaskController.getInstance().submit(new UpdateConfig());
 
         // 初始化BaseController
         BaseController.getInstance().doInit();
@@ -104,7 +115,7 @@ public class ApexAnalytics {
 
 
     /* *************************************************************************************************************
-     *                                          Track, SignIn, SignOut                                             *
+     *                                  Track, SignIn, SignOut, SetApexLocation                                    *
      * *************************************************************************************************************
      */
 
@@ -120,15 +131,41 @@ public class ApexAnalytics {
         }
 
         ATLog.i(TAG, "track() -> trackEvent:" + trackEvent);
-        TaskController.getInstance().submit(new CustomEvent(trackEvent));
+        TaskController.getInstance().submit(new GenerateCustomEventData(trackEvent));
     }
 
     public void signIn(String userId) {
+        if (!mIsInit) {
+            ATLog.e(TAG, "signIn() -> please initialize!");
+            return;
+        }
+
         ApexCache.getInstance().setUserId(userId);
     }
 
     public void signOut() {
+        if (!mIsInit) {
+            ATLog.e(TAG, "signOut() -> please initialize!");
+            return;
+        }
+
         ApexCache.getInstance().setUserId("");
+    }
+
+    public void setApexLocation(ApexLocation apexLocation) {
+        if (!mIsInit) {
+            ATLog.e(TAG, "setApexLocation() -> please initialize!");
+            return;
+        }
+
+        if (null == apexLocation) {
+            ATLog.w(TAG, "setApexLocation() -> apexLocation is null!");
+            return;
+        }
+
+        ApexCache.getInstance().setCountry(apexLocation.getCountry());
+        ApexCache.getInstance().setProvince(apexLocation.getProvince());
+        ApexCache.getInstance().setCity(apexLocation.getCity());
     }
 
 
@@ -137,7 +174,19 @@ public class ApexAnalytics {
      * *************************************************************************************************************
      */
 
-    // TODO: 2018/11/14 0014 各种设置
+    /**
+     * 设置UUID, 若无，将会以AndroidId替代
+     */
+    private void setUuid(String uuid) {
+        if (TextUtils.isEmpty(uuid)) {
+            ATLog.w(TAG, "uuid can not be null! android id will be used");
+            String androidId = PhoneStateUtils.getAndroidId(ApexCache.getInstance().getContext());
+            ApexCache.getInstance().setUuid(androidId);
+            return;
+        }
+
+        ApexCache.getInstance().setUuid(uuid);
+    }
 
     /**
      * setMaxNum 设置上报条数

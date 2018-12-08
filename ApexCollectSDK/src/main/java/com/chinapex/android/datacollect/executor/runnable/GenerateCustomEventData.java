@@ -16,19 +16,19 @@ import java.util.Map;
  * @author SteelCabbage
  * @date 2018/11/25
  */
-public class CustomEvent implements Runnable {
+public class GenerateCustomEventData implements Runnable {
 
-    private static final String TAG = CustomEvent.class.getSimpleName();
+    private static final String TAG = GenerateCustomEventData.class.getSimpleName();
     private TrackEvent mTrackEvent;
 
-    public CustomEvent(TrackEvent trackEvent) {
+    public GenerateCustomEventData(TrackEvent trackEvent) {
         mTrackEvent = trackEvent;
     }
 
     @Override
     public void run() {
         if (null == mTrackEvent) {
-            ATLog.e(TAG, "CustomEvent run() -> mTrackEvent is null!");
+            ATLog.e(TAG, "GenerateCustomEventData run() -> mTrackEvent is null!");
             return;
         }
 
@@ -44,6 +44,7 @@ public class CustomEvent implements Runnable {
         customEventData.setCountry(ApexCache.getInstance().getCountry());
         customEventData.setProvince(ApexCache.getInstance().getProvince());
         customEventData.setCity(ApexCache.getInstance().getCity());
+        customEventData.setTimeStamp(System.currentTimeMillis());
 
         Map<String, String> customEventDataValue = GsonUtils.json2StringMap(mTrackEvent.getValue());
         customEventData.setValue(customEventDataValue);

@@ -13,6 +13,7 @@ public class CustomEventData {
     private String country;
     private String province;
     private String city;
+    private long timeStamp;
     private Map<String, String> value;
 
     public int getEventType() {
@@ -61,6 +62,14 @@ public class CustomEventData {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public long getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(long timeStamp) {
+        this.timeStamp = timeStamp;
     }
 
     public Map<String, String> getValue() {

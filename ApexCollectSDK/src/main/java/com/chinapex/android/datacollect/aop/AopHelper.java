@@ -2,11 +2,15 @@ package com.chinapex.android.datacollect.aop;
 
 import android.app.Activity;
 import android.os.Build;
-import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 
 import com.chinapex.android.datacollect.executor.TaskController;
@@ -30,7 +34,7 @@ public class AopHelper {
     private static boolean isMonitor = false;
 
     public static boolean onClick(View view) {
-        long currentThreadTimeMillis = SystemClock.currentThreadTimeMillis();
+        long currentTimeMillis = System.currentTimeMillis();
         String viewPath = AssembleXpath.getPath(ApexCache.getInstance().getContext(), view);
         String pageClassName = AssembleXpath.getActivityName(view);
         ATLog.i(TAG, "viewPath:" + viewPath);
@@ -48,12 +52,12 @@ public class AopHelper {
             TaskController.getInstance().submit(new GenerateClickEventData(view, viewPath, pageClassName));
         }
 
-        ATLog.e(TAG, "插桩方法耗时======" + (SystemClock.currentThreadTimeMillis() - currentThreadTimeMillis));
+        ATLog.e(TAG, "插桩方法耗时======" + (System.currentTimeMillis() - currentTimeMillis));
         return isMonitor;
     }
 
     public static boolean onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        long currentThreadTimeMillis = SystemClock.currentThreadTimeMillis();
+        long currentTimeMillis = System.currentTimeMillis();
         String viewPath = AssembleXpath.getPath(ApexCache.getInstance().getContext(), view);
         String pageClassName = AssembleXpath.getActivityName(view);
         ATLog.i(TAG, "onItemClick viewPath:" + viewPath);
@@ -71,9 +75,40 @@ public class AopHelper {
             TaskController.getInstance().submit(new GenerateClickEventData(view, viewPath, pageClassName));
         }
 
-        ATLog.e(TAG, "onItemClick 插桩方法耗时======" + (SystemClock.currentThreadTimeMillis() - currentThreadTimeMillis));
+        ATLog.e(TAG, "onItemClick 插桩方法耗时======" + (System.currentTimeMillis() - currentTimeMillis));
         return isMonitor;
     }
+
+    public static boolean onOptionsItemSelected(AppCompatActivity activity, MenuItem menuItem) {
+        ViewGroup viewById = activity.findViewById(android.R.id.content);
+
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+        if (null == searchView) {
+            ATLog.e(TAG, "searchView is null! ");
+            return isMonitor;
+        }
+
+        long currentTimeMillis = System.currentTimeMillis();
+        String menuPath = AssembleXpath.getMenuPath(ApexCache.getInstance().getContext(), menuItem);
+        String contentViewPath = AssembleXpath.getPath(ApexCache.getInstance().getContext(), viewById.getChildAt(0));
+        String pageClassName = AssembleXpath.getActivityName(searchView);
+        String viewPath = contentViewPath + menuPath;
+
+        ATLog.i(TAG, "onOptionsItemSelected viewPath:" + contentViewPath + menuPath);
+        ATLog.i(TAG, "onOptionsItemSelected pageClassName:" + pageClassName);
+
+
+        if (isMonitor) {
+            ATLog.d(TAG, "onItemClick 圈选模式开启，不走原有逻辑======记录并加入配置文件中，待后续上传");
+        } else {
+            ATLog.i(TAG, "onItemClick 圈选模式关闭，原有逻辑执行======正常上传埋点事件");
+            TaskController.getInstance().submit(new GenerateClickEventData(searchView, viewPath, pageClassName));
+        }
+
+        ATLog.e(TAG, "插桩方法耗时======" + (System.currentTimeMillis() - currentTimeMillis));
+        return isMonitor;
+    }
+
 
     private static void getAdapterData(View view) {
         int index = ((RecyclerView) view.getParent()).getChildAdapterPosition(view);

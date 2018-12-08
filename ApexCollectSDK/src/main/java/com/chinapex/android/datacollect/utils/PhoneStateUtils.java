@@ -31,7 +31,7 @@ public class PhoneStateUtils {
     private static final String TAG = PhoneStateUtils.class.getSimpleName();
 
     /**
-     * getAndroidId (uuid)
+     * getAndroidId
      *
      * @param context
      * @return

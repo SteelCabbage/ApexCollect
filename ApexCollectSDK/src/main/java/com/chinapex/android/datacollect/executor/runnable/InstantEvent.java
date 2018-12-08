@@ -94,10 +94,11 @@ public class InstantEvent implements Runnable, INetCallback {
         AnalyticsReport analyticsReport = new AnalyticsReport();
         analyticsReport.setCompany(Constant.COMPANY);
         analyticsReport.setTerminal(Constant.TERMINAL);
+        analyticsReport.setConfigVersion(ApexCache.getInstance().getConfigVersion());
         analyticsReport.setData(dataBean);
 
         String analyticsReportJson = GsonUtils.toJsonStr(analyticsReport);
-        ATLog.i(TAG, "analyticsReportJson:" + analyticsReportJson);
+        ATLog.i(TAG, "InstantEvent analyticsReportJson:" + analyticsReportJson);
 
         OkHttpClientManager.getInstance().postJson(ApexCache.getInstance().getUrlInstant(), analyticsReportJson, this);
     }
