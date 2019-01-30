@@ -83,6 +83,7 @@ public class ColdEventData {
 
         /**
          * "apiKey": "apikey",
+         * "channelId": "豌豆荚",
          * "customVersion": "12.1",
          * "os": "iOS",
          * "osVersion": "12.1",
@@ -97,6 +98,7 @@ public class ColdEventData {
          */
 
         private String apiKey;
+        private String channelId;
         private String customVersion;
         private String os;
         private String osVersion;
@@ -115,6 +117,14 @@ public class ColdEventData {
 
         public void setApiKey(String apiKey) {
             this.apiKey = apiKey;
+        }
+
+        public String getChannelId() {
+            return channelId;
+        }
+
+        public void setChannelId(String channelId) {
+            this.channelId = channelId;
         }
 
         public String getCustomVersion() {

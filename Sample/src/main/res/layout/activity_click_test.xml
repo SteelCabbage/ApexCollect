@@ -80,16 +80,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/image_button"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:gravity="center"
         android:text="ListView"
         android:textStyle="bold" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/list_view_tip"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_toEndOf="@+id/list_view_tip"
+        android:layout_toRightOf="@+id/list_view_tip"
+        android:text="ListTempNode" />
+
     <ListView
         android:id="@+id/list_view"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_below="@+id/list_view_tip"
         android:background="@android:color/holo_purple" />
 
@@ -97,18 +105,50 @@
         android:id="@+id/grid_view_tip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/list_view"
-        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/image_button"
         android:layout_marginTop="10dp"
-        android:gravity="center"
+        android:layout_toStartOf="@+id/grid_temp_node"
+        android:layout_toLeftOf="@+id/grid_temp_node"
+        android:gravity="end"
         android:text="GridView"
         android:textStyle="bold" />
 
+    <TextView
+        android:id="@+id/grid_temp_node"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/grid_view_tip"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:gravity="end"
+        android:text="GridTempNode" />
+
     <GridView
         android:id="@+id/grid_view"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_below="@+id/grid_view_tip"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:background="@color/colorPrimaryDark" />
+
+    <TextView
+        android:id="@+id/tv_expandable_list_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/grid_view"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="ExpandableListView" />
+
+    <ExpandableListView
+        android:id="@+id/expandable_list_view"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tv_expandable_list_view"
+        android:layout_centerHorizontal="true"
+        android:background="@color/c_02A6EF" />
 
 </RelativeLayout>

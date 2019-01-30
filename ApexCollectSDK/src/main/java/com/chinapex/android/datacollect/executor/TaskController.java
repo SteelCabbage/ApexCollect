@@ -70,4 +70,13 @@ public class TaskController implements IController {
         return mScheduledExecutorService.scheduleAtFixedRate(runnable, initialDelay, period, TimeUnit.MILLISECONDS);
     }
 
+    public ScheduledFuture scheduleDelay(Runnable runnable, long delay) {
+        if (null == mScheduledExecutorService || null == runnable) {
+            ATLog.e(TAG, "scheduleDelay() -> mScheduledExecutorService or runnable is null!");
+            return null;
+        }
+
+        return mScheduledExecutorService.schedule(runnable, delay, TimeUnit.MILLISECONDS);
+    }
+
 }

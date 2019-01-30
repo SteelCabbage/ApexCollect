@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/upload_page_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="@string/upload_event"
+        android:textSize="18sp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/upload_event_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/upload_page_button_container"
+        android:layout_below="@+id/upload_page_title"
+        android:layout_margin="10dp"
+        android:scrollbars="none" />
+
+    <RelativeLayout
+        android:id="@+id/upload_page_button_container"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="20dp">
+
+        <Button
+            android:id="@+id/btn_upload"
+            android:layout_width="120dp"
+            android:layout_height="match_parent"
+            android:background="@color/c_02A6EF"
+            android:text="@string/upload"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/title_lv3_size" />
+
+        <Button
+            android:id="@+id/btn_cancel_upload"
+            android:layout_width="120dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="30dp"
+            android:layout_marginLeft="30dp"
+            android:layout_toEndOf="@+id/btn_upload"
+            android:layout_toRightOf="@+id/btn_upload"
+            android:background="@drawable/border_line_while"
+            android:text="@string/upload_cancel"
+            android:textSize="@dimen/title_lv3_size" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,10 +1,9 @@
 package com.chinapex.android.datacollect.controller;
 
-import android.text.TextUtils;
-
 import com.chinapex.android.datacollect.executor.TaskController;
 import com.chinapex.android.datacollect.executor.runnable.GenerateColdEventData;
 import com.chinapex.android.datacollect.global.ApexCache;
+import com.chinapex.android.datacollect.global.Constant;
 import com.chinapex.android.datacollect.utils.PhoneStateUtils;
 
 import java.util.List;
@@ -38,7 +37,7 @@ public class PhoneStateController implements IController {
             ApexCache.getInstance().setDeviceIds(deviceIds);
         }
 
-        TaskController.getInstance().submit(new GenerateColdEventData());
+        TaskController.getInstance().scheduleDelay(new GenerateColdEventData(), Constant.DELAY_REPORT_COLD_EVENT);
     }
 
     @Override

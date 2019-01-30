@@ -11,11 +11,15 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.chinapex.analytics.sample.R;
+import com.chinapex.analytics.sample.bean.TestTracker;
 import com.chinapex.analytics.sample.utils.AppLog;
 import com.chinapex.android.datacollect.ApexAnalytics;
 import com.chinapex.android.datacollect.model.bean.ApexLocation;
 import com.chinapex.android.datacollect.model.bean.TrackEvent;
 import com.chinapex.android.datacollect.testAop.CabbageButton;
+import com.chinapex.android.datacollect.utils.GsonUtils;
+
+import java.util.Properties;
 
 
 /**
@@ -26,7 +30,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int REQUEST_PERMISSION = 201;
-    private EditText mEtLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initView() {
+        Button btToTestActivity = (Button) findViewById(R.id.bt_2_test_activity);
+        btToTestActivity.setOnClickListener(this);
+
         Button btTest = (Button) findViewById(R.id.bt_test);
         btTest.setOnClickListener(this);
 
@@ -73,6 +79,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.bt_2_test_activity:
+                startActivity(new Intent(MainActivity.this, TestActivity.class));
+                break;
             case R.id.bt_test:
                 AppLog.i(TAG, "原有逻辑执行 ====== bt_test被点击了");
                 break;
@@ -90,29 +99,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent2);
                 break;
             case R.id.bt_delay:
+                TestTracker testTracker = new TestTracker();
+                testTracker.setDate("2018.12.12");
+                testTracker.setName("张三");
+                testTracker.setAge("18");
+                testTracker.setWork("study");
+
+                AppLog.d(TAG, "testTracker:" + GsonUtils.toJsonStr(testTracker));
                 ApexAnalytics.getInstance().track(new TrackEvent.EventBuilder()
-                        .setLabel("延时上报的label")
-                        .setValue("{\n" +
-                                "                \"custom1\": \"111111\",\n" +
-                                "                \"custom2\": \"222222\",\n" +
-                                "                \"custom3\": \"333333\",\n" +
-                                "                \"custom4\": \"444444\",\n" +
-                                "                \"custom5\": \"555555\"\n" +
-                                "            }")
+                        .setMode(0)
+                        .setLabel("testTracker")
+                        .setValue(GsonUtils.toJsonStr(testTracker))
                         .build());
                 break;
             case R.id.bt_instant:
+                Properties properties = new Properties();
+                properties.put("lala1", "lala11");
+                properties.put("lala2", "lala22");
+                properties.put("lala3", "lala33");
+                properties.put("lala4", "lala44");
+                properties.put("lala5", "lala55");
+
+                AppLog.d(TAG, "properties:" + GsonUtils.toJsonStr(properties));
                 ApexAnalytics.getInstance().track(new TrackEvent.EventBuilder()
-                        // 0: delay (default), 1: instant
                         .setMode(1)
-                        .setLabel("即时上报的label")
-                        .setValue("{\n" +
-                                "                \"custom1\": \"111111\",\n" +
-                                "                \"custom2\": \"222222\",\n" +
-                                "                \"custom3\": \"333333\",\n" +
-                                "                \"custom4\": \"444444\",\n" +
-                                "                \"custom5\": \"555555\"\n" +
-                                "            }")
+                        .setLabel("properties")
+                        .setValue(GsonUtils.toJsonStr(properties))
                         .build());
                 break;
             case R.id.bt_signIn:
@@ -142,12 +154,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void checkPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED
-//                    || checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-//                    || checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                    ) {
+                    || checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    || checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.READ_PHONE_STATE
-                                /* , Manifest.permission.ACCESS_FINE_LOCATION
-                                 , Manifest.permission.ACCESS_COARSE_LOCATION*/},
+                                , Manifest.permission.ACCESS_FINE_LOCATION
+                                , Manifest.permission.ACCESS_COARSE_LOCATION
+                                , Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                , Manifest.permission.READ_EXTERNAL_STORAGE},
                         REQUEST_PERMISSION);
             }
         }

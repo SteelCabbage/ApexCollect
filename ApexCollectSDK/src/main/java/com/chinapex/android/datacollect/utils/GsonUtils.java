@@ -1,5 +1,6 @@
 package com.chinapex.android.datacollect.utils;
 
+import com.chinapex.android.datacollect.model.bean.response.UpdateConfigResponse;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
@@ -58,10 +59,22 @@ public class GsonUtils {
             }.getType();
             map = sGson.fromJson(stringMapJson, type);
         } catch (JsonSyntaxException e) {
-            ATLog.e(TAG, "json2Map JsonSyntaxException:" + e.getMessage());
+            ATLog.e(TAG, "json2StringMap JsonSyntaxException:" + e.getMessage());
         }
         return map;
     }
+
+//    public static Map<String, UpdateConfigResponse.DataBean.Config> json2ConfigMap(String configMapJson) {
+//        Map<String, UpdateConfigResponse.DataBean.Config> map = null;
+//        try {
+//            Type type = new TypeToken<Map<String, UpdateConfigResponse.DataBean.Config>>() {
+//            }.getType();
+//            map = sGson.fromJson(configMapJson, type);
+//        } catch (JsonSyntaxException e) {
+//            ATLog.e(TAG, "json2ConfigMap JsonSyntaxException:" + e.getMessage());
+//        }
+//        return map;
+//    }
 
     public static <T> List<T> json2List(String listJson, Class<T> cls) {
         Type type = new ParameterizedTypeImpl(cls);

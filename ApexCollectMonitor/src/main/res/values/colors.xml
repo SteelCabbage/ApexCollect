@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="c_999999">#999999</color>
+    <color name="c_1ADCDCDC">#1ADCDCDC</color>
+    <color name="c_4B9FC4">#4B9FC4</color>
+    <color name="c_ffcccccc">#ffcccccc</color>
+
+    <!--switch开关色-->
+    <color name="c_188FFE">#188FFE</color>
+    <!--圈选导航蓝色-->
+    <color name="c_7ABAD7">#7ABAD7</color>
+    <!--背景灰色-->
+    <color name="c_F1F1F1">#F1F1F1</color>
+    <!--菜单分割线-->
+    <color name="c_D3D3D3">#D3D3D3</color>
+    <!--条目序号底色蓝-->
+    <color name="c_AFE0F6">#AFE0F6</color>
+    <!--条目字体蓝-->
+    <color name="c_548FA8">#548FA8</color>
+    <!--点击占比 / 排行榜 底色蓝-->
+    <color name="c_47A0C8">#47A0C8</color>
+    <!--button蓝-->
+    <color name="c_02A6EF">#02A6EF</color>
+    <!--上传页面，删除字体蓝-->
+    <color name="c_015478">#015478</color>
+
+</resources>

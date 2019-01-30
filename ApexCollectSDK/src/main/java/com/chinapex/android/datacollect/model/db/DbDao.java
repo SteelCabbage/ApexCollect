@@ -7,6 +7,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
+import com.chinapex.android.datacollect.BuildConfig;
 import com.chinapex.android.datacollect.global.ApexCache;
 import com.chinapex.android.datacollect.global.Constant;
 import com.chinapex.android.datacollect.model.bean.TrackEvent;
@@ -70,6 +71,11 @@ public class DbDao {
     }
 
     public synchronized void insert(String tableName, TrackEvent trackEvent, long time) {
+        if (BuildConfig.DEBUG) {
+            ATLog.d(TAG, "DbDao insert() -> current is DEBUG mode, no need to insert!");
+//            return;    后续正式版本打开，debug模式不上报
+        }
+
         if (TextUtils.isEmpty(tableName) || null == trackEvent) {
             ATLog.e(TAG, "insert() -> tableName or trackEvent is null!");
             return;
@@ -83,8 +89,8 @@ public class DbDao {
         contentValues.put(DbConstant.FIELD_VALUE, trackEvent.getValue());
 
         SQLiteDatabase db = openDatabase();
+        db.beginTransaction();
         try {
-            db.beginTransaction();
             long insertOrThrow = db.insertOrThrow(tableName, null, contentValues);
             db.setTransactionSuccessful();
             ATLog.i(TAG, "insert into " + tableName + " id = " + insertOrThrow + " ->" + trackEvent);
@@ -206,8 +212,8 @@ public class DbDao {
         }
 
         SQLiteDatabase db = openDatabase();
+        db.beginTransaction();
         try {
-            db.beginTransaction();
             db.delete(tableName, WHERE_CLAUSE_TIME_EQ, new String[]{time + ""});
             db.setTransactionSuccessful();
             ATLog.v(TAG, "deleteByTime from table " + tableName + " ->" + time);
@@ -271,8 +277,8 @@ public class DbDao {
         }
 
         SQLiteDatabase db = openDatabase();
+        db.beginTransaction();
         try {
-            db.beginTransaction();
             db.execSQL(DbConstant.SQL_WIPE_DATA + tableName);
             db.execSQL(DbConstant.SQL_RESET_ID + "'" + tableName + "'");
             db.setTransactionSuccessful();

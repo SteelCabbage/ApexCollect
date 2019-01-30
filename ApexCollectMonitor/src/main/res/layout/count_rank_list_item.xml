@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="60dp">
+
+    <TextView
+        android:id="@+id/tv_event_name"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:textSize="@dimen/text_normal_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="元素事件1"/>
+
+    <View
+        android:id="@+id/v_column"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/column_margin_left"
+        android:layout_marginLeft="@dimen/column_margin_left"
+        android:layout_marginEnd="@dimen/column_margin_right"
+        android:layout_marginRight="@dimen/column_margin_right"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        tools:background="@color/c_4B9FC4"/>
+
+    <TextView
+        android:id="@+id/tv_column_percent"
+        android:textSize="@dimen/text_small_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/v_column"
+        android:layout_alignLeft="@+id/v_column"
+        android:layout_above="@+id/v_column"
+        tools:text="100%"/>
+
+</RelativeLayout>

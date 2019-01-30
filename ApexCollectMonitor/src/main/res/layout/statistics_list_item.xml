@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:layout_marginBottom="5dp"
+    android:background="@color/c_F1F1F1">
+
+    <View
+        android:layout_width="1px"
+        android:layout_height="70dp"
+        android:background="@color/c_D3D3D3" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/c_D3D3D3" />
+
+    <View
+        android:layout_width="1px"
+        android:layout_height="70dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:background="@color/c_D3D3D3" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_alignParentBottom="true"
+        android:background="@color/c_D3D3D3" />
+
+    <TextView
+        android:id="@+id/tv_sequence"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/c_AFE0F6"
+        android:gravity="center"
+        android:text="1"
+        android:textColor="@color/c_548FA8"
+        android:textSize="@dimen/title_lv3_size"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_event_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="10dp"
+        android:text="页面事件名称A"
+        android:textSize="@dimen/title_lv3_size" />
+
+    <TextView
+        android:id="@+id/tv_item_click_cnt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="10dp"
+        android:text="@string/click_count" />
+
+    <TextView
+        android:id="@+id/tv_item_click_cnt_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="3dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginBottom="10dp"
+        android:layout_toEndOf="@+id/tv_item_click_cnt"
+        android:layout_toRightOf="@+id/tv_item_click_cnt"
+        android:text="5,310" />
+
+    <TextView
+        android:id="@+id/tv_item_click_proportion_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="80dp"
+        android:layout_marginRight="80dp"
+        android:layout_marginBottom="10dp"
+        android:text="2.31%" />
+
+    <TextView
+        android:id="@+id/tv_item_click_proportion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="3dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginBottom="10dp"
+        android:layout_toStartOf="@+id/tv_item_click_proportion_value"
+        android:layout_toLeftOf="@+id/tv_item_click_proportion_value"
+        android:text="@string/click_proportion" />
+
+    <ImageButton
+        android:id="@+id/ib_delete_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="@null"
+        android:padding="20dp"
+        android:src="@drawable/close_16" />
+</RelativeLayout>

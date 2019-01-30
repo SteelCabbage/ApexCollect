@@ -1,5 +1,7 @@
 package com.chinapex.android.datacollect.changelistener;
 
+import android.widget.AbsListView;
+
 import com.chinapex.android.datacollect.controller.IController;
 import com.chinapex.android.datacollect.utils.ATLog;
 
@@ -15,6 +17,7 @@ public class AnalyticsListenerController implements IController {
     private static final String TAG = AnalyticsListenerController.class.getSimpleName();
 
     private List<OnNetworkTypeChangeListener> mOnNetworkTypeChangeListeners;
+    private List<OnListPvEventsChangeListener> mOnListPvEventsChangeListeners;
 
     private AnalyticsListenerController() {
 
@@ -32,6 +35,7 @@ public class AnalyticsListenerController implements IController {
     @Override
     public void doInit() {
         mOnNetworkTypeChangeListeners = new ArrayList<>();
+        mOnListPvEventsChangeListeners = new ArrayList<>();
     }
 
     @Override
@@ -41,8 +45,16 @@ public class AnalyticsListenerController implements IController {
             return;
         }
 
+        if (null == mOnListPvEventsChangeListeners) {
+            ATLog.e(TAG, "onDestroy() -> mOnListPvEventsChangeListeners is null!");
+            return;
+        }
+
         mOnNetworkTypeChangeListeners.clear();
         mOnNetworkTypeChangeListeners = null;
+
+        mOnListPvEventsChangeListeners.clear();
+        mOnListPvEventsChangeListeners = null;
     }
 
     public void addOnNetworkTypeChangeListener(OnNetworkTypeChangeListener onNetworkTypeChangeListener) {
@@ -54,6 +66,15 @@ public class AnalyticsListenerController implements IController {
         mOnNetworkTypeChangeListeners.add(onNetworkTypeChangeListener);
     }
 
+    public void addOnListPvEventsChangeListener(OnListPvEventsChangeListener onListPvEventsChangeListener) {
+        if (null == mOnListPvEventsChangeListeners || null == onListPvEventsChangeListener) {
+            ATLog.e(TAG, "1: mOnListPvEventsChangeListeners or onListPvEventsChangeListener is null!");
+            return;
+        }
+
+        mOnListPvEventsChangeListeners.add(onListPvEventsChangeListener);
+    }
+
     public void removeOnNetworkTypeChangeListener(OnNetworkTypeChangeListener onNetworkTypeChangeListener) {
         if (null == mOnNetworkTypeChangeListeners || null == onNetworkTypeChangeListener) {
             ATLog.e(TAG, "0: mOnNetworkTypeChangeListeners or onNetworkTypeChangeListener is null!");
@@ -61,6 +82,15 @@ public class AnalyticsListenerController implements IController {
         }
 
         mOnNetworkTypeChangeListeners.remove(onNetworkTypeChangeListener);
+    }
+
+    public void removeOnListPvEventsChangeListener(OnListPvEventsChangeListener onListPvEventsChangeListener) {
+        if (null == mOnListPvEventsChangeListeners || null == onListPvEventsChangeListener) {
+            ATLog.e(TAG, "0: mOnListPvEventsChangeListeners or onListPvEventsChangeListener is null!");
+            return;
+        }
+
+        mOnListPvEventsChangeListeners.remove(onListPvEventsChangeListener);
     }
 
     public void notifyNetworkTypeChange(String networkType) {
@@ -76,6 +106,54 @@ public class AnalyticsListenerController implements IController {
             }
 
             onNetworkTypeChangeListener.networkTypeChange(networkType);
+        }
+    }
+
+    public void notifyListPvEventsOnPageExit(String pageName) {
+        if (null == mOnListPvEventsChangeListeners) {
+            ATLog.e(TAG, "notifyListPvEventsOnPageExit() -> mOnListPvEventsChangeListeners is null!");
+            return;
+        }
+
+        for (OnListPvEventsChangeListener onListPvEventsChangeListener : mOnListPvEventsChangeListeners) {
+            if (null == onListPvEventsChangeListener) {
+                ATLog.e(TAG, "notifyListPvEventsOnPageExit() -> onListPvEventsChangeListener is null!");
+                continue;
+            }
+
+            onListPvEventsChangeListener.onPageExit(pageName);
+        }
+    }
+
+    public void notifyListPvEventsOnListIdle(AbsListView absListView) {
+        if (null == mOnListPvEventsChangeListeners) {
+            ATLog.e(TAG, "notifyListPvEventsOnListIdle() -> mOnListPvEventsChangeListeners is null!");
+            return;
+        }
+
+        for (OnListPvEventsChangeListener onListPvEventsChangeListener : mOnListPvEventsChangeListeners) {
+            if (null == onListPvEventsChangeListener) {
+                ATLog.e(TAG, "notifyListPvEventsChangeListener() -> onListPvEventsChangeListener is null!");
+                continue;
+            }
+
+            onListPvEventsChangeListener.onListIdle(absListView);
+        }
+    }
+
+    public void notifyListPvEventsOnListScroll(AbsListView absListView) {
+        if (null == mOnListPvEventsChangeListeners) {
+            ATLog.e(TAG, "notifyListPvEventsOnListScroll() -> mOnListPvEventsChangeListeners is null!");
+            return;
+        }
+
+        for (OnListPvEventsChangeListener onListPvEventsChangeListener : mOnListPvEventsChangeListeners) {
+            if (null == onListPvEventsChangeListener) {
+                ATLog.e(TAG, "notifyListPvEventsChangeListener() -> onListPvEventsChangeListener is null!");
+                continue;
+            }
+
+            onListPvEventsChangeListener.onListScroll(absListView);
         }
     }
 

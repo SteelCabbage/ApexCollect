@@ -6,5 +6,25 @@
     android:background="@android:color/holo_blue_light"
     tools:context=".activity.FragmentActivity">
 
+    <Button
+        android:id="@+id/bt_frag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="fragment中的点击事件" />
+
+    <Button
+        android:id="@+id/bt_frag2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bt_frag"
+        android:text="匿名内部类" />
+
+    <ListView
+        android:id="@+id/lv_frag"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/bt_frag2"
+        android:tag="fragmentNoV4" />
+
 
 </RelativeLayout>

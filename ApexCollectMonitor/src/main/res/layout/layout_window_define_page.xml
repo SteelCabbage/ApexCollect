@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
+
+
+    <RelativeLayout
+        android:id="@+id/rl_event_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/menu_item_margin_left"
+        android:paddingRight="@dimen/menu_item_margin_left">
+
+        <TextView
+            android:id="@+id/tv_title_event_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:gravity="end"
+            android:text="@string/event_name_label"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/title_lv2_size" />
+
+        <EditText
+            android:id="@+id/et_event_name"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_toEndOf="@+id/tv_title_event_name"
+            android:layout_toRightOf="@+id/tv_title_event_name"
+            android:gravity="center"
+            android:hint="xx事件"
+            android:singleLine="true"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/title_lv2_size" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_view_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/menu_item_margin_left"
+        android:paddingRight="@dimen/menu_item_margin_left">
+
+        <TextView
+            android:id="@+id/tv_title_view_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/view_path"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/title_lv3_size" />
+
+        <EditText
+            android:id="@+id/et_view_path"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_toEndOf="@+id/tv_title_view_name"
+            android:layout_toRightOf="@+id/tv_title_view_name"
+            android:background="@color/c_F1F1F1"
+            android:gravity="start|center_vertical"
+            android:textSize="@dimen/text_small_size"
+            android:visibility="gone"
+            tools:text="xxxxxxxxxxxxxxxxxxxxx" />
+
+        <Spinner
+            android:id="@+id/spinner_page_path"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/tv_title_view_name"
+            android:layout_toRightOf="@+id/tv_title_view_name"
+            android:background="@color/c_F1F1F1"
+            android:gravity="start"
+            android:scrollbars="horizontal"
+            android:textSize="@dimen/text_small_size"
+            android:visibility="gone"
+            tools:text="xxxxxxxxxxxxxxxxxxxxx" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_element_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/menu_item_margin_left"
+        android:paddingRight="@dimen/menu_item_margin_left">
+
+        <TextView
+            android:id="@+id/tv_path_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="10dp"
+            android:gravity="end"
+            android:text="@string/defined_page"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/title_lv3_size" />
+
+        <EditText
+            android:id="@+id/et_data_path"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_toEndOf="@+id/tv_path_label"
+            android:layout_toRightOf="@+id/tv_path_label"
+            android:background="@color/c_F1F1F1"
+            android:gravity="start|center_vertical"
+            android:inputType="none"
+            android:textSize="@dimen/text_small_size"
+            tools:text="xxxxxxxxxxxxxxxxxxxxx" />
+    </RelativeLayout>
+
+    <com.chinapex.android.monitor.view.charts.LineChartContainer
+        android:id="@+id/line_chart_container"
+        android:layout_width="match_parent"
+        android:layout_height="300dp" />
+
+    <LinearLayout
+        android:id="@+id/ll_btn"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/menu_item_margin_left"
+        android:paddingRight="@dimen/menu_item_margin_left">
+
+        <Button
+            android:id="@+id/btn_save_define_event"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_weight="1"
+            android:background="@color/c_02A6EF"
+            android:gravity="center"
+            android:text="@string/save"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/title_lv3_size" />
+
+        <Button
+            android:id="@+id/btn_cancel_define_event"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_weight="1"
+            android:background="@drawable/border_line_while"
+            android:gravity="center"
+            android:text="@string/cancel"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/title_lv3_size" />
+    </LinearLayout>
+
+</LinearLayout>

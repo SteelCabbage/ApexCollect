@@ -29,10 +29,14 @@ public class SampleApp extends Application {
         // 初始化埋点sdk
         ApexAnalytics.getInstance().init(new AnalyticsSettings.SettingsBuilder(sSampleApp)
                 .setUuid("testUuid")
+                .setChannelId("豌豆荚")
                 .setLogLevel(ATLog.VERBOSE)
                 .setDelayReportInterval(1000 * 60 * 2)
                 .setCheckInstantErrInterval(1000 * 60)
                 .setReportMaxNum(5)
+                .setUrlDelay("")
+                .setUrlInstant("")
+                .setHostnameVerifier("")
                 .build());
 
         AppLog.d(TAG, "================init ApexAnalytics cost time================:" + (System.currentTimeMillis() - time));

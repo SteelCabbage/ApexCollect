@@ -15,6 +15,8 @@ public class AppLog {
 
     private static int sMinLevel = VERBOSE;
 
+    private static final String TAG = "SampleApp-";
+
     public static void setLevel(int minLevel) {
         sMinLevel = minLevel;
     }
@@ -25,31 +27,31 @@ public class AppLog {
 
     public static void v(String tag, String message) {
         if (shouldLog(VERBOSE)) {
-            Log.v(tag, message);
+            Log.v((TAG + tag), message);
         }
     }
 
     public static void d(String tag, String message) {
         if (shouldLog(DEBUG)) {
-            Log.d(tag, message);
+            Log.d((TAG + tag), message);
         }
     }
 
     public static void i(String tag, String message) {
         if (shouldLog(INFO)) {
-            Log.i(tag, message);
+            Log.i((TAG + tag), message);
         }
     }
 
     public static void w(String tag, String message) {
         if (shouldLog(WARN)) {
-            Log.w(tag, message);
+            Log.w((TAG + tag), message);
         }
     }
 
     public static void e(String tag, String message) {
         if (shouldLog(ERROR)) {
-            Log.e(tag, message);
+            Log.e((TAG + tag), message);
         }
     }
 

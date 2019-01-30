@@ -3,8 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AnalyticsAop/AnalyticsAop.iml" filepath="$PROJECT_DIR$/AnalyticsAop/AnalyticsAop.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ApexCollectMonitor/ApexCollectMonitor.iml" filepath="$PROJECT_DIR$/ApexCollectMonitor/ApexCollectMonitor.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ApexCollectMonitorNoOp/ApexCollectMonitorNoOp.iml" filepath="$PROJECT_DIR$/ApexCollectMonitorNoOp/ApexCollectMonitorNoOp.iml" />
       <module fileurl="file://$PROJECT_DIR$/ApexCollectSDK/ApexCollectSDK.iml" filepath="$PROJECT_DIR$/ApexCollectSDK/ApexCollectSDK.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/ApexDataCollect-Android.iml" filepath="$PROJECT_DIR$/.idea/ApexDataCollect-Android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ApexDataCollect-Android.iml" filepath="$PROJECT_DIR$/ApexDataCollect-Android.iml" />
       <module fileurl="file://$PROJECT_DIR$/Sample/Sample.iml" filepath="$PROJECT_DIR$/Sample/Sample.iml" />
     </modules>
   </component>

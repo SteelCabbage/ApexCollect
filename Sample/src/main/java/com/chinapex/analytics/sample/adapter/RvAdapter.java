@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.chinapex.analytics.sample.R;
+import com.chinapex.analytics.sample.bean.Student;
 import com.chinapex.analytics.sample.utils.AppLog;
 import com.chinapex.android.datacollect.utils.ATLog;
 

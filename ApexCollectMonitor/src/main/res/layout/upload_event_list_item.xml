@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:background="@color/c_F1F1F1">
+
+    <TextView
+        android:id="@+id/tv_upload_sequence"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:background="@color/c_AFE0F6"
+        android:gravity="center"
+        android:text="1"
+        android:textColor="@color/c_548FA8"
+        android:textSize="@dimen/title_lv3_size"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_upload_event_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="页面事件名称A"
+        android:textSize="@dimen/title_lv3_size" />
+
+    <TextView
+        android:id="@+id/tv_delete_upload_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="25dp"
+        android:layout_marginRight="25dp"
+        android:background="@null"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="@string/upload_delete_event"
+        android:textColor="@color/c_015478" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@android:color/darker_gray" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/darker_gray" />
+
+</RelativeLayout>

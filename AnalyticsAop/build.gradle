@@ -23,12 +23,12 @@ publish {
     userOrg = 'apextechnologies'
     groupId = 'com.chinapex.analytics.aop'
     artifactId = 'AnalyticsAop'
-    publishVersion = '1.0.4'
+    publishVersion = '1.0.6'
     desc = 'ASM AOP'
 }
 
 group = 'com.chinapex.analytics.aop'
-version = '1.0.4'
+version = '1.0.6'
 
 uploadArchives {
     repositories {

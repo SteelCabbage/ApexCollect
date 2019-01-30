@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import com.chinapex.analytics.sample.R;
 import com.chinapex.analytics.sample.SampleApp;
 import com.chinapex.analytics.sample.adapter.RvAdapter;
-import com.chinapex.analytics.sample.adapter.Student;
+import com.chinapex.analytics.sample.bean.Student;
 import com.chinapex.analytics.sample.utils.AppLog;
 
 import java.util.ArrayList;

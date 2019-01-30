@@ -68,6 +68,13 @@
         android:text="登入" />
 
     <Button
+        android:id="@+id/bt_2_test_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TestActivity"
+        android:textAllCaps="false" />
+
+    <Button
         android:id="@+id/bt_signOut"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

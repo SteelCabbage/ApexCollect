@@ -1,7 +1,5 @@
 package com.chinapex.android.datacollect.model.bean.event;
 
-import java.util.List;
-
 /**
  * @author SteelCabbage
  * @date 2018/11/22
@@ -83,58 +81,29 @@ public class PvEventData {
     public static class ValueBean {
 
         /**
+         * "alias":"事件别名"
          * "reference": "ApexAssetMainController",      From
-         * "pageTitle": "111111",
          * "pageClassName": "ApexAccountDetailController",
+         * "md5":"",
          * "durationTime": "1.45",       // 改为long 毫秒
-         * "customPageUrl": "ddddd\/\/ddddd.ddddd",   // ios代码埋点
-         * "customPageProperties": {                  // ios代码埋点
-         *                           "a": "b",
-         *                           "c": "d"
-         *                         },
-         * "customPageTitle": "ddddddd",              // ios代码埋点
-         * "exposures": [
-         *                     {
-         *                         "viewPath": "UITableView(0)/UIView(0) => ApexAssetMainController(ETH)",
-         *                         "pageClassName": "ApexAssetMainController",
-         *                         "viewPathMD5": "798d070f2f9aba94",
-         *                         "elements": {
-         *                             "0:0": {
-         *                                 "viewPath": "Cell[0:0]/UITableView(0)/UIView(0) => ApexAssetMainController(ETH)",
-         *                                 "index": "0:0",
-         *                                 "isShowing": true,
-         *                                 "count": 1,
-         *                                 "viewPathMD5": "f0b2a03bc1c662cb",
-         *                                 "dataDict": {
-         *                                     "image_url": "https://tracker.chinapex.com.cn/tool/static/icon84/84_ZRX.png",
-         *                                     "symbol": "ZRX",
-         *                                     "precision": "18",
-         *                                     "type": "Erc20",
-         *                                     "hex_hash": "0xe41d2489571d322189246dafa5ebde1f4699f498",
-         *                                     "name": "ZRX"
-         *                                 }
-         *                             }
-         *                         }
-         *                     }
-         *                 ],
-         *
          */
 
-        /**
-
-         */
-
+        private String alias;
         private String reference;
-        private String pageTitle;
         private String pageClassName;
+        /**
+         * MD5 ( pageClassName )
+         */
+        private String md5;
         private long durationTime;
 
-        // TODO: 2018/11/26 0026  列表曝光率
-        /**
-         * 列表曝光率
-         */
-        private List<Object> exposures;
+        public String getAlias() {
+            return alias;
+        }
 
+        public void setAlias(String alias) {
+            this.alias = alias;
+        }
 
         public String getReference() {
             return reference;
@@ -144,12 +113,12 @@ public class PvEventData {
             this.reference = reference;
         }
 
-        public String getPageTitle() {
-            return pageTitle;
+        public String getMd5() {
+            return md5;
         }
 
-        public void setPageTitle(String pageTitle) {
-            this.pageTitle = pageTitle;
+        public void setMd5(String md5) {
+            this.md5 = md5;
         }
 
         public String getPageClassName() {
@@ -168,12 +137,5 @@ public class PvEventData {
             this.durationTime = durationTime;
         }
 
-        public List<Object> getExposures() {
-            return exposures;
-        }
-
-        public void setExposures(List<Object> exposures) {
-            this.exposures = exposures;
-        }
     }
 }

@@ -1,18 +1,20 @@
 package com.chinapex.android.datacollect.executor.runnable;
 
-import android.app.Fragment;
 import android.text.TextUtils;
 
 import com.chinapex.android.datacollect.global.ApexCache;
 import com.chinapex.android.datacollect.global.Constant;
 import com.chinapex.android.datacollect.model.bean.TrackEvent;
 import com.chinapex.android.datacollect.model.bean.event.PvEventData;
+import com.chinapex.android.datacollect.model.bean.response.UpdateConfigResponse;
 import com.chinapex.android.datacollect.model.db.DbConstant;
 import com.chinapex.android.datacollect.model.db.DbDao;
 import com.chinapex.android.datacollect.utils.ATLog;
+import com.chinapex.android.datacollect.utils.ConfigUtils;
 import com.chinapex.android.datacollect.utils.GsonUtils;
+import com.chinapex.android.datacollect.utils.MD5Utils;
 
-import java.util.ArrayList;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -23,41 +25,49 @@ public class GenerateFragmentNotV4PvEventData implements Runnable {
 
     private static final String TAG = GenerateFragmentNotV4PvEventData.class.getSimpleName();
 
-    private Fragment mFragment;
+    private String mPageClassName;
     private String mReference;
     private long mPvEndTime;
 
-    public GenerateFragmentNotV4PvEventData(Fragment fragment, String reference, long pvEndTime) {
-        mFragment = fragment;
+    public GenerateFragmentNotV4PvEventData(String pageClassName, String reference, long pvEndTime) {
+        mPageClassName = pageClassName;
         mReference = reference;
         mPvEndTime = pvEndTime;
     }
 
     @Override
     public void run() {
-        if (null == mFragment) {
-            ATLog.e(TAG, "GenerateFragmentNotV4PvEventData run() -> mFragment  is null!");
+        if (TextUtils.isEmpty(mPageClassName)) {
+            ATLog.e(TAG, "GenerateFragmentNotV4PvEventData run() -> mPageClassName  is null or empty!");
             return;
         }
 
+        String pageClassNameMD5 = MD5Utils.getMD5(mPageClassName);
+        UpdateConfigResponse.DataBean.Config.PvBean configPvBean = ConfigUtils.getConfigPvBean(mPageClassName);
+
         PvEventData.ValueBean valueBean = new PvEventData.ValueBean();
-        valueBean.setReference(mReference);
-        String pageClassName = mFragment.getClass().getName();
-        valueBean.setPageClassName(pageClassName);
 
-        ConcurrentHashMap<String, Long> pvDurationTimes = ApexCache.getInstance().getPvDurationTimes();
-        if (null != pvDurationTimes && !TextUtils.isEmpty(pageClassName)) {
-            Long pvStartTime = pvDurationTimes.get(pageClassName);
-            if (null != pvStartTime) {
-                valueBean.setDurationTime((mPvEndTime - pvStartTime));
-                pvDurationTimes.remove(pageClassName);
-
-                ATLog.v(TAG, "GenerateFragmentNotV4PvEventData run() -> mFragment: " + mFragment.getClass().getSimpleName() + " pvTime: " + (mPvEndTime - pvStartTime));
-            }
+        if (null == configPvBean || TextUtils.isEmpty(configPvBean.getAlias())) {
+            valueBean.setAlias(Constant.EVENT_LABEL_PV);
+        } else {
+            valueBean.setAlias(configPvBean.getAlias());
         }
 
-        // TODO: 2018/11/26 0026  列表曝光率
-        valueBean.setExposures(new ArrayList<>());
+        valueBean.setReference(null == mReference ? "" : mReference);
+        valueBean.setPageClassName(mPageClassName);
+        valueBean.setMd5(pageClassNameMD5);
+
+        ConcurrentHashMap<String, Long> pvDurationTimes = ApexCache.getInstance().getPvDurationTimes();
+        if (null != pvDurationTimes && !TextUtils.isEmpty(mPageClassName)) {
+            Long pvStartTime = pvDurationTimes.get(mPageClassName);
+            if (null != pvStartTime) {
+                valueBean.setDurationTime((mPvEndTime - pvStartTime));
+                pvDurationTimes.remove(mPageClassName);
+
+                ATLog.v(TAG, "GenerateFragmentNotV4PvEventData run() -> mFragment: " + mPageClassName
+                        + " pvTime: " + (mPvEndTime - pvStartTime));
+            }
+        }
 
         PvEventData pvEventData = new PvEventData();
         pvEventData.setEventType(Constant.EVENT_TYPE_PV);
@@ -84,4 +94,5 @@ public class GenerateFragmentNotV4PvEventData implements Runnable {
 
         dbDao.insert(DbConstant.TABLE_DELAY_REPORT, trackEvent, System.currentTimeMillis());
     }
+
 }

@@ -1,18 +1,20 @@
 package com.chinapex.android.datacollect.executor.runnable;
 
-import android.app.Activity;
 import android.text.TextUtils;
 
 import com.chinapex.android.datacollect.global.ApexCache;
 import com.chinapex.android.datacollect.global.Constant;
 import com.chinapex.android.datacollect.model.bean.TrackEvent;
 import com.chinapex.android.datacollect.model.bean.event.PvEventData;
+import com.chinapex.android.datacollect.model.bean.response.UpdateConfigResponse;
 import com.chinapex.android.datacollect.model.db.DbConstant;
 import com.chinapex.android.datacollect.model.db.DbDao;
 import com.chinapex.android.datacollect.utils.ATLog;
+import com.chinapex.android.datacollect.utils.ConfigUtils;
 import com.chinapex.android.datacollect.utils.GsonUtils;
+import com.chinapex.android.datacollect.utils.MD5Utils;
 
-import java.util.ArrayList;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -22,41 +24,47 @@ import java.util.concurrent.ConcurrentHashMap;
 public class GenerateActivityPvEventData implements Runnable {
 
     private static final String TAG = GenerateActivityPvEventData.class.getSimpleName();
-    private Activity mActivity;
+    private String mPageClassName;
     private String mReference;
     private long mPvEndTime;
 
-    public GenerateActivityPvEventData(Activity activity, String reference, long pvEndTime) {
-        mActivity = activity;
+    public GenerateActivityPvEventData(String pageClassName, String reference, long pvEndTime) {
+        mPageClassName = pageClassName;
         mReference = reference;
         mPvEndTime = pvEndTime;
     }
 
     @Override
     public void run() {
-        if (null == mActivity || null == mReference) {
+        if (TextUtils.isEmpty(mPageClassName) || null == mReference) {
             ATLog.e(TAG, "GenerateActivityPvEventData run() -> mActivity or mReference is null!");
             return;
         }
 
+        String pageClassNameMD5 = MD5Utils.getMD5(mPageClassName);
+        UpdateConfigResponse.DataBean.Config.PvBean configPvBean = ConfigUtils.getConfigPvBean(mPageClassName);
+
         PvEventData.ValueBean valueBean = new PvEventData.ValueBean();
+
+        if (null == configPvBean || TextUtils.isEmpty(configPvBean.getAlias())) {
+            valueBean.setAlias(Constant.EVENT_LABEL_PV);
+        } else {
+            valueBean.setAlias(configPvBean.getAlias());
+        }
+
         valueBean.setReference(mReference);
-//        valueBean.setPageTitle();
-        String pageClassName = mActivity.getClass().getName();
-        valueBean.setPageClassName(pageClassName);
+        valueBean.setPageClassName(mPageClassName);
+        valueBean.setMd5(MD5Utils.getMD5(pageClassNameMD5));
 
         ConcurrentHashMap<String, Long> pvDurationTimes = ApexCache.getInstance().getPvDurationTimes();
-        if (null != pvDurationTimes && !TextUtils.isEmpty(pageClassName)) {
-            Long pvStartTime = pvDurationTimes.get(pageClassName);
+        if (null != pvDurationTimes && !TextUtils.isEmpty(mPageClassName)) {
+            Long pvStartTime = pvDurationTimes.get(mPageClassName);
             if (null != pvStartTime) {
                 valueBean.setDurationTime((mPvEndTime - pvStartTime));
                 // 计算完毕后, 从缓存中移除
-                pvDurationTimes.remove(pageClassName);
+                pvDurationTimes.remove(mPageClassName);
             }
         }
-
-        // TODO: 2018/11/26 0026  列表曝光率
-        valueBean.setExposures(new ArrayList<Object>());
 
         PvEventData pvEventData = new PvEventData();
         pvEventData.setEventType(Constant.EVENT_TYPE_PV);
@@ -83,4 +91,5 @@ public class GenerateActivityPvEventData implements Runnable {
 
         dbDao.insert(DbConstant.TABLE_DELAY_REPORT, trackEvent, System.currentTimeMillis());
     }
+
 }

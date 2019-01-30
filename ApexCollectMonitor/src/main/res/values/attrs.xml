@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="LineChart">
+        <attr name="pointRadius" format="float"/>
+        <attr name="pointColor" format="color" />
+        <attr name="textColor" format="color"/>
+        <attr name="textSize" format="dimension"/>
+        <attr name="baseLineColor" format="color"/>
+        <attr name="baseLineWidth" format="dimension"/>
+        <attr name="brokenLineWidth" format="dimension"/>
+        <attr name="brokenLineColor" format="color"/>
+        <attr name="dashLineColor" format="color"/>
+        <attr name="dashLineWidth" format="dimension"/>
+    </declare-styleable>
+</resources>

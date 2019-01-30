@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">ApexCollectMonitor</string>
+    <string name="monitor_mode">圈选模式</string>
+    <string name="contrast_mode">对比模式</string>
+    <string name="contrast_charts">对比图表</string>
+    <string name="define_page_events">定义页面事件</string>
+    <string name="done">完成埋点</string>
+    <string name="close_menu">关闭菜单</string>
+
+    <string name="event_name_label">事件名称</string>
+    <string name="view_path">控件路径 - </string>
+    <string name="defined_page">圈选页面 - </string>
+    <string name="data_path">数据路径 - </string>
+    <string name="reference">Reference - </string>
+    <string name="click_count">点击量: </string>
+    <string name="alias_leak_hint">请输入事件名称</string>
+    <string name="defined_page_hint">请先定义圈选页面</string>
+    <string name="save_failed">保存失败</string>
+    <string name="save">保存</string>
+    <string name="cancel">取消</string>
+
+    <string name="back">返回</string>
+    <string name="click_percent_pie_label">点击占比-饼图</string>
+    <string name="click_rank_list_label">点击排行榜</string>
+    <string name="upload_event">上传圈选事件</string>
+    <string name="click_proportion">点击占比：</string>
+    <string name="compare_analyse_list">对比分析列表</string>
+    <string name="compare_analyse_chart">对比分析图表</string>
+    <string name="clean_statistics_list">清空列表</string>
+    <string name="upload">上传</string>
+    <string name="upload_cancel">取消</string>
+    <string name="upload_delete_event">删除</string>
+    <string name="click_amount_label">点击量</string>
+    <string name="click_percent_label">点击占比</string>
+
+</resources>

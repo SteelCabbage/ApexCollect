@@ -87,6 +87,7 @@ public class BaseController {
 
         // test location
         LocationController.getInstance().doInit();
+        mIControllerHashMap.put(Constant.CONTROLLER_LOCATION, LocationController.getInstance());
     }
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)

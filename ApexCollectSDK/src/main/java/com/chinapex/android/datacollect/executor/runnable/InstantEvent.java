@@ -1,11 +1,13 @@
 package com.chinapex.android.datacollect.executor.runnable;
 
+import com.chinapex.android.datacollect.BuildConfig;
 import com.chinapex.android.datacollect.global.ApexCache;
 import com.chinapex.android.datacollect.global.Constant;
 import com.chinapex.android.datacollect.model.bean.TrackEvent;
 import com.chinapex.android.datacollect.model.bean.event.ClickEventData;
 import com.chinapex.android.datacollect.model.bean.event.ColdEventData;
 import com.chinapex.android.datacollect.model.bean.event.CustomEventData;
+import com.chinapex.android.datacollect.model.bean.event.ListEventData;
 import com.chinapex.android.datacollect.model.bean.event.PvEventData;
 import com.chinapex.android.datacollect.model.bean.request.AnalyticsReport;
 import com.chinapex.android.datacollect.model.db.DbConstant;
@@ -79,6 +81,15 @@ public class InstantEvent implements Runnable, INetCallback {
 
                 events.add(pvEventData);
                 break;
+            case Constant.EVENT_TYPE_LIST:
+                ListEventData listEventData = GsonUtils.json2Bean(mTrackEvent.getValue(), ListEventData.class);
+                if (null == listEventData) {
+                    ATLog.e(TAG, "listEventData is null!");
+                    return;
+                }
+
+                events.add(listEventData);
+                break;
             default:
                 ATLog.e(TAG, "InstantEvent unknown eventType!");
                 break;
@@ -99,6 +110,11 @@ public class InstantEvent implements Runnable, INetCallback {
 
         String analyticsReportJson = GsonUtils.toJsonStr(analyticsReport);
         ATLog.i(TAG, "InstantEvent analyticsReportJson:" + analyticsReportJson);
+
+        if (BuildConfig.DEBUG) {
+            ATLog.d(TAG, "InstantEvent run() -> current is DEBUG mode, no need to report!");
+//            return;    后续正式版本打开，debug模式不上报
+        }
 
         OkHttpClientManager.getInstance().postJson(ApexCache.getInstance().getUrlInstant(), analyticsReportJson, this);
     }

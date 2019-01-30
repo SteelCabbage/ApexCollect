@@ -2,6 +2,7 @@ package com.chinapex.android.datacollect.utils.net;
 
 import android.text.TextUtils;
 
+import com.chinapex.android.datacollect.global.ApexCache;
 import com.chinapex.android.datacollect.global.Constant;
 import com.chinapex.android.datacollect.utils.ATLog;
 
@@ -82,7 +83,7 @@ public class OkHttpClientManager {
     private class TrustAllHostnameVerifier implements HostnameVerifier {
         @Override
         public boolean verify(String hostname, SSLSession session) {
-            return Constant.HOSTNAME_VERIFIER.equals(hostname);
+            return ApexCache.getInstance().getHostnameVerifier().equals(hostname);
         }
     }
 

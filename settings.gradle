@@ -1,1 +1,1 @@
-include ':ApexCollectSDK', ':AnalyticsAop', ':Sample'
+include ':ApexCollectSDK', ':AnalyticsAop', ':Sample', ':ApexCollectMonitor', ':ApexCollectMonitorNoOp'

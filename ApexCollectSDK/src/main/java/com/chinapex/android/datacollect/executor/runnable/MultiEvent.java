@@ -9,6 +9,7 @@ import com.chinapex.android.datacollect.model.bean.TrackEvent;
 import com.chinapex.android.datacollect.model.bean.event.ClickEventData;
 import com.chinapex.android.datacollect.model.bean.event.ColdEventData;
 import com.chinapex.android.datacollect.model.bean.event.CustomEventData;
+import com.chinapex.android.datacollect.model.bean.event.ListEventData;
 import com.chinapex.android.datacollect.model.bean.event.PvEventData;
 import com.chinapex.android.datacollect.model.bean.request.AnalyticsReport;
 import com.chinapex.android.datacollect.model.db.DbConstant;
@@ -127,14 +128,22 @@ public class MultiEvent implements Runnable, INetCallback {
                     events.add(clickEventData);
                     break;
                 case Constant.EVENT_TYPE_PV:
-                    PvEventData pvEventData = GsonUtils.json2Bean(trackEvent.getValue(),
-                            PvEventData.class);
+                    PvEventData pvEventData = GsonUtils.json2Bean(trackEvent.getValue(), PvEventData.class);
                     if (null == pvEventData) {
                         ATLog.e(TAG, mTableName + " pvEventData is null!");
                         continue a;
                     }
 
                     events.add(pvEventData);
+                    break;
+                case Constant.EVENT_TYPE_LIST:
+                    ListEventData listEventData = GsonUtils.json2Bean(trackEvent.getValue(), ListEventData.class);
+                    if (null == listEventData) {
+                        ATLog.e(TAG, mTableName + " listEventData is null!");
+                        continue a;
+                    }
+
+                    events.add(listEventData);
                     break;
                 default:
                     ATLog.e(TAG, " MultiEvent unknown eventType!");

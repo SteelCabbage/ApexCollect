@@ -81,30 +81,29 @@ public class ClickEventData {
     public static class ValueBean {
 
         /**
-         * "pageClassName": "所属的activity名字，或者当前栈顶的activity名字",
          * "viewPath": "_UIButtonBarButton(9223372036854775807)&_invoke:forEvent: => ApexAssetMainController(NEO)",
-         * "viewPathMD5": "51870df90a2633ba",
+         * "md5": "事件唯一id",
+         * "pageClassName": "所属的activity名字，或者当前栈顶的activity名字",
+         * "definedPage": 被定义在哪个页面
+         * "alias":"事件别名"
+         * "preMD5":"若有大的改动, 与之前版本的同一事件关联"
          * "content": "button上的字",
-         * "frame": "{\"x\":0.000000,\"y\":0.000000,\"width\":43.000000,\"height\":44.000000}",
-         * "alpha": 1,
-         * "invocation": "_invoke:forEvent:"
          */
 
-        private String pageClassName;
         private String viewPath;
-        private String viewPathMD5;
+        /**
+         * 普通:
+         * MD5 ( viewPath )
+         *
+         * 列表:
+         * MD5 (listId + dataKey)
+         */
+        private String md5;
+        private String pageClassName;
+        private String definedPage;
+        private String alias;
+        private String preMD5;
         private String content;
-        private String frame;
-        private float alpha;
-        private String invocation;
-
-        public String getPageClassName() {
-            return pageClassName;
-        }
-
-        public void setPageClassName(String pageClassName) {
-            this.pageClassName = pageClassName;
-        }
 
         public String getViewPath() {
             return viewPath;
@@ -114,12 +113,44 @@ public class ClickEventData {
             this.viewPath = viewPath;
         }
 
-        public String getViewPathMD5() {
-            return viewPathMD5;
+        public String getMd5() {
+            return md5;
         }
 
-        public void setViewPathMD5(String viewPathMD5) {
-            this.viewPathMD5 = viewPathMD5;
+        public void setMd5(String md5) {
+            this.md5 = md5;
+        }
+
+        public String getPageClassName() {
+            return pageClassName;
+        }
+
+        public void setPageClassName(String pageClassName) {
+            this.pageClassName = pageClassName;
+        }
+
+        public String getDefinedPage() {
+            return definedPage;
+        }
+
+        public void setDefinedPage(String definedPage) {
+            this.definedPage = definedPage;
+        }
+
+        public String getAlias() {
+            return alias;
+        }
+
+        public void setAlias(String alias) {
+            this.alias = alias;
+        }
+
+        public String getPreMD5() {
+            return preMD5;
+        }
+
+        public void setPreMD5(String preMD5) {
+            this.preMD5 = preMD5;
         }
 
         public String getContent() {
@@ -128,30 +159,6 @@ public class ClickEventData {
 
         public void setContent(String content) {
             this.content = content;
-        }
-
-        public String getFrame() {
-            return frame;
-        }
-
-        public void setFrame(String frame) {
-            this.frame = frame;
-        }
-
-        public float getAlpha() {
-            return alpha;
-        }
-
-        public void setAlpha(float alpha) {
-            this.alpha = alpha;
-        }
-
-        public String getInvocation() {
-            return invocation;
-        }
-
-        public void setInvocation(String invocation) {
-            this.invocation = invocation;
         }
     }
 }

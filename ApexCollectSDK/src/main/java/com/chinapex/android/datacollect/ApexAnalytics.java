@@ -7,6 +7,7 @@ import com.chinapex.android.datacollect.changelistener.AnalyticsListenerControll
 import com.chinapex.android.datacollect.controller.BaseController;
 import com.chinapex.android.datacollect.controller.IController;
 import com.chinapex.android.datacollect.executor.TaskController;
+import com.chinapex.android.datacollect.executor.callback.IUpdateConfigCallback;
 import com.chinapex.android.datacollect.executor.runnable.GenerateCustomEventData;
 import com.chinapex.android.datacollect.executor.runnable.UpdateConfig;
 import com.chinapex.android.datacollect.global.ApexCache;
@@ -16,18 +17,23 @@ import com.chinapex.android.datacollect.model.bean.ApexLocation;
 import com.chinapex.android.datacollect.model.bean.TrackEvent;
 import com.chinapex.android.datacollect.utils.ATLog;
 import com.chinapex.android.datacollect.utils.PhoneStateUtils;
+import com.chinapex.android.datacollect.utils.SystemUtils;
 import com.chinapex.android.datacollect.utils.SpUtils;
+import com.chinapex.android.monitor.utils.MLog;
 
 import java.util.HashMap;
+import java.util.concurrent.ScheduledFuture;
+
 
 /**
  * @author SteelCabbage
  * @date 2018/10/17
  */
-public class ApexAnalytics {
+public class ApexAnalytics implements IUpdateConfigCallback {
 
     private static final String TAG = ApexAnalytics.class.getSimpleName();
     private boolean mIsInit;
+    private ScheduledFuture mUpdateConfigSF;
 
     private ApexAnalytics() {
 
@@ -69,6 +75,18 @@ public class ApexAnalytics {
             return;
         }
 
+        // for baidu location sdk
+        String processName = SystemUtils.getProcessName(applicationContext);
+        if (TextUtils.isEmpty(processName)) {
+            ATLog.e(TAG, "processName is null!");
+            return;
+        }
+
+        if (Constant.PROCESS_NAME_BAIDU_LOCATION.endsWith(processName)) {
+            ATLog.e(TAG, ":remote process does not need to init again,ApexAnalytics was init already!");
+            return;
+        }
+
         HashMap<String, IController> iControllerHashMap = BaseController.getInstance().getIControllerHashMap();
         if (null == iControllerHashMap) {
             ATLog.e(TAG, "iControllerHashMap is null!");
@@ -83,19 +101,21 @@ public class ApexAnalytics {
         AnalyticsListenerController.getInstance().doInit();
         iControllerHashMap.put(Constant.CONTROLLER_ANALYTICS_LISTENER, AnalyticsListenerController.getInstance());
 
-        // 初始化全局缓存对象ApexCache
-        ApexCache.getInstance().doInit();
-
         // 设置应用的applicationContext
         ApexCache.getInstance().setContext(applicationContext);
 
+        // 初始化全局缓存对象ApexCache
+        ApexCache.getInstance().doInit();
+
         // 可自定义的Settings
         setUuid(analyticsSettings.getUuid());
+        setChannelId(analyticsSettings.getChannelId());
         setReportMaxNum(analyticsSettings.getReportMaxNum());
         setDelayReportInterval(analyticsSettings.getDelayReportInterval());
         setCheckInstantErrInterval(analyticsSettings.getCheckInstantErrInterval());
         setUrlDelay(analyticsSettings.getUrlDelay());
         setUrlInstant(analyticsSettings.getUrlInstant());
+        setHostnameVerifier(analyticsSettings.getHostnameVerifier());
         setLogLevel(analyticsSettings.getLogLevel());
 
         // 获取并设置当前配置文件版本号
@@ -105,12 +125,27 @@ public class ApexAnalytics {
         ApexCache.getInstance().setConfigVersion(configVersion);
 
         // 更新配置文件
-        TaskController.getInstance().submit(new UpdateConfig());
+        mUpdateConfigSF = TaskController.getInstance().schedule(new UpdateConfig(this), 0, Constant.POLLING_TIME_UPDATE_CONFIG);
 
         // 初始化BaseController
         BaseController.getInstance().doInit();
 
         mIsInit = true;
+    }
+
+    @Override
+    public void updateConfig(boolean isUpdateSuccessful) {
+        if (null == mUpdateConfigSF) {
+            ATLog.e(TAG, "mUpdateConfigSF is null!");
+            return;
+        }
+
+        ATLog.i(TAG, "updateConfig() -> isUpdateSuccessful:" + isUpdateSuccessful);
+
+        if (isUpdateSuccessful) {
+            boolean cancel = mUpdateConfigSF.cancel(true);
+            ATLog.i(TAG, "mUpdateConfigSF cancel:" + cancel);
+        }
     }
 
 
@@ -189,6 +224,20 @@ public class ApexAnalytics {
     }
 
     /**
+     * 设置app安装渠道
+     *
+     * @param channelId
+     */
+    private void setChannelId(String channelId) {
+        if (TextUtils.isEmpty(channelId)) {
+            ATLog.w(TAG, "channelId is null, default: channelId is currently used");
+            return;
+        }
+
+        ApexCache.getInstance().setChannelId(channelId);
+    }
+
+    /**
      * setMaxNum 设置上报条数
      *
      * @param reportMaxNum Default: 30 (默认30条)
@@ -262,6 +311,20 @@ public class ApexAnalytics {
     }
 
     /**
+     * 域名过滤, 自定义url的同时, 必须设置与其域名一致的hostnameVerifier
+     *
+     * @param hostnameVerifier
+     */
+    private void setHostnameVerifier(String hostnameVerifier) {
+        if (TextUtils.isEmpty(hostnameVerifier)) {
+            ATLog.w(TAG, "setHostnameVerifier() -> hostnameVerifier is null or empty!");
+            return;
+        }
+
+        ApexCache.getInstance().setHostnameVerifier(hostnameVerifier);
+    }
+
+    /**
      * setLogLevel 设置日志输出等级，默认为WARN
      *
      * @param logLevel One of {@link ATLog#VERBOSE}, {@link ATLog#DEBUG}, {@link ATLog#INFO}
@@ -274,6 +337,7 @@ public class ApexAnalytics {
         }
 
         ATLog.setLevel(logLevel);
+        MLog.setLevel(logLevel);
     }
 
 }

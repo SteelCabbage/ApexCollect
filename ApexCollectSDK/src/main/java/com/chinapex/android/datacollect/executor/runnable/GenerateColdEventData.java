@@ -8,7 +8,6 @@ import com.chinapex.android.datacollect.global.ApexCache;
 import com.chinapex.android.datacollect.global.Constant;
 import com.chinapex.android.datacollect.model.bean.TrackEvent;
 import com.chinapex.android.datacollect.model.bean.event.ColdEventData;
-import com.chinapex.android.datacollect.utils.ATLog;
 import com.chinapex.android.datacollect.utils.GsonUtils;
 import com.chinapex.android.datacollect.utils.PhoneStateUtils;
 
@@ -26,6 +25,7 @@ public class GenerateColdEventData implements Runnable {
         ColdEventData.ValueBean valueBean = new ColdEventData.ValueBean();
         // 预留字段
         valueBean.setApiKey("");
+        valueBean.setChannelId(ApexCache.getInstance().getChannelId());
         // 暂取不到厂商定制系统的版本号
         valueBean.setCustomVersion("");
         valueBean.setOs(System.getProperty("os.name"));
@@ -51,14 +51,11 @@ public class GenerateColdEventData implements Runnable {
         coldEventData.setTimeStamp(System.currentTimeMillis());
         coldEventData.setValue(valueBean);
 
-        String coldEventDataJson = GsonUtils.toJsonStr(coldEventData);
-        ATLog.d(TAG, "coldEventDataJson:" + coldEventDataJson);
-
         TrackEvent trackEvent = new TrackEvent.EventBuilder()
                 .setMode(Constant.MODE_INSTANT)
                 .setEventType(Constant.EVENT_TYPE_COLD)
                 .setLabel(Constant.EVENT_LABEL_COLD)
-                .setValue(coldEventDataJson)
+                .setValue(GsonUtils.toJsonStr(coldEventData))
                 .build();
 
         TaskController.getInstance().submit(new InstantEvent(trackEvent));

@@ -18,15 +18,13 @@ public class FragmentV4 extends BaseFragmentV4 {
 
     private static final String TAG = FragmentV4.class.getSimpleName();
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
-            savedInstanceState) {
+    View baseOnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_v4, container, false);
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    protected void baseOnViewCreated(View view, Bundle savedInstanceState) {
+
     }
 }

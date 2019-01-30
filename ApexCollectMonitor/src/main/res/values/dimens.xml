@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="menu_item_space_between">15dp</dimen>
+    <dimen name="menu_item_text_size">20sp</dimen>
+    <dimen name="menu_item_margin_left">15dp</dimen>
+    <dimen name="switch_min_width">60dp</dimen>
+
+    <dimen name="column_margin_left">120dp</dimen>
+    <dimen name="column_margin_right">16dp</dimen>
+
+
+    <dimen name="text_small_size">12sp</dimen>
+    <dimen name="text_normal_size">14sp</dimen>
+
+    <dimen name="title_lv3_size">16sp</dimen>
+    <dimen name="title_lv2_size">18sp</dimen>
+    <dimen name="title_lv1_size">20sp</dimen>
+
+
+</resources>
